@@ -37,4 +37,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 * Added Building label chit
 * Added listeners/handlers for building label
 * Updated cas-leaflet.js to handle building label
+* Requested by JTACs
 
+## 1.3.1
+* Added show/hide title buttons
+* Updated cas-leaflet.js to handle the showing/hiding of titles
+* Requested by GOV
