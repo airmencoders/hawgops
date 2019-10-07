@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.2"
+   width="50"
+   height="50"
+   viewBox="24 24 50 50"
+   id="svg24716"
+   sodipodi:docname="cbrne.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <metadata
+     id="metadata24722">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs24720" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="972"
+     id="namedview24718"
+     showgrid="false"
+     inkscape:zoom="12.421053"
+     inkscape:cx="6.7775224"
+     inkscape:cy="33.702802"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg24716" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:2.86518168;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 49,26.025989 71.97401,49 49,71.97401 26.025989,49 Z"
+     id="path24708" />
+  <path
+     style="fill:none;stroke:#ff0000;stroke-width:2.86518168;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 42.61833,55.38167 C 42.61833,49 45.809165,45.170998 58.572504,44.213748 M 55.38167,55.38167 C 55.38167,49 52.190834,45.170998 39.427495,44.213748"
+     id="path24710" />
+  <circle
+     style="fill:#ff0000;stroke:#ff0000;stroke-width:2.86518168;stroke-miterlimit:4;stroke-dasharray:none"
+     cx="39.023762"
+     cy="46.117069"
+     r="1.9145008"
+     id="circle24712" />
+  <circle
+     style="fill:#ff0000;stroke:#ff0000;stroke-width:2.86518168;stroke-miterlimit:4;stroke-dasharray:none"
+     cx="58.976238"
+     cy="46.116726"
+     r="1.9145008"
+     id="circle24714" />
+</svg>

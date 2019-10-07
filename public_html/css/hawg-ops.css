@@ -1,0 +1,135 @@
+html, body {
+	min-height: 100vh;
+}
+
+body {
+	background-color: #dcdcdc;
+	display: flex;
+	flex-flow: column;
+}
+
+/**
+ * Background Image for landing page
+ */
+#bg {
+	background-image: url("https://hawg-ops.com/images/home-bg-mod.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;	
+	background-attachment: fixed;
+}
+
+#opacity {
+	background-color: white;
+	background-size: cover;
+	opacity: 0.5;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: -1;
+}
+
+/**
+ * Fix content due to fixed navbar
+ */
+#body-container {
+	/*margin-top: 4rem;*/
+	/*margin-top: 56px;*/
+	margin-top: 80px;
+}
+
+.alert {
+	margin-top: 2rem;
+}
+
+#class-banner {
+	/*margin-top: 56px;*/
+	position: fixed;
+	top: 0px;
+	width: 100vw;
+	z-index: 99999;
+}
+
+.modal {
+	z-index: 999999;
+}
+
+.modal-footer .btn-block {
+	margin-left: 0;
+}
+
+.chit-small, .chit-tht-ring, .chit-cap, .chit-bldg-label, .chit-srv, .chit-bldg-label {
+	width: 35px;
+	margin-top: 5px;
+}
+
+#btn-group-load-save {
+	width: 100%;
+}
+
+/*#btn-load-scenario, #btn-save-scenario {
+	width: 50%;
+}*/
+
+.navbar {
+	margin-top: 24px;
+}
+
+.leaflet-grids-label {
+	width: auto !important;
+	margin-left: -6px !important;
+	margin-top: -12px !important;
+}
+
+.btn-donate {
+	border: none;
+	color: white !important;
+}
+
+#action-buttons, #title-buttons {
+	width: 100%;
+}
+
+.card-sm {
+	max-width: 35rem;
+}
+
+.threat-divicon, .bldg-label-divicon {
+	text-align: center;
+	font-weight: bold;
+}
+
+.threat-divicon-text, .bldg-label-divicon-text {
+	width: 200%;
+	margin-left: -50%;
+}
+
+.threat-hos, .bldg-label-divicon-text {
+	color: red;
+}
+
+.threat-sus {
+	color: yellow;
+}
+
+.threat-unk {
+	color: white;
+}
+
+.threat-fnd {
+	color: lime;
+}
+
+.cap-rename, .tht-rename, .chit-rename, .roz-rename, .flot-rename, .feba-rename, .polygon-rename, .ea-rename {
+	margin-bottom: 5px;
+}
+
+.btn-cap-rename, .btn-tht-rename, .btn-chit-rename, .btn-roz-rename, .btn-flot-rename, .btn-feba-rename, .btn-polygon-rename, .btn-ea-rename, .btn-del-15-line, .btn-del-9-line {
+	margin-right: 5px;
+}
+
+.btn-add-9-line, .btn-add-15-line {
+	margin-top: 5px;
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.2"
+   width="50.001987"
+   height="49.893044"
+   viewBox="24 24 50.001987 49.893043"
+   id="svg4873"
+   sodipodi:docname="missile.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <metadata
+     id="metadata4879">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4877" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="972"
+     id="namedview4875"
+     showgrid="false"
+     inkscape:zoom="8.7830105"
+     inkscape:cx="13.374549"
+     inkscape:cy="30.030551"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4873" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:2.8621726;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 49.000993,26.021656 71.975916,48.946523 49.000993,71.87139 26.02607,48.946523 Z"
+     id="path4869" />
+  <path
+     style="fill:none;stroke:#ff0000;stroke-width:2.8621726;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 44.214551,58.498552 V 44.170509 c 0,-4.776015 9.572884,-4.776015 9.572884,0 v 14.328043 m -4.786442,0 V 39.394494"
+     id="path4871" />
+</svg>

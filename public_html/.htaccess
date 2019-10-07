@@ -1,0 +1,19 @@
+#Force HTML to be parsed as PHP
+#AddType application/x-httpd-php .htm .html
+
+#Deny access to indexing of files
+Options All -Indexes
+
+#Remove the PHP extension from URLs
+#RewriteEngine On
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+RewriteEngine On
+#RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [NC,L]
+
+#Error Documents
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
