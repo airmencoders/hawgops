@@ -26,7 +26,7 @@
         decimal: 2,
         factor: null,
         label: 'Distance:'
-      },
+      },	  
       angleUnit: {
         display: '&deg;',
         decimal: 2,

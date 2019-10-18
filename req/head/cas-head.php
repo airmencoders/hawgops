@@ -102,6 +102,8 @@
 <script>
 // Create a layer group for markers
 	var layer_markers = L.layerGroup();
+	var layer_master_threats = L.layerGroup();
+	var layer_threat_markers = L.layerGroup();
 	var layer_threats = L.layerGroup();
 	var layer_caps = L.layerGroup();
 	//var layer_drawings = new L.FeatureGroup();
@@ -109,4 +111,7 @@
 	var layer_polygons = new L.FeatureGroup();
 	var layer_eas = new L.FeatureGroup();
 	var layer_rozs = new L.FeatureGroup();
+	
+	layer_threats.addTo(layer_master_threats);
+	layer_threat_markers.addTo(layer_master_threats);
 </script>

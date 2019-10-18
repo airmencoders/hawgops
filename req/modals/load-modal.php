@@ -12,8 +12,6 @@
 					<label>Paste text</label>
 					<input id="scenario-input" class="form-control">
 				</div>
-				<p class="card-text">As of 26 Sep, the save and load functions of CAS planner were updated in order to make the generated text more user friendly and cleaner.<br/><strong>NOTE:</strong> Any scenarios that were previously saved will no longer be compatible and cannot be loaded.</p>
-				<p class="card-text">-Porkins</p>
 			</div>
 			<div id="load-scenario-footer" class="modal-footer d-block">
 				<button id="btn-add-scenario-to-map" class="btn btn-block btn-success">Load Scenario</button>

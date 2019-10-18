@@ -8,7 +8,7 @@ import Dms from "./geodesy/dms.js";
  * Site Options
  */
 var chit_scale = 3;
-var tht_scale = 5;
+var tht_scale = 3;
 var bldg_label_scale = 10;
 var minor_axis = 2 * 926;
 var tht_ring_dash_array = "12,12";
@@ -136,7 +136,7 @@ var drawControl = new L.Control.Draw(draw_control_options);
  * Add them to the map here
  */
 layer_markers.addTo(map);
-layer_threats.addTo(map);
+layer_master_threats.addTo(map);
 layer_caps.addTo(map);
 layer_lines.addTo(map);
 layer_polygons.addTo(map);
@@ -181,7 +181,9 @@ var label_layers = {
 	"Map Labels": labels_imagery,
 	"Road Labels": labels_roads,
 	"Airspace": labels_airspace,
-	"MGRS Grids": mgrs_grids
+	"MGRS Grids": mgrs_grids,
+	"Threat Rings": layer_master_threats,
+	"Chits": layer_markers
 };
 
 /**
@@ -584,7 +586,7 @@ function addThtRing(e) {
 			msn_tht_label = "Custom";
 		}
 
-		var marker = L.marker(ll_posit, marker_options).addTo(layer_markers);
+		var marker = L.marker(ll_posit, marker_options).addTo(layer_threat_markers);
 		
 		// Attempt to get elevation data
 		// https://nationalmap.gov/epqs/
@@ -861,6 +863,7 @@ function chitClicked() {
  */
 function clearMap() {
 	layer_markers.clearLayers();
+	layer_threat_markers.clearLayers();
 	layer_caps.clearLayers();
 	layer_threats.clearLayers();
 	layer_lines.clearLayers();
@@ -1061,15 +1064,22 @@ function resetThtModal() {
  * Resizes markers according to their type
  */
 function resizeChits() {
+	layer_threat_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		var map_zoom = map.getZoom();
+		
+		$(".threat-divicon").css("font-size", (tht_scale * map_zoom) / 2);
+		$(".threat-divicon").css("line-height", ((tht_scale * map_zoom)) + "px");
+		marker_icon.options.iconSize = [tht_scale * map_zoom, tht_scale * map_zoom];
+		
+		marker.setIcon(marker_icon);
+	});
+	
 	layer_markers.eachLayer(function(marker) {
 		var marker_icon = marker.getIcon();
 		var map_zoom = map.getZoom();
 		
-		if(marker.options.type == "threat") {
-			$(".threat-divicon").css("font-size", (tht_scale * map_zoom) / 2);
-			$(".threat-divicon").css("line-height", ((tht_scale * map_zoom)) + "px");
-			marker_icon.options.iconSize = [tht_scale * map_zoom, tht_scale * map_zoom];
-		} else if(marker.options.type == "div") {
+		if(marker.options.type == "div") {
 			$(".bldg-label-divicon").css("font-size", (chit_scale * map_zoom) / 2);
 			$(".bldg-label-divicon").css("line-height", ((chit_scale * map_zoom)) + "px");
 			marker_icon.options.iconSize = [chit_scale * map_zoom, chit_scale * map_zoom];
@@ -1166,7 +1176,7 @@ function thtClicked() {
 	
 	$(".btn-tht-del").click(function() {
 		layer_threats.removeLayer(thtRing);
-		layer_markers.removeLayer(thtMarker);
+		layer_threat_markers.removeLayer(thtMarker);
 	});
 	
 	$(".btn-tht-rename").click(function() {
@@ -1380,17 +1390,100 @@ $(document).ready(function() {
 				var input_json = JSON.parse(input_text);
 				var details = input_json.details;
 				var markers = input_json.markers;
+				var threat_markers = input_json.threat_markers;
 				var circles = input_json.circles;
 				var ellipses = input_json.ellipses;
 				var lines = input_json.lines;
 				var polygons = input_json.polygons;
 				var eas = input_json.eas;
 				var rozs = input_json.rozs;
-								
-				markers.forEach(function(ref) {
-					// Make the Marker
-					// Marker is a threat
-					if(ref.type == "threat") {
+				
+				if(details.scenario_version == null || details.scenario_version != "2") {
+					alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 2");
+				}
+				
+				if(threat_markers == null) {					
+					markers.forEach(function(ref) {
+						// Make the Marker
+						// Marker is a threat
+						if(ref.type == "threat") {
+							// Make the icon
+							// Preset threat, icon is image
+							if(ref.icon.type == "img") {
+								var icon = L.icon({
+									type: ref.icon.type,
+									iconUrl: ref.icon.iconUrl,
+									iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()]
+								});
+							}
+							// Custom threat, icon is divIcon
+							else {
+								var icon = L.divIcon({
+									type: ref.icon.type,
+									html: "<div class=\"threat-divicon-text threat-" + ref.soverignty.toLowerCase() + "\">" + ref.title + "</div>",
+									iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()],
+									className: "threat-divicon"
+								});
+							}
+													
+							// Make the ring
+							var circle_options = {
+								radius: ref.radius,
+								color: ref.color,
+								fill: false,
+								dashArray: tht_ring_dash_array,
+								weight: 5
+							};
+							
+							var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
+							
+							var marker_options = {
+								type: ref.type,
+								msnThreat: ref.msnThreat,
+								soverignty: ref.soverignty,
+								icon: icon,
+								title: ref.title,
+								riseOnHover: true,
+								ring: circle,
+								radius: ref.radius,
+								units: ref.units,
+								latlng: ref.latlng,
+								mgrs: ref.mgrs,
+								data: ref.data,
+								elevation: ref.elevation
+							};
+							
+							var msn_label = ref.msnThreat;
+							if(msn_label == "custom") {
+								msn_label = "Custom";
+							}
+							
+							var radius_label = ref.radius;
+							if(ref.units == "NM") {
+								radius_label = ref.radius / 1852;
+							} else if(ref.units == "km") {
+								radius_label = ref.radius / 1000;
+							}
+							
+							var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
+							
+							if(marker.options.data == null) {
+								marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+							} else {
+								marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button>");
+							}
+													
+							marker.on("popupopen", thtClicked);
+							
+							if(ref.msnThreat == "custom") {
+								$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
+								$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
+							}
+						}
+					});
+					
+				} else {				
+					threat_markers.forEach(function(ref) {
 						// Make the icon
 						// Preset threat, icon is image
 						if(ref.icon.type == "img") {
@@ -1449,12 +1542,10 @@ $(document).ready(function() {
 							radius_label = ref.radius / 1000;
 						}
 						
-						var marker = L.marker(ref.latlng, marker_options).addTo(layer_markers);
+						var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
 						
 						if(marker.options.data == null) {
 							marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
-							
-							marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
 						} else {
 							marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button>");
 						}
@@ -1465,6 +1556,14 @@ $(document).ready(function() {
 							$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
 							$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
 						}
+					});
+				}
+								
+				markers.forEach(function(ref) {
+					// Make the Marker
+					// Marker is a threat
+					if(ref.type == "threat") {
+						
 					}
 					// Marker is a chit
 					else {
@@ -1635,16 +1734,56 @@ $(document).ready(function() {
 		var today = new Date().toUTCString();
 		var scenario_details = {
 			classification: "UNCLASSIFIED",
-			date: today
+			date: today,
+			scenario_version: "2"
 		};
 
 		var scenario_markers = [];
+		var scenario_threat_markers = [];
 		var scenario_circles = [];
 		var scenario_ellipses = [];
 		var scenario_lines = [];
 		var scenario_polygons = [];
 		var scenario_eas = [];
 		var scenario_rozs = [];
+		
+		layer_threat_markers.eachLayer(function(marker) {
+			var marker_icon = marker.getIcon();
+			
+			// Make the icon reference
+			if(marker_icon.options.type == "img") {
+				var icon = {
+					type: marker_icon.options.type,
+					iconUrl: marker_icon.options.iconUrl
+					// iconSize default
+				};
+			} else {
+				var icon = {
+					type: marker_icon.options.type
+					// html uses label
+					// iconSize default
+					// className default
+				};
+			}
+			
+			var marker_ref = {
+				type: marker.options.type,
+				title: marker.options.title,
+				latlng: marker.getLatLng(),
+				mgrs: marker.options.mgrs,
+				elevation: marker.options.elevation,
+				msnThreat: marker.options.msnThreat,
+				soverignty: marker.options.soverignty,
+				color: marker.options.ring.options.color,
+				radius: marker.options.radius,
+				units: marker.options.units,
+				icon: icon,
+				data: marker.options.data
+			};
+			
+			scenario_threat_markers.push(marker_ref);
+			
+		});
 
 		layer_markers.eachLayer(function(marker) {
 			var marker_icon = marker.getIcon();
@@ -1666,32 +1805,16 @@ $(document).ready(function() {
 			}
 
 			// Make the marker reference
-			if(marker.options.type == "threat") {
-				var marker_ref = {
-					type: marker.options.type,
-					title: marker.options.title,
-					latlng: marker.getLatLng(),
-					mgrs: marker.options.mgrs,
-					elevation: marker.options.elevation,
-					msnThreat: marker.options.msnThreat,
-					soverignty: marker.options.soverignty,
-					color: marker.options.ring.options.color,
-					radius: marker.options.radius,
-					units: marker.options.units,
-					icon: icon,
-					data: marker.options.data
-				};
-			} else {
-				var marker_ref = {
-					type: marker.options.type,
-					title: marker.options.title,
-					latlng: marker.getLatLng(),
-					mgrs: marker.options.mgrs,
-					elevation: marker.options.elevation,
-					icon: icon,
-					data: marker.options.data
-				};
-			}
+			var marker_ref = {
+				type: marker.options.type,
+				title: marker.options.title,
+				latlng: marker.getLatLng(),
+				mgrs: marker.options.mgrs,
+				elevation: marker.options.elevation,
+				icon: icon,
+				data: marker.options.data
+			};
+			
 			scenario_markers.push(marker_ref);
 		});
 
@@ -1774,6 +1897,7 @@ $(document).ready(function() {
 
 		var scenario = {
 			details: scenario_details,
+			threat_markers: scenario_threat_markers,
 			markers: scenario_markers,
 			ellipses: scenario_ellipses,
 			lines: scenario_lines,
@@ -1952,6 +2076,7 @@ $(document).ready(function() {
 			.openOn(map);
 		
 		// Listen if the user wants to add a CAP
+		$(".chit-bldg-label").click({ll_posit}, addBldgLabel);
 		$(".chit-cap").click({ll_posit}, addCap);
 		$(".chit-tht-ring").click({ll_posit}, addThtRing);
 		$(".chit-small").click(function() {
