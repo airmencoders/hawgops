@@ -1,55 +1,109 @@
 <?php
     //===============================
-    // 1xxx - Primary (Dark Blue)
+    // 1xxxx - Primary (Dark Blue)
     //===============================
-    // 10xx - API
+    // 101xx - API
     //-------------------------------
 
     //===============================
-    // 2xxx - Secondary (Light Gray)
+    // 2xxxx - Secondary (Light Gray)
     //===============================
-    // 20xx - API
+    // 201xx - API
     //-------------------------------
 
     //===============================
-    // 3xxx - Success (Green)
+    // 3xxxx - Success (Green)
     //===============================
-    // 30xx - API
-    //-------------------------------
-	// 31xx - DO
+    // 301xx - API
 	//-------------------------------
-	// 310x - CONTACT.PHP
+	$API_CREATE_ACCOUNT_ACCOUNT_CREATED = 30100;	
+	$API_LOGIN_USER_AUTHENTICATED = 30101;	
+	$API_SAVE_SCENARIO_SCENARIO_SAVED = 30102;
+	$API_DELETE_SCENARIO_SCENARIO_DELETED = 30103;
+	
 	//-------------------------------
-	$DO_CONTACT_EMAIL_SENT = 3101;
-
-    //===============================
-    // 4xxx - Danger (Red)
-    //===============================
-    // 40xx - API
-    //-------------------------------
+	// 302xx - CONTACT-DO.PHP
+	//-------------------------------
+	$DO_CONTACT_EMAIL_SENT = 30200;
 
 	//-------------------------------
-	// 41xx - DO
+	// 303xx - CREATE-ACCOUNT-DO.PHP
 	//-------------------------------
-	// 410x - CONTACT.PHP
+	
 	//-------------------------------
-	$DO_CONTACT_DATA_NOT_RECEIVED = 4101;
-	$DO_CONTACT_NAME_NOT_RECEIVED = 4102;
-	$DO_CONTACT_EMAIL_NOT_RECEIVED = 4103;
-	$DO_CONTACT_MESSAGE_NOT_RECEIVED = 4104;
-	$DO_CONTACT_EMAIL_NOT_SENT = 4105;
+	// 304xx - DEL-SCENARIO-DO.PHP
+	//-------------------------------
 	
 
     //===============================
-    // 5xxx - Warning (Yellow)
+    // 4xxxx - Danger (Red)
     //===============================
-    // 50xx - API
+    // 400xx - SHARED
+	//-------------------------------
+	$ERROR_MYSQL = 40000;
+	$ERROR_UNAUTHORIZED = 40001;
+
+	//-------------------------------
+	// 401xx - API
+    //-------------------------------
+	$API_CREATE_ACCOUNT_FNAME_NOT_RECEIVED = 40100;
+	$API_CREATE_ACCOUNT_LNAME_NOT_RECEIVED = 40101;
+	$API_CREATE_ACCOUNT_EMAIL_NOT_RECEIVED = 40102;
+	$API_CREATE_ACCOUNT_PASSWORD_NOT_RECEIVED = 40103;
+	$API_CREATE_ACCOUNT_ACCOUNT_EXISTS = 40104;
+
+	$API_LOGIN_EMAIL_NOT_RECEIVED = 40105;
+	$API_LOGIN_PASSWORD_NOT_RECEIVED = 40106;
+	$API_LOGIN_ACCOUNT_DOES_NOT_EXIST = 40107;
+	$API_LOGIN_ACCOUNT_DISABLED = 40108;
+	$API_LOGIN_INCORRECT_PASSWORD = 40109;
+	
+	$API_SAVE_SCENARIO_USER_ID_NOT_RECEIVED = 40110;
+	$API_SAVE_SCENARIO_DATA_NOT_RECEIVED = 40111;
+	
+	$API_GET_SCENARIO_SCENARIO_ID_NOT_RECEIVED = 40112;
+	$API_GET_SCENARIO_SCENARIO_DOES_NOT_EXIST = 40113;
+	
+	$API_DELETE_SCENARIO_ID_NOT_RECEIVED = 40114;
+	$API_DELETE_SCENARIO_SCENARIO_DOES_NOT_EXIST = 40115;
+	
+	//-------------------------------
+	// 402xx - CONTACT-DO.PHP
+	//-------------------------------
+	$DO_CONTACT_DATA_NOT_RECEIVED = 40200;
+	$DO_CONTACT_NAME_NOT_RECEIVED = 40201;
+	$DO_CONTACT_EMAIL_NOT_RECEIVED = 40202;
+	$DO_CONTACT_MESSAGE_NOT_RECEIVED = 40203;
+	$DO_CONTACT_MESSAGE_NOT_SENT = 40204;
+
+	//-------------------------------
+	// 403xx - CREATE-ACCOUNT-DO.PHP
+	//-------------------------------
+	$DO_CREATE_ACCOUNT_DATA_NOT_RECEIVED = 40300;
+	$DO_CREATE_ACCOUNT_FNAME_NOT_RECEIVED = 40301;
+	$DO_CREATE_ACCOUNT_LNAME_NOT_RECEIVED = 40302;
+	$DO_CREATE_ACCOUNT_EMAIL_NOT_RECEIVED = 40303;
+	$DO_CREATE_ACCOUNT_PASSWORD_NOT_RECEIVED = 40304;
+	$DO_CREATE_ACCOUNT_CONFIRM_PASSWORD_NOT_RECEIVED = 40305;
+	$DO_CREATE_ACCOUNT_PASSWORD_TOO_SHORT = 40306;
+	$DO_CREATE_ACCOUNT_PASSWORD_TOO_SIMPLE = 40307;
+	$DO_CREATE_ACCOUNT_PASSWORDS_DO_NOT_MATCH = 40308;
+	
+	//-------------------------------
+	// 404xx - DEL-SCENARIO-DO.PHP
+	//-------------------------------
+	$DO_DEL_SCENARIO_ID_NOT_RECEIVED = 40400;
+
+    //===============================
+    // 5xxxx - Warning (Yellow)
+    //===============================
+    // 501xx - API
     //-------------------------------
 
     //===============================
-    // 6xxx - Info (Light Blue)
+    // 6xxxx - Info (Light Blue)
     //===============================
-    // 60xx - API
+    // 601xx - API
     //-------------------------------
 
 ?>

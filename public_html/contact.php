@@ -1,46 +1,12 @@
+<?php
+	require("../req/all/codes.php");
+	require("../req/all/api-v1.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<?php require("../req/head/head.php"); ?>
-		<script>
-			function validateContactForm() {
-				var name = $("#user-name").val();
-				var email = $("#user-email").val();
-				var message = $("#message").val();
-				
-				$("#user-name").removeClass("is-invalid");
-				$("#user-name").removeClass("is-valid");
-				$("#user-email").removeClass("is-invalid");
-				$("#user-email").removeClass("is-valid");
-				$("#message").removeClass("is-invalid");
-				$("#message").removeClass("is-valid");
-				
-				var response = true;
-				
-				if(name == "") {
-					$("#user-name").addClass("is-invalid");
-					response = false;
-				} else {
-					$("#user-name").addClass("is-valid");
-				}
-				
-				if(email == "") {
-					$("#user-email").addClass("is-invalid");
-					response = false;
-				} else {
-					$("#user-email").addClass("is-valid");
-				}
-				
-				if(message == "") {
-					$("#message").addClass("is-invalid");
-					response = false;
-				} else {
-					$("#message").addClass("is-valid");
-				}
-				
-				return response;
-			}
-		</script>
+		<script src="./js/validation.js"></script>
 	</head>
 	<body id="bg">
 		<?php require("../req/structure/navbar.php")?>
@@ -84,3 +50,4 @@
 		</div>
 	</body>	
 </html>
+<?php closeLogs(); ?>

@@ -16,6 +16,11 @@
 		
 		<div id="body-container" class="container">
 			<div id="alert-container"><?php require("../req/structure/alert-container.php"); ?></div>
+			<div class="card">
+				<div class="card-body">
+					<?php echo date_default_timezone_get(); ?>
+				</div>
+			</div>
 		</div>
     </body>
 </html>

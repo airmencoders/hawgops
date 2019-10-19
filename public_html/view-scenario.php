@@ -15,7 +15,14 @@
 		<noscript><?php require("../req/structure/js-alert.php"); ?></noscript>
 		
 		<div id="body-container" class="container">
-			<div id="alert-container"><?php require("../req/structure/alert-container.php"); ?></div>
+		
+			<div class="card mt-5">
+				<div class="card-body">
+					<?php
+						echo getScenario($_SESSION["id"], $_GET["scenario"]);
+					?>
+				</div>
+			</div>	
 		</div>
     </body>
 </html>

@@ -133,3 +133,11 @@ body {
 .btn-add-9-line, .btn-add-15-line {
 	margin-top: 5px;
 }
+
+.cas-alert {
+	width: 1140px;
+	position: absolute;
+	top: 5rem;
+	left: 25%;
+	z-index: 99999;
+}

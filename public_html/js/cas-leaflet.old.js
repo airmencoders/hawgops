@@ -492,102 +492,6 @@ function addThtRing(e) {
 	
 	// Show the options modal
 	$("#tht-ring-modal").modal("show");
-	
-	$("#msn-tht").change(function() {
-		var threat = $("#msn-tht").val();
-		var options = {label: threat, radius: ""};
-		
-		switch(threat) {
-			case "SA-2B/F":
-				options.radius = "18.4";
-				break;
-			case "SA-2D/E":
-				options.radius = "23.2";
-				break;
-			case "SA-3":
-				options.radius = "13";
-				break;
-			case "SA-5":
-				options.radius = "162";
-				break;
-			case "SA-6":
-				options.radius = "13.4";
-				break;
-			case "SA-8":
-				options.radius = "5.5";
-				break;
-			case "SA-10A/B":
-				options.radius = "40";
-				break;
-			case "SA-11":
-				options.radius = "17";
-				break;
-			case "SA-12A":
-				options.radius = "50";
-				break;
-			case "SA-12B":
-				options.radius = "80";
-				break;
-			case "SA-15":
-				options.radius = "6.5";
-				break;
-			case "SA-17":
-				options.radius = "17";
-				break;
-			case "SA-19":
-				options.radius = "6.5";
-				break;
-			case "SA-20":
-				options.radius = "80";
-				break;
-			case "SA-21":
-				options.radius = "64.8";
-				break;
-			case "SA-22":
-				options.radius = "10.8";
-				break;
-			case "CROTALE/FM-80":
-				options.radius = "15";
-				break;
-			case "I-HAWK":
-				options.radius = "21.6";
-				break;
-			case "PATRIOT":
-				options.radius = "86.4";
-				break;
-			case "RAPIER":
-				options.radius = "3.8";
-				break;
-			case "ROLAND-II":
-				options.radius = "4.3";
-				break;
-			case "SA-9":
-				options.radius = "2.3";
-				break;
-			case "SA-13":
-				options.radius = "2.7";
-				break;
-			default:
-				options.label = "";
-				break;
-		}
-		
-		setThtRingOptions(options);
-	});
-	
-	/**
-	 * Listens to the select menu for when the user is creating a threat
-	 * If the user changes the units, then update the placeholder
-	 */
-	$("#msn-tht-units").change(function() {
-		var units = $("#msn-tht-units").val();
-		
-		if(units == "m") {
-			$("#tht-ring-radius").prop("placeholder", "3000");
-		} else {
-			$("#tht-ring-radius").prop("placeholder", "3");
-		}
-	});
 
 	// Listen for the create CAP Button
 	$("#btn-create-tht-ring").click(function() {
@@ -1032,440 +936,6 @@ function flotClicked() {
 }
 
 /**
- *
- */
-function flyToCoordinates() {
-	var center_mgrs = $("#center-map").val().toUpperCase();
-		
-	// Remove all spaces
-	center_mgrs = center_mgrs.replace(/ /g, "");
-	
-	// If the second character is a letter, add a leading 0
-	var second_char = center_mgrs.substr(1,1);
-	if(!$.isNumeric(second_char)) {
-		center_mgrs = "0" + center_mgrs;
-	}
-	
-	// Break apart the sections
-	var digits = center_mgrs.substr(5);
-	var zone_digits = center_mgrs.substr(0,5);
-	var first_digits = digits.substr(0, digits.length / 2);
-	var second_digits = digits.substr(digits.length / 2);
-	
-	// Add trailing 0s
-	while(first_digits.length < 5) {
-		first_digits = first_digits + "0";
-	}
-	
-	while(second_digits.length < 5) {
-		second_digits = second_digits + "0";
-	}
-	
-	// Recombine sections
-	center_mgrs = zone_digits + first_digits + second_digits
-	
-	// Parse MGRS, Translate to UTM, Translate to Lat Lon
-	var mgrs_ref = Mgrs.parse(center_mgrs);
-	var utm = mgrs_ref.toUtm();
-	var ll_posit = mgrs_ref.toUtm().toLatLon();
-
-	// Fly to Lat Lon and zoom in
-	map.flyTo([ll_posit.lat, ll_posit.lon], 13);
-	
-	var fly_popup = L.popup()
-		.setLatLng([ll_posit.lat, ll_posit.lon])
-		.setContent(zone_digits.substr(0,3) + " " + zone_digits.substr(3) + " " + first_digits + " " + second_digits + "<br/>" + ll_posit)
-		.openOn(map);
-	
-	// Listen if the user wants to add a CAP
-	$(".chit-bldg-label").click({ll_posit}, addBldgLabel);
-	$(".chit-cap").click({ll_posit}, addCap);
-	$(".chit-tht-ring").click({ll_posit}, addThtRing);
-	$(".chit-small").click(function() {
-		var img_src = $(this).attr("src");
-		addChit(img_src, ll_posit);
-	});
-	$(".chit-srv").click(function() {
-		var img_src = $(this).attr("src");
-		addChit(img_src, ll_posit);
-	});
-}
-
-/**
- *
- */
-function hideTitles() {
-	layer_threat_markers.eachLayer(function(marker) {
-		marker.unbindTooltip();
-	});
-
-	layer_markers.eachLayer(function(marker) {
-		marker.unbindTooltip();
-	});
-}
-
-/**
- *
- */
-function loadScenario(input) {
-	var input_json = JSON.parse(input);
-	var details = input_json.details;
-	var markers = input_json.markers;
-	var threat_markers = input_json.threat_markers;
-	var circles = input_json.circles;
-	var ellipses = input_json.ellipses;
-	var lines = input_json.lines;
-	var polygons = input_json.polygons;
-	var eas = input_json.eas;
-	var rozs = input_json.rozs;
-	
-	if(details.scenario_version == null || details.scenario_version != "2") {
-		alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 2");
-	}
-	
-	if(threat_markers == null) {					
-		markers.forEach(function(ref) {
-			// Make the Marker
-			// Marker is a threat
-			if(ref.type == "threat") {
-				// Make the icon
-				// Preset threat, icon is image
-				if(ref.icon.type == "img") {
-					var icon = L.icon({
-						type: ref.icon.type,
-						iconUrl: ref.icon.iconUrl,
-						iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()]
-					});
-				}
-				// Custom threat, icon is divIcon
-				else {
-					var icon = L.divIcon({
-						type: ref.icon.type,
-						html: "<div class=\"threat-divicon-text threat-" + ref.soverignty.toLowerCase() + "\">" + ref.title + "</div>",
-						iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()],
-						className: "threat-divicon"
-					});
-				}
-										
-				// Make the ring
-				var circle_options = {
-					radius: ref.radius,
-					color: ref.color,
-					fill: false,
-					dashArray: tht_ring_dash_array,
-					weight: 5
-				};
-				
-				var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
-				
-				var marker_options = {
-					type: ref.type,
-					msnThreat: ref.msnThreat,
-					soverignty: ref.soverignty,
-					icon: icon,
-					title: ref.title,
-					riseOnHover: true,
-					ring: circle,
-					radius: ref.radius,
-					units: ref.units,
-					latlng: ref.latlng,
-					mgrs: ref.mgrs,
-					data: ref.data,
-					elevation: ref.elevation
-				};
-				
-				var msn_label = ref.msnThreat;
-				if(msn_label == "custom") {
-					msn_label = "Custom";
-				}
-				
-				var radius_label = ref.radius;
-				if(ref.units == "NM") {
-					radius_label = ref.radius / 1852;
-				} else if(ref.units == "km") {
-					radius_label = ref.radius / 1000;
-				}
-				
-				var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
-				
-				if(marker.options.data == null) {
-					marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
-				} else {
-					marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button>");
-				}
-										
-				marker.on("popupopen", thtClicked);
-				
-				if(ref.msnThreat == "custom") {
-					$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
-					$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
-				}
-			}
-		});
-		
-	} else {				
-		threat_markers.forEach(function(ref) {
-			// Make the icon
-			// Preset threat, icon is image
-			if(ref.icon.type == "img") {
-				var icon = L.icon({
-					type: ref.icon.type,
-					iconUrl: ref.icon.iconUrl,
-					iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()]
-				});
-			}
-			// Custom threat, icon is divIcon
-			else {
-				var icon = L.divIcon({
-					type: ref.icon.type,
-					html: "<div class=\"threat-divicon-text threat-" + ref.soverignty.toLowerCase() + "\">" + ref.title + "</div>",
-					iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()],
-					className: "threat-divicon"
-				});
-			}
-									
-			// Make the ring
-			var circle_options = {
-				radius: ref.radius,
-				color: ref.color,
-				fill: false,
-				dashArray: tht_ring_dash_array,
-				weight: 5
-			};
-			
-			var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
-			
-			var marker_options = {
-				type: ref.type,
-				msnThreat: ref.msnThreat,
-				soverignty: ref.soverignty,
-				icon: icon,
-				title: ref.title,
-				riseOnHover: true,
-				ring: circle,
-				radius: ref.radius,
-				units: ref.units,
-				latlng: ref.latlng,
-				mgrs: ref.mgrs,
-				data: ref.data,
-				elevation: ref.elevation
-			};
-			
-			var msn_label = ref.msnThreat;
-			if(msn_label == "custom") {
-				msn_label = "Custom";
-			}
-			
-			var radius_label = ref.radius;
-			if(ref.units == "NM") {
-				radius_label = ref.radius / 1852;
-			} else if(ref.units == "km") {
-				radius_label = ref.radius / 1000;
-			}
-			
-			var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
-			
-			if(marker.options.data == null) {
-				marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
-			} else {
-				marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button>");
-			}
-									
-			marker.on("popupopen", thtClicked);
-			
-			if(ref.msnThreat == "custom") {
-				$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
-				$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
-			}
-		});
-	}
-					
-	markers.forEach(function(ref) {
-		// Make the Marker
-		// Marker is a threat
-		if(ref.type == "threat") {
-			
-		}
-		// Marker is a chit
-		else {
-			// Make the Icon
-			if(ref.type == "div") {
-				var icon = L.divIcon({
-					type: ref.icon.type,
-					html:"<div class=\"bldg-label-divicon-text\">" + ref.title + "</div>",
-					iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()],
-					className: "bldg-label-divicon"
-				});
-			} else {
-				var icon = L.icon({
-					type: ref.icon.type,
-					iconUrl: ref.icon.iconUrl,
-					iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()]
-				});
-			}
-			
-			// Make the marker
-			var marker_options = {
-				type: ref.type,
-				icon: icon,
-				title: ref.title,
-				riseOnHover: true,
-				latlng: ref.latlng,
-				mgrs: ref.mgrs,
-				elevation: ref.elevation,
-				data: ref.data
-			};
-			
-			var marker = L.marker(ref.latlng, marker_options).addTo(layer_markers);
-			
-			if(marker.options.type == "hostile") {
-				if(marker.options.data == null) {
-					marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
-				} else {
-					marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
-				}
-			} else if(marker.options.type == "srv") {
-				if(marker.options.data == null) {
-					marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-15-line\">Add 15-Line</button>");
-				} else {
-					marker.bindPopup("Callsign/Freq: " + marker.options.data.callsign_freq + "<br/>Number of Objectives: " + marker.options.data.num_objectives + "<br/>Location: " + marker.options.data.mgrs + "<br/>Elevation: " + marker.options.data.elevation + "<br/>Date/Time(Z): " + marker.options.data.dtg + "<br/>Source: " + marker.options.data.source + "<br/>Condition: " + marker.options.data.condition + "<br/>Equipment: " + marker.options.data.equipment + "<br/>PLS/HHRID: " + marker.options.data.pls_hhrid + "<br/>Authentication: " + marker.options.data.authentication + "<br/>Threats: " + marker.options.data.threats + "<br/>PZ Description: " + marker.options.data.pz_description + "<br/>On Scene CC: " + marker.options.data.osc + "<br/>RV/Freq: " + marker.options.data.rv_freq + "<br/>IP/Ingress: " + marker.options.data.ip_ingress + "<br/>Rescort: " + marker.options.data.rescort + "<br/>Objective Area Gameplan: " + marker.options.data.obj_gp + "<br/>Recovery Signal: " + marker.options.data.signal + "<br/>Egress Route: " + marker.options.data.egress_rte + "<hr/><button class=\"btn btn-sm btn-warning btn-del-15-line\">Delete 15-Line</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
-				}
-			} else {
-				marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
-			}
-			
-			marker.on("popupopen", chitClicked);
-			
-			if(ref.type == "div") {
-				$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
-				$(".bldg-label-divicon").css("line-height", ((chit_scale * map.getZoom())) + "px");
-			}
-		}
-	});
-					
-	ellipses.forEach(function(ref) {
-		
-		var ellipse_options = {
-			type: ref.type,
-			title: ref.title,
-			latlng: ref.latlng,
-			mgrs: ref.mgrs,
-			radii: ref.radii,
-			tilt: ref.tilt,
-			color: ref.color,
-			fill: false,
-			weight: 5
-		};
-		
-		var ellipse = L.ellipse(ref.latlng, [ref.radii.x, ref.radii.y], ref.tilt, ellipse_options).addTo(layer_caps);
-		ellipse.bindPopup(ref.title + "<br/>Center: " + ref.mgrs + "<hr/><input type=\"text\" class=\"form-control cap-rename\"><button class=\"btn btn-sm btn-warning btn-cap-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
-		ellipse.on("popupopen", capClicked);
-	});
-	
-	lines.forEach(function(ref) {					
-		var line_options = {
-			type: ref.type,
-			title: ref.title,
-			latlngs: ref.latlngs,
-			stroke: true,
-			color: ref.color,
-			weight: 5,
-			fill: false,
-			clickable: false,
-			dashArray: "20,10,5,10,5,10"
-		};
-		
-		var line = L.polyline(ref.latlngs, line_options).addTo(layer_lines);
-		
-		if(ref.type == "flot") {
-			line.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control flot-rename\"><button class=\"btn btn-sm btn-warning btn-flot-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-flot-del\">Delete</button>");
-			line.on("popupopen", flotClicked);
-		} else {
-			line.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control feba-rename\"><button class=\"btn btn-sm btn-warning btn-feba-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-feba-del\">Delete</button>");
-			line.on("popupopen", febaClicked);
-		}
-	})
-	
-	polygons.forEach(function(ref) {
-		
-		var polygon_options = {
-			type: ref.type,
-			title: ref.title,
-			latlngs: ref.latlngs,
-			clickable: false,
-			color: "#3388ff",
-			stroke: true,
-			weight: 5,
-			fill: false
-		};
-		
-		var polygon = L.polygon(ref.latlngs, polygon_options).addTo(layer_polygons);
-		polygon.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control polygon-rename\"><button class=\"btn btn-sm btn-warning btn-polygon-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-polygon-del\">Delete</button>");
-		polygon.on("popupopen", polygonClicked);
-	});
-	
-	eas.forEach(function(ref) {					
-		var ea_options = {
-			type: ref.type,
-			title: ref.title,
-			latlngs: ref.latlngs,
-			stroke: true,
-			color: "#ff0000",
-			weight: 5,
-			fill: false,
-			clickable: false
-		};
-		
-		var rectangle = L.rectangle(ref.latlngs, ea_options).addTo(layer_eas);
-		rectangle.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control ea-rename\"><button class=\"btn btn-sm btn-warning btn-ea-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-ea-del\">Delete</button>");
-		rectangle.on("popupopen", eaClicked);
-	});
-	
-	rozs.forEach(function(ref) {				
-		var roz_options = {
-			type: ref.type,
-			title: ref.title,
-			latlng: ref.latlng,
-			mgrs: ref.mgrs,
-			radius: ref.radius,
-			color: "#ff0000",
-			stroke: true,
-			dashArray: "20,10,5,10",
-			fillOpacity: 0.2,
-			weight: 5,
-			clickable: false
-		};
-		
-		var circle = L.circle(ref.latlng, roz_options).addTo(layer_rozs);
-		circle.bindPopup(ref.title + "<br/>Radius: " + ref.radius.toFixed(2) + " NM<br/>" + ref.mgrs + "<hr/><input type=\"text\" class=\"form-control roz-rename\"><button class=\"btn btn-sm btn-warning btn-roz-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-roz-del\">Delete</button>");
-		circle.on("popupopen", rozClicked);
-	});
-}
-
-
-/**
- *
- */
-function loadScenarioHelper() {
-	$("#load-modal").modal("show");
-		
-	$("#btn-add-scenario-to-map").click(function() {
-		clearMap();
-		
-		var input_text = $("#scenario-input").val();
-		
-		if(input_text == "") {
-			$("#load-modal").modal("hide");
-		} else {
-			loadScenario(input_text);
-			$("#scenario-input").val("");
-			$("#btn-add-scenario-to-map").off("click");
-			$("#load-modal").modal("hide");
-		}
-	});
-}
-
-/**
  * Function for if the map is clicked.
  * Gets the lat,long of the mouse click and displays a popup of the location.
  * Listens for the various Chits/CAP/Threat buttons to add if clicked
@@ -1650,229 +1120,6 @@ function rozClicked() {
 }
 
 /**
- *
- */
-function saveScenario() {
-	var today = new Date().toUTCString();
-	var scenario_details = {
-		classification: "UNCLASSIFIED",
-		date: today,
-		scenario_version: "2"
-	};
-
-	var scenario_markers = [];
-	var scenario_threat_markers = [];
-	var scenario_circles = [];
-	var scenario_ellipses = [];
-	var scenario_lines = [];
-	var scenario_polygons = [];
-	var scenario_eas = [];
-	var scenario_rozs = [];
-	
-	layer_threat_markers.eachLayer(function(marker) {
-		var marker_icon = marker.getIcon();
-		
-		// Make the icon reference
-		if(marker_icon.options.type == "img") {
-			var icon = {
-				type: marker_icon.options.type,
-				iconUrl: marker_icon.options.iconUrl
-				// iconSize default
-			};
-		} else {
-			var icon = {
-				type: marker_icon.options.type
-				// html uses label
-				// iconSize default
-				// className default
-			};
-		}
-		
-		var marker_ref = {
-			type: marker.options.type,
-			title: marker.options.title,
-			latlng: marker.getLatLng(),
-			mgrs: marker.options.mgrs,
-			elevation: marker.options.elevation,
-			msnThreat: marker.options.msnThreat,
-			soverignty: marker.options.soverignty,
-			color: marker.options.ring.options.color,
-			radius: marker.options.radius,
-			units: marker.options.units,
-			icon: icon,
-			data: marker.options.data
-		};
-		
-		scenario_threat_markers.push(marker_ref);
-		
-	});
-
-	layer_markers.eachLayer(function(marker) {
-		var marker_icon = marker.getIcon();
-		
-		// Make the icon reference
-		if(marker_icon.options.type == "img") {
-			var icon = {
-				type: marker_icon.options.type,
-				iconUrl: marker_icon.options.iconUrl
-				// iconSize default
-			};
-		} else {
-			var icon = {
-				type: marker_icon.options.type
-				// html uses label
-				// iconSize default
-				// className default
-			};
-		}
-
-		// Make the marker reference
-		var marker_ref = {
-			type: marker.options.type,
-			title: marker.options.title,
-			latlng: marker.getLatLng(),
-			mgrs: marker.options.mgrs,
-			elevation: marker.options.elevation,
-			icon: icon,
-			data: marker.options.data
-		};
-		
-		scenario_markers.push(marker_ref);
-	});
-
-	layer_caps.eachLayer(function(ellipse) {
-		var ellipse_ref = {
-			type: ellipse.options.type,
-			title: ellipse.options.title,
-			latlng: ellipse.options.latlng,
-			mgrs: ellipse.options.mgrs,
-			radii: ellipse.getRadius(),
-			tilt: ellipse.getTilt(),
-			color: ellipse.options.color
-			// fill: false
-			// weight: 5
-		};
-		scenario_ellipses.push(ellipse_ref);
-	});
-
-	layer_lines.eachLayer(function(line) {
-		var line_ref = {
-			type: line.options.type,
-			title: line.options.title,
-			latlngs: line.options.latlngs,
-			color: line.options.color
-			// stroke: true
-			// color: 000000
-			// weight: 5
-			// fill: false
-			// clickable: false
-			// dashArray: 20,10,5,10,5,10
-		};
-		scenario_lines.push(line_ref);
-	});
-
-	layer_polygons.eachLayer(function(polygon) {
-		var polygon_ref = {
-			type: polygon.options.type,
-			title: polygon.options.title,
-			latlngs: polygon.options.latlngs
-			// stroke: true
-			// color: 3388ff
-			// weight: 5
-			// clickable: false
-			// fill: false
-		};
-		scenario_polygons.push(polygon_ref);
-	});
-
-	layer_eas.eachLayer(function(ea) {
-		var ea_ref = {
-			type: ea.options.type,
-			title: ea.options.title,
-			latlngs: ea.options.latlngs
-			// stroke: true
-			// color: ff0000
-			// weight: 5
-			// fill: false
-			// clickable: false
-		};
-		scenario_eas.push(ea_ref);
-	});
-
-	layer_rozs.eachLayer(function(roz) {
-		var roz_ref = {
-			type: roz.options.type,
-			title: roz.options.title,
-			latlng: roz.options.latlng,
-			mgrs: roz.options.mgrs,
-			radius: roz.options.radius,
-			//color: roz.options.color
-			// stroke: true
-			// color: ff0000
-			// dash array: 20,10,5,10
-			// weight 5
-			// fill true
-			// fill opacity: 0.2
-		};
-		scenario_rozs.push(roz_ref);
-	});
-
-	var scenario = {
-		details: scenario_details,
-		threat_markers: scenario_threat_markers,
-		markers: scenario_markers,
-		ellipses: scenario_ellipses,
-		lines: scenario_lines,
-		polygons: scenario_polygons,
-		eas: scenario_eas,
-		rozs: scenario_rozs
-	};
-
-	scenario = JSON.stringify(scenario);
-
-	$("#scenario-output").val(scenario);
-	$("#save-modal").modal("show");
-	
-	$("#btn-copy-to-clipboard").click(function() {
-		var output_text = $("#scenario-output");
-		output_text.select();
-		document.execCommand("copy");
-		$("#btn-copy-to-clipboard").html("Copied!");
-		$("#btn-copy-to-clipboard").attr("disabled", true);
-	});
-	
-	$("#btn-save-to-account").click(function() {
-		var name = $("#scenario-name").val();
-		
-		$.ajax({
-			url: "/do/save-scenario-to-account-do.php",
-			method: "POST",
-			data: {
-				"name": name,
-				"data": $("#scenario-output").val()
-			},
-			success: function(data, textStatus, jqXHR) {
-				var responseText = "";
-				var responseLevel = "";
-				if(data == "30102") {
-					responseLevel = "success";
-					responseText = "Scenario " + name + " saved to your account.";
-				} else {
-					responseLevel = "danger";
-					responseText = "There was an error saving the scenario to your account.";
-				}
-				
-				$("#alert-container").html("<div class=\"alert alert-" + responseLevel + " alert-dismissible fade show\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label\"Close\"><i class=\"fa fa-times\"></i></button>" + responseText + "</div>");
-				
-				$("#save-modal").modal("hide");
-			}
-		});
-		
-		$("#btn-save-to-account").off("click");
-	});
-}
-
-/**
  * Function to set threat ring options depending on what the user clicks on the modal
  * Automatically sets the Label and radius for preset threats
  * Enables/Disables threat radius input depending if custom threat or preset
@@ -1890,21 +1137,6 @@ function setThtRingOptions(options) {
 	$("#msn-tht-units").val("NM");
 	$("#tht-ring-label").val(options.label);
 	$("#tht-ring-radius").val(options.radius);
-}
-
-/**
- *
- */
-function showTitles() {
-	layer_threat_markers.eachLayer(function(marker) {
-		marker.unbindTooltip();
-		marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
-	});
-	
-	layer_markers.eachLayer(function(marker) {
-		marker.unbindTooltip();
-		marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
-	});
 }
 
 /**
@@ -2090,7 +1322,9 @@ function thtClicked() {
  * Various listeners that run all the time
  */
 $(document).ready(function() { 
-	// Initialize CAP Modal color picker
+	/**
+	 * Initialize color picker options for CAP/Hold & Threat Rings
+	 */
 	$("#cap-color").spectrum({
 		preferredFormat: "name",
 		color: "#3388ff",
@@ -2100,7 +1334,6 @@ $(document).ready(function() {
 		palette: ["#3388ff","#ff0000","#ff9000","#ffff00","#00ff00","#00ffff","#0000ff","#9000ff","#ff00ff"]
 	});
 	
-	// Initialize THT Ring color picker
 	$("#tht-ring-color").spectrum({
 		preferredFormat: "name",
 		color: "#ff0000",
@@ -2110,31 +1343,749 @@ $(document).ready(function() {
 		palette: ["#ff0000","#ffff00","#ffffff", "#00ff00"]
 	});
 	
-	// Listen to buttons
-	$("#fly-button").click(flyToCoordinates);
-	$("#clear-chits").click(clearMap);
-	$("#btn-save-scenario").click(saveScenario);
-	$("#btn-load-scenario").click(loadScenarioHelper);
-	$("#btn-show-titles").click(showTitles);	
-	$("#btn-hide-titles").click(hideTitles);
+	$("#btn-show-titles").click(function() {
+		layer_markers.eachLayer(function(marker) {
+			marker.unbindTooltip();
+			marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
+		});
+	});
 	
-	// Stop listening to modals when you create a modal. This prevents erroneous addition of objects
+	$("#btn-hide-titles").click(function() {
+		layer_markers.eachLayer(function(marker) {
+			marker.unbindTooltip();
+		});
+	});
+	
+	/**
+	 * Stop listening to modals when you create a modal. This prevents erroneous addition of objects
+	 */
 	$("#tht-ring-modal").on("show.bs.modal", stopListeningToModals);
 	$("#cap-modal").on("show.bs.modal", stopListeningToModals);
 	$("#add-15-line-modal").on("show.bs.modal", stopListeningToModals);
 	$("#add-9-line-modal").on("show.bs.modal", stopListeningToModals);
 	
-	// Resets form values when modals are closed without CAP/Threat being added
+	/**
+	 * Resets form values when modals are closed without CAP/Threat being added
+	 */
 	$("#save-modal").on("hidden.bs.modal", resetSaveModal);
 	$("#cap-modal").on("hidden.bs.modal", resetCapModal);
 	$("#tht-ring-modal").on("hidden.bs.modal", resetThtModal);
 	$("#add-15-line-modal").on("hidden.bs.modal", reset15lineModal);
 	$("#add-9-line-modal").on("hidden.bs.modal", reset9lineModal);
 	
-	// Close alert if user clicks the body
-	$("body").click(function() {
-		$(".alert").alert("close");
+	/**
+	 * Parses through JSON object to create saved objects
+	 */
+	$("#btn-load-scenario").click(function() {
+		$("#load-modal").modal("show");
+		
+		$("#btn-add-scenario-to-map").click(function() {
+			clearMap();
+			
+			var input_text = $("#scenario-input").val();
+			
+			if(input_text == "") {
+				$("#load-modal").modal("hide");
+			} else {
+				var input_json = JSON.parse(input_text);
+				var details = input_json.details;
+				var markers = input_json.markers;
+				var threat_markers = input_json.threat_markers;
+				var circles = input_json.circles;
+				var ellipses = input_json.ellipses;
+				var lines = input_json.lines;
+				var polygons = input_json.polygons;
+				var eas = input_json.eas;
+				var rozs = input_json.rozs;
+				
+				if(details.scenario_version == null || details.scenario_version != "2") {
+					alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 2");
+				}
+				
+				if(threat_markers == null) {					
+					markers.forEach(function(ref) {
+						// Make the Marker
+						// Marker is a threat
+						if(ref.type == "threat") {
+							// Make the icon
+							// Preset threat, icon is image
+							if(ref.icon.type == "img") {
+								var icon = L.icon({
+									type: ref.icon.type,
+									iconUrl: ref.icon.iconUrl,
+									iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()]
+								});
+							}
+							// Custom threat, icon is divIcon
+							else {
+								var icon = L.divIcon({
+									type: ref.icon.type,
+									html: "<div class=\"threat-divicon-text threat-" + ref.soverignty.toLowerCase() + "\">" + ref.title + "</div>",
+									iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()],
+									className: "threat-divicon"
+								});
+							}
+													
+							// Make the ring
+							var circle_options = {
+								radius: ref.radius,
+								color: ref.color,
+								fill: false,
+								dashArray: tht_ring_dash_array,
+								weight: 5
+							};
+							
+							var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
+							
+							var marker_options = {
+								type: ref.type,
+								msnThreat: ref.msnThreat,
+								soverignty: ref.soverignty,
+								icon: icon,
+								title: ref.title,
+								riseOnHover: true,
+								ring: circle,
+								radius: ref.radius,
+								units: ref.units,
+								latlng: ref.latlng,
+								mgrs: ref.mgrs,
+								data: ref.data,
+								elevation: ref.elevation
+							};
+							
+							var msn_label = ref.msnThreat;
+							if(msn_label == "custom") {
+								msn_label = "Custom";
+							}
+							
+							var radius_label = ref.radius;
+							if(ref.units == "NM") {
+								radius_label = ref.radius / 1852;
+							} else if(ref.units == "km") {
+								radius_label = ref.radius / 1000;
+							}
+							
+							var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
+							
+							if(marker.options.data == null) {
+								marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+							} else {
+								marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button>");
+							}
+													
+							marker.on("popupopen", thtClicked);
+							
+							if(ref.msnThreat == "custom") {
+								$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
+								$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
+							}
+						}
+					});
+					
+				} else {				
+					threat_markers.forEach(function(ref) {
+						// Make the icon
+						// Preset threat, icon is image
+						if(ref.icon.type == "img") {
+							var icon = L.icon({
+								type: ref.icon.type,
+								iconUrl: ref.icon.iconUrl,
+								iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()]
+							});
+						}
+						// Custom threat, icon is divIcon
+						else {
+							var icon = L.divIcon({
+								type: ref.icon.type,
+								html: "<div class=\"threat-divicon-text threat-" + ref.soverignty.toLowerCase() + "\">" + ref.title + "</div>",
+								iconSize: [tht_scale * map.getZoom(), tht_scale * map.getZoom()],
+								className: "threat-divicon"
+							});
+						}
+												
+						// Make the ring
+						var circle_options = {
+							radius: ref.radius,
+							color: ref.color,
+							fill: false,
+							dashArray: tht_ring_dash_array,
+							weight: 5
+						};
+						
+						var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
+						
+						var marker_options = {
+							type: ref.type,
+							msnThreat: ref.msnThreat,
+							soverignty: ref.soverignty,
+							icon: icon,
+							title: ref.title,
+							riseOnHover: true,
+							ring: circle,
+							radius: ref.radius,
+							units: ref.units,
+							latlng: ref.latlng,
+							mgrs: ref.mgrs,
+							data: ref.data,
+							elevation: ref.elevation
+						};
+						
+						var msn_label = ref.msnThreat;
+						if(msn_label == "custom") {
+							msn_label = "Custom";
+						}
+						
+						var radius_label = ref.radius;
+						if(ref.units == "NM") {
+							radius_label = ref.radius / 1852;
+						} else if(ref.units == "km") {
+							radius_label = ref.radius / 1000;
+						}
+						
+						var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
+						
+						if(marker.options.data == null) {
+							marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+						} else {
+							marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button>");
+						}
+												
+						marker.on("popupopen", thtClicked);
+						
+						if(ref.msnThreat == "custom") {
+							$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
+							$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
+						}
+					});
+				}
+								
+				markers.forEach(function(ref) {
+					// Make the Marker
+					// Marker is a threat
+					if(ref.type == "threat") {
+						
+					}
+					// Marker is a chit
+					else {
+						// Make the Icon
+						if(ref.type == "div") {
+							var icon = L.divIcon({
+								type: ref.icon.type,
+								html:"<div class=\"bldg-label-divicon-text\">" + ref.title + "</div>",
+								iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()],
+								className: "bldg-label-divicon"
+							});
+						} else {
+							var icon = L.icon({
+								type: ref.icon.type,
+								iconUrl: ref.icon.iconUrl,
+								iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()]
+							});
+						}
+						
+						// Make the marker
+						var marker_options = {
+							type: ref.type,
+							icon: icon,
+							title: ref.title,
+							riseOnHover: true,
+							latlng: ref.latlng,
+							mgrs: ref.mgrs,
+							elevation: ref.elevation,
+							data: ref.data
+						};
+						
+						var marker = L.marker(ref.latlng, marker_options).addTo(layer_markers);
+						
+						if(marker.options.type == "hostile") {
+							if(marker.options.data == null) {
+								marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+							} else {
+								marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+							}
+						} else if(marker.options.type == "srv") {
+							if(marker.options.data == null) {
+								marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-15-line\">Add 15-Line</button>");
+							} else {
+								marker.bindPopup("Callsign/Freq: " + marker.options.data.callsign_freq + "<br/>Number of Objectives: " + marker.options.data.num_objectives + "<br/>Location: " + marker.options.data.mgrs + "<br/>Elevation: " + marker.options.data.elevation + "<br/>Date/Time(Z): " + marker.options.data.dtg + "<br/>Source: " + marker.options.data.source + "<br/>Condition: " + marker.options.data.condition + "<br/>Equipment: " + marker.options.data.equipment + "<br/>PLS/HHRID: " + marker.options.data.pls_hhrid + "<br/>Authentication: " + marker.options.data.authentication + "<br/>Threats: " + marker.options.data.threats + "<br/>PZ Description: " + marker.options.data.pz_description + "<br/>On Scene CC: " + marker.options.data.osc + "<br/>RV/Freq: " + marker.options.data.rv_freq + "<br/>IP/Ingress: " + marker.options.data.ip_ingress + "<br/>Rescort: " + marker.options.data.rescort + "<br/>Objective Area Gameplan: " + marker.options.data.obj_gp + "<br/>Recovery Signal: " + marker.options.data.signal + "<br/>Egress Route: " + marker.options.data.egress_rte + "<hr/><button class=\"btn btn-sm btn-warning btn-del-15-line\">Delete 15-Line</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+							}
+						} else {
+							marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+						}
+						
+						marker.on("popupopen", chitClicked);
+						
+						if(ref.type == "div") {
+							$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
+							$(".bldg-label-divicon").css("line-height", ((chit_scale * map.getZoom())) + "px");
+						}
+					}
+				});
+								
+				ellipses.forEach(function(ref) {
+					
+					var ellipse_options = {
+						type: ref.type,
+						title: ref.title,
+						latlng: ref.latlng,
+						mgrs: ref.mgrs,
+						radii: ref.radii,
+						tilt: ref.tilt,
+						color: ref.color,
+						fill: false,
+						weight: 5
+					};
+					
+					var ellipse = L.ellipse(ref.latlng, [ref.radii.x, ref.radii.y], ref.tilt, ellipse_options).addTo(layer_caps);
+					ellipse.bindPopup(ref.title + "<br/>Center: " + ref.mgrs + "<hr/><input type=\"text\" class=\"form-control cap-rename\"><button class=\"btn btn-sm btn-warning btn-cap-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
+					ellipse.on("popupopen", capClicked);
+				});
+				
+				lines.forEach(function(ref) {					
+					var line_options = {
+						type: ref.type,
+						title: ref.title,
+						latlngs: ref.latlngs,
+						stroke: true,
+						color: ref.color,
+						weight: 5,
+						fill: false,
+						clickable: false,
+						dashArray: "20,10,5,10,5,10"
+					};
+					
+					var line = L.polyline(ref.latlngs, line_options).addTo(layer_lines);
+					
+					if(ref.type == "flot") {
+						line.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control flot-rename\"><button class=\"btn btn-sm btn-warning btn-flot-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-flot-del\">Delete</button>");
+						line.on("popupopen", flotClicked);
+					} else {
+						line.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control feba-rename\"><button class=\"btn btn-sm btn-warning btn-feba-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-feba-del\">Delete</button>");
+						line.on("popupopen", febaClicked);
+					}
+				})
+				
+				polygons.forEach(function(ref) {
+					
+					var polygon_options = {
+						type: ref.type,
+						title: ref.title,
+						latlngs: ref.latlngs,
+						clickable: false,
+						color: "#3388ff",
+						stroke: true,
+						weight: 5,
+						fill: false
+					};
+					
+					var polygon = L.polygon(ref.latlngs, polygon_options).addTo(layer_polygons);
+					polygon.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control polygon-rename\"><button class=\"btn btn-sm btn-warning btn-polygon-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-polygon-del\">Delete</button>");
+					polygon.on("popupopen", polygonClicked);
+				});
+				
+				eas.forEach(function(ref) {					
+					var ea_options = {
+						type: ref.type,
+						title: ref.title,
+						latlngs: ref.latlngs,
+						stroke: true,
+						color: "#ff0000",
+						weight: 5,
+						fill: false,
+						clickable: false
+					};
+					
+					var rectangle = L.rectangle(ref.latlngs, ea_options).addTo(layer_eas);
+					rectangle.bindPopup(ref.title + "<hr/><input type=\"text\" class=\"form-control ea-rename\"><button class=\"btn btn-sm btn-warning btn-ea-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-ea-del\">Delete</button>");
+					rectangle.on("popupopen", eaClicked);
+				});
+				
+				rozs.forEach(function(ref) {				
+					var roz_options = {
+						type: ref.type,
+						title: ref.title,
+						latlng: ref.latlng,
+						mgrs: ref.mgrs,
+						radius: ref.radius,
+						color: "#ff0000",
+						stroke: true,
+						dashArray: "20,10,5,10",
+						fillOpacity: 0.2,
+						weight: 5,
+						clickable: false
+					};
+					
+					var circle = L.circle(ref.latlng, roz_options).addTo(layer_rozs);
+					circle.bindPopup(ref.title + "<br/>Radius: " + ref.radius.toFixed(2) + " NM<br/>" + ref.mgrs + "<hr/><input type=\"text\" class=\"form-control roz-rename\"><button class=\"btn btn-sm btn-warning btn-roz-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-roz-del\">Delete</button>");
+					circle.on("popupopen", rozClicked);
+				});
+			}
+			$("#scenario-input").val("");
+			$("#btn-add-scenario-to-map").off("click");
+			$("#load-modal").modal("hide");
+		});
+	});
+	
+	/**
+	 * Gathers all objects on the map and presents a JSON object for the user to save
+	 */
+	$("#btn-save-scenario").click(function() {
+
+		var today = new Date().toUTCString();
+		var scenario_details = {
+			classification: "UNCLASSIFIED",
+			date: today,
+			scenario_version: "2"
+		};
+
+		var scenario_markers = [];
+		var scenario_threat_markers = [];
+		var scenario_circles = [];
+		var scenario_ellipses = [];
+		var scenario_lines = [];
+		var scenario_polygons = [];
+		var scenario_eas = [];
+		var scenario_rozs = [];
+		
+		layer_threat_markers.eachLayer(function(marker) {
+			var marker_icon = marker.getIcon();
+			
+			// Make the icon reference
+			if(marker_icon.options.type == "img") {
+				var icon = {
+					type: marker_icon.options.type,
+					iconUrl: marker_icon.options.iconUrl
+					// iconSize default
+				};
+			} else {
+				var icon = {
+					type: marker_icon.options.type
+					// html uses label
+					// iconSize default
+					// className default
+				};
+			}
+			
+			var marker_ref = {
+				type: marker.options.type,
+				title: marker.options.title,
+				latlng: marker.getLatLng(),
+				mgrs: marker.options.mgrs,
+				elevation: marker.options.elevation,
+				msnThreat: marker.options.msnThreat,
+				soverignty: marker.options.soverignty,
+				color: marker.options.ring.options.color,
+				radius: marker.options.radius,
+				units: marker.options.units,
+				icon: icon,
+				data: marker.options.data
+			};
+			
+			scenario_threat_markers.push(marker_ref);
+			
+		});
+
+		layer_markers.eachLayer(function(marker) {
+			var marker_icon = marker.getIcon();
+			
+			// Make the icon reference
+			if(marker_icon.options.type == "img") {
+				var icon = {
+					type: marker_icon.options.type,
+					iconUrl: marker_icon.options.iconUrl
+					// iconSize default
+				};
+			} else {
+				var icon = {
+					type: marker_icon.options.type
+					// html uses label
+					// iconSize default
+					// className default
+				};
+			}
+
+			// Make the marker reference
+			var marker_ref = {
+				type: marker.options.type,
+				title: marker.options.title,
+				latlng: marker.getLatLng(),
+				mgrs: marker.options.mgrs,
+				elevation: marker.options.elevation,
+				icon: icon,
+				data: marker.options.data
+			};
+			
+			scenario_markers.push(marker_ref);
+		});
+
+		layer_caps.eachLayer(function(ellipse) {
+			var ellipse_ref = {
+				type: ellipse.options.type,
+				title: ellipse.options.title,
+				latlng: ellipse.options.latlng,
+				mgrs: ellipse.options.mgrs,
+				radii: ellipse.getRadius(),
+				tilt: ellipse.getTilt(),
+				color: ellipse.options.color
+				// fill: false
+				// weight: 5
+			};
+			scenario_ellipses.push(ellipse_ref);
+		});
+
+		layer_lines.eachLayer(function(line) {
+			var line_ref = {
+				type: line.options.type,
+				title: line.options.title,
+				latlngs: line.options.latlngs,
+				color: line.options.color
+				// stroke: true
+				// color: 000000
+				// weight: 5
+				// fill: false
+				// clickable: false
+				// dashArray: 20,10,5,10,5,10
+			};
+			scenario_lines.push(line_ref);
+		});
+
+		layer_polygons.eachLayer(function(polygon) {
+			var polygon_ref = {
+				type: polygon.options.type,
+				title: polygon.options.title,
+				latlngs: polygon.options.latlngs
+				// stroke: true
+				// color: 3388ff
+				// weight: 5
+				// clickable: false
+				// fill: false
+			};
+			scenario_polygons.push(polygon_ref);
+		});
+
+		layer_eas.eachLayer(function(ea) {
+			var ea_ref = {
+				type: ea.options.type,
+				title: ea.options.title,
+				latlngs: ea.options.latlngs
+				// stroke: true
+				// color: ff0000
+				// weight: 5
+				// fill: false
+				// clickable: false
+			};
+			scenario_eas.push(ea_ref);
+		});
+
+		layer_rozs.eachLayer(function(roz) {
+			var roz_ref = {
+				type: roz.options.type,
+				title: roz.options.title,
+				latlng: roz.options.latlng,
+				mgrs: roz.options.mgrs,
+				radius: roz.options.radius,
+				//color: roz.options.color
+				// stroke: true
+				// color: ff0000
+				// dash array: 20,10,5,10
+				// weight 5
+				// fill true
+				// fill opacity: 0.2
+			};
+			scenario_rozs.push(roz_ref);
+		});
+
+		var scenario = {
+			details: scenario_details,
+			threat_markers: scenario_threat_markers,
+			markers: scenario_markers,
+			ellipses: scenario_ellipses,
+			lines: scenario_lines,
+			polygons: scenario_polygons,
+			eas: scenario_eas,
+			rozs: scenario_rozs
+		};
+
+		scenario = JSON.stringify(scenario);
+
+		$("#scenario-output").val(scenario);
+		$("#save-modal").modal("show");
+		
+		$("#btn-copy-to-clipboard").click(function() {
+			var output_text = $("#scenario-output");
+			output_text.select();
+			document.execCommand("copy");
+			$("#btn-copy-to-clipboard").html("Copied!");
+			$("#btn-copy-to-clipboard").attr("disabled", true);
+		});
+	});
+	
+	/**
+	 * Listens to the Select menu for when the user is creating a threat
+	 * Switch between the mission threats and create options with the label and radius
+	 */
+	$("#msn-tht").change(function() {
+		var threat = $("#msn-tht").val();
+		var options = {label: threat, radius: ""};
+		
+		switch(threat) {
+			case "SA-2B/F":
+				options.radius = "18.4";
+				break;
+			case "SA-2D/E":
+				options.radius = "23.2";
+				break;
+			case "SA-3":
+				options.radius = "13";
+				break;
+			case "SA-5":
+				options.radius = "162";
+				break;
+			case "SA-6":
+				options.radius = "13.4";
+				break;
+			case "SA-8":
+				options.radius = "5.5";
+				break;
+			case "SA-10A/B":
+				options.radius = "40";
+				break;
+			case "SA-11":
+				options.radius = "17";
+				break;
+			case "SA-12A":
+				options.radius = "50";
+				break;
+			case "SA-12B":
+				options.radius = "80";
+				break;
+			case "SA-15":
+				options.radius = "6.5";
+				break;
+			case "SA-17":
+				options.radius = "17";
+				break;
+			case "SA-19":
+				options.radius = "6.5";
+				break;
+			case "SA-20":
+				options.radius = "80";
+				break;
+			case "SA-21":
+				options.radius = "64.8";
+				break;
+			case "SA-22":
+				options.radius = "10.8";
+				break;
+			case "CROTALE/FM-80":
+				options.radius = "15";
+				break;
+			case "I-HAWK":
+				options.radius = "21.6";
+				break;
+			case "PATRIOT":
+				options.radius = "86.4";
+				break;
+			case "RAPIER":
+				options.radius = "3.8";
+				break;
+			case "ROLAND-II":
+				options.radius = "4.3";
+				break;
+			case "SA-9":
+				options.radius = "2.3";
+				break;
+			case "SA-13":
+				options.radius = "2.7";
+				break;
+			default:
+				options.label = "";
+				break;
+		}
+		
+		setThtRingOptions(options);
+	});
+	
+	/**
+	 * Listens to the select menu for when the user is creating a threat
+	 * If the user changes the units, then update the placeholder
+	 */
+	$("#msn-tht-units").change(function() {
+		var units = $("#msn-tht-units").val();
+		
+		if(units == "m") {
+			$("#tht-ring-radius").prop("placeholder", "3000");
+		} else {
+			$("#tht-ring-radius").prop("placeholder", "3");
+		}
+	});
+	
+	/**
+	 * Listens for the "Clear Chits" button click and clears all the chits
+	 */
+	$("#clear-chits").click(function() {
+		clearMap();
+	});
+
+	/**
+	 * Listens for the "Fly to Coordinates" button click.
+	 * Parses the MGRS, pads numbers as required, translates to lat/long and centers the map on the lat/long.
+	 * The Geodesy function requires a 10 digit grid
+	 */
+	$("#fly-button").click(function() {		
+		var center_mgrs = $("#center-map").val().toUpperCase();
+		
+		// Remove all spaces
+		center_mgrs = center_mgrs.replace(/ /g, "");
+		
+		// If the second character is a letter, add a leading 0
+		var second_char = center_mgrs.substr(1,1);
+		if(!$.isNumeric(second_char)) {
+			center_mgrs = "0" + center_mgrs;
+		}
+		
+		// Break apart the sections
+		var digits = center_mgrs.substr(5);
+		var zone_digits = center_mgrs.substr(0,5);
+		var first_digits = digits.substr(0, digits.length / 2);
+		var second_digits = digits.substr(digits.length / 2);
+		
+		// Add trailing 0s
+		while(first_digits.length < 5) {
+			first_digits = first_digits + "0";
+		}
+		
+		while(second_digits.length < 5) {
+			second_digits = second_digits + "0";
+		}
+		
+		// Recombine sections
+		center_mgrs = zone_digits + first_digits + second_digits
+		
+		// Parse MGRS, Translate to UTM, Translate to Lat Lon
+		var mgrs_ref = Mgrs.parse(center_mgrs);
+		var utm = mgrs_ref.toUtm();
+		var ll_posit = mgrs_ref.toUtm().toLatLon();
+
+		// Fly to Lat Lon and zoom in
+		map.flyTo([ll_posit.lat, ll_posit.lon], 13);
+		
+		var fly_popup = L.popup()
+			.setLatLng([ll_posit.lat, ll_posit.lon])
+			.setContent(zone_digits.substr(0,3) + " " + zone_digits.substr(3) + " " + first_digits + " " + second_digits + "<br/>" + ll_posit)
+			.openOn(map);
+		
+		// Listen if the user wants to add a CAP
+		$(".chit-bldg-label").click({ll_posit}, addBldgLabel);
+		$(".chit-cap").click({ll_posit}, addCap);
+		$(".chit-tht-ring").click({ll_posit}, addThtRing);
+		$(".chit-small").click(function() {
+			var img_src = $(this).attr("src");
+			addChit(img_src, ll_posit);
+		});
+		$(".chit-srv").click(function() {
+			var img_src = $(this).attr("src");
+			addChit(img_src, ll_posit);
+		});
 	});
 });
-
-export {loadScenario};

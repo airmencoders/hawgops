@@ -21,6 +21,42 @@
 			</li>
 		</ul>
 		<ul class="navbar-nav">
+			<?php if(isLoggedIn()) { ?>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="account-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-user-circle"></i> <?php echo getUserName($_SESSION["id"]); ?>
+				</a>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-toggle">
+					<?php if(isAdmin()) { ?>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-users.php") ? "active" : ""; ?>" href="/admin-users">Users</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-logs.php") ? "active" : ""; ?>" href="/admin-logs">Logs</a>
+					<div class="dropdown-divider"></div>
+					<?php } ?>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/my-scenarios.php") ? "active" : ""; ?>" href="/my-scenarios">My Scenarios</a>
+					<!--<a class="dropdown-item" href="/account-settings">Account Settings</a>-->
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="/logout">Logout</a>
+				</div>
+			</li>
+			<?php } else { ?>
+			<li class="nav-item">
+				<a class="nav-link <?php echo ($_SERVER["PHP_SELF"] == "/login.php") ? "active" : ""; ?>" href="/login">Login</a>
+			</li>
+			<?php } ?>
+			<li class="nav-item">
+				<a class="nav-link <?php echo ($_SERVER["PHP_SELF"] == "/contact.php") ? "active" : ""; ?>" href="/contact">Contact Porkins</a>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="policy-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					About
+				</a>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="policy-toggle">
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/terms.php") ? "active" : ""; ?>" href="./terms">Terms of Use</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/privacy.php") ? "active" : ""; ?>" href="./privacy">Privacy Policy</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/cookies.php") ? "active" : ""; ?>" href="./cookies">Cookie Policy</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses">Licenses</a>
+				</div>
+			</li>
 			<li class="nav-item">
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="form-inline">
 					<input type="hidden" name="cmd" value="_donations" />
@@ -28,17 +64,6 @@
 					<input type="hidden" name="currency_code" value="USD" />
 					<button type="submit" name="submit" class="btn btn-sm btn-dark btn-donate nav-link"><i class="fab fa-2x fa-cc-paypal"></i></button>
 				</form>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/contact">Contact Porkins</a>
-			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="policy-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Policies
-				</a>
-				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="policy-toggle">
-					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses">Licenses</a>
-				</div>
 			</li>
 		</ul>
 	</div>

@@ -1,3 +1,7 @@
+<?php
+	require("../req/all/codes.php");
+	require("../req/all/api-v1.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head><?php require("../req/head/head.php"); ?></head>
@@ -38,3 +42,4 @@
 		</div>
 	</body>	
 </html>
+<?php closeLogs(); ?>

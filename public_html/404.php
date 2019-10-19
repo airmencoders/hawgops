@@ -1,7 +1,11 @@
+<?php
+	require("../req/all/codes.php");
+	require("../req/all/api-v1.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head><?php require("../req/head/head.php"); ?></head>
-	<body>
+	<body id="bg">
 		<?php // Navigation / Header ?>
 		<?php require("../req/structure/navbar.php"); ?>
 				
@@ -18,3 +22,4 @@
 		</div>
 	</body>
 </html>
+<?php closeLogs(); ?>
