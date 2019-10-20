@@ -6,6 +6,14 @@ website located at https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.5.1
+* Updated My Scenarios page to add a share button
+* Created Share modal to handle sharing of scenarios
+* Updated validation.js to handle new form validation
+* Updated API to add getUserNameByEmail, getUserEmailByID
+* Updated login.php to handle scenario parameter
+* Updated cas.php to handle scenario and share parameter
+
 ## 1.5.0
 * Added user accounts
 * Added login/logout pages
