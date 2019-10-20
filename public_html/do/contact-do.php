@@ -9,6 +9,7 @@
 	$user_email = "";
 	$subject = "";
 	$message = "";
+	$crlf = "\r\n";
 	
 	if(!isset($_POST)) {
 		header("Location: /contact?s=$DO_CONTACT_DATA_NOT_RECEIVED");

@@ -1,6 +1,13 @@
 <?php
 	require("../req/all/codes.php");
 	require("../req/all/api-v1.php");
+	
+	if(isset($_GET["scenario"]) && $_GET["scenario"] != "" && isset($_GET["share"]) && $_GET["share"] == "1") {
+		logInfoMsg("Guest is logging in to view a scenario.");
+		$referText = "?scenario=".$_GET["scenario"]."&share=1";
+	} else {
+		$referText = "";
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +25,7 @@
 			<div class="card card-sm mt-5 mx-auto">
 				<h4 class="card-header text-center">Login to Hawg Ops</h4>
 				<div class="card-body">
-					<form method="POST" action="./do/login-do.php" onsubmit="return validateLoginForm()">
+					<form method="POST" action="./do/login-do.php<?php echo $referText; ?>" onsubmit="return validateLoginForm()">
 						<div class="form-group">
 							<label for="email">Email Address</label>
 							<input type="email" class="form-control" id="email" name="email">

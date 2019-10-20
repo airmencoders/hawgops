@@ -218,3 +218,20 @@ function validateChangePasswordForm() {
 
 	return response;
 }
+
+function validateShareScenarioForm() {
+	var share_email = $("#email-share").val();
+	var response = true;
+	
+	$("#email-share").removeClass("is-invalid");
+	$("#email-share").removeClass("is-valid");
+	
+	if(share_email == "") {
+		$("#email-share").addClass("is-invalid");
+		response = false;
+	} else {
+		$("#email-share").addClass("is-valid");
+	}
+	
+	return response;
+}

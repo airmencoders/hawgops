@@ -37,6 +37,10 @@
 			case $DO_CONTACT_EMAIL_SENT:
 				$text = "Messge sent to Porkins.";
 				break;
+			// 303xx SHARE-SCENARIO-DO.PHP
+			case $DO_SHARE_SCENARIO_EMAIL_SENT:
+				$text = "Scenario sent.";
+				break;
 			// 4xxxx DANGER
 			// 400xx SHARED	
 			case $ERROR_MYSQL:
@@ -131,6 +135,19 @@
 				break;
 			case $DO_CREATE_ACCOUNT_PASSWORDS_DO_NOT_MATCH:
 				$text = "Your passwords do not match.";
+				break;
+			// 405xx SHARE-SCENARIO-DO.PHP
+			case $DO_SHARE_SCENARIO_NAME_NOT_RECEIVED:
+				$text = "Scenario name was not received.";
+				break;
+			case $DO_SHARE_SCENARIO_ID_NOT_RECEIVED:
+				$text = "Scenario ID was not received.";
+				break;
+			case $DO_SHARE_SCENARIO_EMAIL_NOT_RECEIVED:
+				$text = "Recipient email address was not received.";
+				break;
+			case $DO_SHARE_SCENARIO_EMAIL_NOT_SENT:
+				$text = "There was an error sharing your scenario, email was not sent.";
 				break;
 		}
 	}

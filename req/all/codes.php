@@ -27,13 +27,9 @@
 	$DO_CONTACT_EMAIL_SENT = 30200;
 
 	//-------------------------------
-	// 303xx - CREATE-ACCOUNT-DO.PHP
+	// 303xx - SHARE-SCENARIO-DO.PHP
 	//-------------------------------
-	
-	//-------------------------------
-	// 304xx - DEL-SCENARIO-DO.PHP
-	//-------------------------------
-	
+	$DO_SHARE_SCENARIO_EMAIL_SENT = 30300;
 
     //===============================
     // 4xxxx - Danger (Red)
@@ -93,6 +89,14 @@
 	// 404xx - DEL-SCENARIO-DO.PHP
 	//-------------------------------
 	$DO_DEL_SCENARIO_ID_NOT_RECEIVED = 40400;
+	
+	//-------------------------------
+	// 405xx - SHARE-SCENARIO-DO.PHP
+	//-------------------------------
+	$DO_SHARE_SCENARIO_NAME_NOT_RECEIVED = 40500;
+	$DO_SHARE_SCENARIO_ID_NOT_RECEIVED = 40501;
+	$DO_SHARE_SCENARIO_EMAIL_NOT_RECEIVED = 40502;
+	$DO_SHARE_SCENARIO_EMAIL_NOT_SENT = 40503;
 
     //===============================
     // 5xxxx - Warning (Yellow)

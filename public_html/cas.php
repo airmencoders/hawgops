@@ -5,8 +5,14 @@
 	if(isset($_GET["scenario"])) {
 		if(!isLoggedIn()) {
 			logInfoMsg("Guest [".$_SERVER["REMOTE_ADDR"]."] attempted to load a scenario while not logged in.");
-			header("Location: /cas");
-			closeLogs();
+			if(isset($_GET["share"]) && $_GET["share"] == "1") {
+				logInfoMsg("Share flag was set, send to login.");
+				header("Location: /login?scenario=".$_GET["scenario"]."&share=1");
+				closeLogs();
+			} else {
+				header("Location: /cas");
+				closeLogs();
+			}
 		}
 		
 		$uid = $_SESSION["id"];

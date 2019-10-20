@@ -19,12 +19,19 @@
 <html lang="en">
     <head>
         <?php require("../req/head/head.php"); ?>
+		<script src="./js/validation.js"></script>
 		<script>
 			$(document).ready(function() {
 				$(".btn-del").click(function() {
 					$("#del-scenario-name").text($(this).attr("data-name"));
 					$("#scenario-id").val($(this).attr("data-id"));
 					$("#btn-del-scenario-confirm").text("Delete \"" + $(this).attr("data-name") + "\"");
+				});
+				
+				$(".btn-share-scenario").click(function() {
+					$("#share-scenario-name").text($(this).attr("data-name"));
+					$("#share-scenario-id").val($(this).attr("data-id"));
+					$("#scenario-name").val($(this).attr("data-name"));
 				});
 			});
 		</script>
@@ -38,6 +45,7 @@
 			<div id="alert-container"><?php require("../req/structure/alert-container.php"); ?></div>
 			<?php
 				require("../req/modals/del-scenario-modal.php");
+				require("../req/modals/share-scenario-modal.php");
 			?>
 			<div class="card mt-5">
 				<h3 class="card-header">My Scenarios</h3>
@@ -53,6 +61,7 @@
 							<?php echo $scenario["name"]." (Created On ".date("d M, Y", strtotime($scenario["date"]))." at ".date("H:i", strtotime($scenario["date"]))." Z)"; ?> 
 							<div id="buttons" class="d-inline">
 								<a class="btn btn-success" href="/cas?scenario=<?php echo $scenario["id"];?>" role="button">Load</a>
+								<button type="button" class="btn btn-primary btn-share-scenario" data-name="<?php echo $scenario["name"]; ?>" data-id="<?php echo $scenario["id"]; ?>" data-toggle="modal" data-target="#share-scenario-modal">Share</button>
 								<button type="button" class="btn btn-danger btn-del" data-name="<?php echo $scenario["name"]; ?>" data-id="<?php echo $scenario["id"]; ?>" data-toggle="modal" data-target="#del-scenario-modal">Delete</button>
 							</div>
 						</li>
