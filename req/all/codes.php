@@ -38,6 +38,7 @@
 	//-------------------------------
 	$ERROR_MYSQL = 40000;
 	$ERROR_UNAUTHORIZED = 40001;
+	$ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECEIVED = 40002;
 
 	//-------------------------------
 	// 401xx - API

@@ -49,6 +49,9 @@
 			case $ERROR_UNAUTHORIZED:
 				$text = "You are not authorized to perform that action.";
 				break;
+			case $ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECEIVED:
+				$text = "User ID was not received.";
+				break;
 			// 401xx API
 			// CREATE ACCOUNT
 			case $API_CREATE_ACCOUNT_EMAIL_NOT_RECEIVED:
