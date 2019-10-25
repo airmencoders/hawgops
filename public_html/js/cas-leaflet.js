@@ -263,22 +263,27 @@ function addBldgLabel(e) {
 		// Attempt to get elevation data
 		// https://nationalmap.gov/epqs/
 		// https://www.usgs.gov/core-science-systems/ngp/3dep/about-3dep-products-services
-		// Only works in USA, if lat/lng are outside of USA, then returns -1000000
-		marker.options.elevation = "";
-		
+		// Only works in USA, if lat/lng are outside of USA, then returns -1000000	
 		$.get("https://nationalmap.gov/epqs/pqs.php?x=" + marker.options.latlng.lng + "&y=" + marker.options.latlng.lat + "&units=Feet&output=json", function(data) {
 			var response = Math.round(data.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation);
 			if(response != "-1000000") {
 				marker.options.elevation = response + " ft";
 			}
-		});
+			
+			marker.bindPopup(label + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
 		
-		marker.bindPopup(label + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+			$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
+			$(".bldg-label-divicon").css("line-height", ((chit_scale * map.getZoom())) + "px");
+			
+			marker.on("popupopen", bldgLabelClicked);
+		}).fail(function() {
+			marker.bindPopup(label + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
 		
-		$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
-		$(".bldg-label-divicon").css("line-height", ((chit_scale * map.getZoom())) + "px");
-		
-		marker.on("popupopen", bldgLabelClicked);
+			$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
+			$(".bldg-label-divicon").css("line-height", ((chit_scale * map.getZoom())) + "px");
+			
+			marker.on("popupopen", bldgLabelClicked);
+		});	
 		
 		// Prevent making more than one chit at a time
 		stopListeningToChits();
@@ -455,28 +460,46 @@ function addChit(img_src, ll_posit) {
 	// https://nationalmap.gov/epqs/
 	// https://www.usgs.gov/core-science-systems/ngp/3dep/about-3dep-products-services
 	// Only works in USA, if lat/lng are outside of USA, then returns -1000000
-	marker.options.elevation = "";
+	
 	$.get("https://nationalmap.gov/epqs/pqs.php?x=" + marker.options.latlng.lng + "&y=" + marker.options.latlng.lat + "&units=Feet&output=json", function(data) {
 		var response = Math.round(data.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation);
 		if(response != "-1000000") {
 			marker.options.elevation = response + " ft";
 		}
-	});
 		
-	// Threats and Hostile chits - Add 9-Line
-	if(marker.options.type == "hostile") {
-		marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
-	} 
-	// SRV chit - Add 15-Line
-	else if(marker.options.type == "srv") {
-		marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-15-line\">Add 15-Line</button>");
-	} 
-	// Other chits - Can't add data
-	else {
-		marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
-	}
-	
-	marker.on("popupopen", chitClicked);
+		// Threats and Hostile chits - Add 9-Line
+		if(marker.options.type == "hostile") {
+			marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+		} 
+		// SRV chit - Add 15-Line
+		else if(marker.options.type == "srv") {
+			marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-15-line\">Add 15-Line</button>");
+		} 
+		// Other chits - Can't add data
+		else {
+			marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+		}
+		
+		marker.on("popupopen", chitClicked);
+		
+	}).fail(function() {
+		marker.options.elevation = "";
+		
+		// Threats and Hostile chits - Add 9-Line
+		if(marker.options.type == "hostile") {
+			marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+		} 
+		// SRV chit - Add 15-Line
+		else if(marker.options.type == "srv") {
+			marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-15-line\">Add 15-Line</button>");
+		} 
+		// Other chits - Can't add data
+		else {
+			marker.bindPopup(name + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+		}
+		
+		marker.on("popupopen", chitClicked);
+	});	
 	
 	// Prevent making more than one chit at a time
 	stopListeningToChits();
@@ -691,23 +714,32 @@ function addThtRing(e) {
 		// https://nationalmap.gov/epqs/
 		// https://www.usgs.gov/core-science-systems/ngp/3dep/about-3dep-products-services
 		// Only works in USA, if lat/lng are outside of USA, then returns -1000000
-		marker.options.elevation = "";
 		$.get("https://nationalmap.gov/epqs/pqs.php?x=" + marker.options.latlng.lng + "&y=" + marker.options.latlng.lat + "&units=Feet&output=json", function(data) {
 			var response = Math.round(data.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation);
 			if(response != "-1000000") {
 				marker.options.elevation = response + " ft";
 			}
+			
+			marker.bindPopup(label + " (" + soverignty + ")<br/>Type: " + msn_tht_label + "<br/>Range: " + radius_label + " " + units + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+			
+			marker.on("click", thtClicked);
+		
+			if(msn_tht == "custom") {
+				$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
+				$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
+			}
+		}).fail(function() {
+			marker.options.elevation = "";
+			
+			marker.bindPopup(label + " (" + soverignty + ")<br/>Type: " + msn_tht_label + "<br/>Range: " + radius_label + " " + units + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+			
+			marker.on("click", thtClicked);
+		
+			if(msn_tht == "custom") {
+				$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
+				$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
+			}
 		});
-		
-		marker.bindPopup(label + " (" + soverignty + ")<br/>Type: " + msn_tht_label + "<br/>Range: " + radius_label + " " + units + "<br/>" + mgrs + "<br/>" + marker.options.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
-		
-		marker.on("click", thtClicked);
-	
-		if(msn_tht == "custom") {
-			$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
-			$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
-		}
-		
 		
 		// Close the modal
 		$("#tht-ring-modal").modal("hide");
@@ -717,6 +749,7 @@ function addThtRing(e) {
 		
 		// Stop listening
 		stopListeningToModals();
+		
 	});
 
 	// Prevent making more than one chit at a time

@@ -17,3 +17,32 @@
 
 <link rel="icon" href="https://hawg-ops.com/images/favicon.png">
 <title>Hawg Ops</title>
+<script>
+	$(document).ready(function() {
+		window.addEventListener("online", function() {
+			<!-- "Online" returns true even if connected to LAN but don't have actual internet, so test to see if you have internet -->
+			<?php /*
+			$.ajax({
+				url: "https://hawg-ops.com/images/favicon.png",
+				crossDomain: true,
+				error: function(xhr, ajaxOptions, thrownError) {
+					$("#notify-online").addClass("d-none");
+					$("#notify-offline").removeClass("d-none");
+				},
+				success: function(data, textStatus, jqXHR) {
+					$("#notify-online").removeClass("d-none");
+					$("#notify-offline").addClass("d-none");
+				}
+			});*/
+			?>
+			$("#notify-online").removeClass("d-none");
+			$("#notify-offline").addClass("d-none");
+			
+		});
+		
+		window.addEventListener("offline", function() {
+			$("#notify-online").addClass("d-none");
+			$("#notify-offline").removeClass("d-none");
+		});
+	});
+</script>
