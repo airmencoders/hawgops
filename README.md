@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.5.3
+* Fix bug with elevation API to still allow popups for chits
+
 ## 1.5.2
 * Added Admin Scenarios page to view user scenarios
 * Added Admin Users page to view users
