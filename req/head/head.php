@@ -21,7 +21,6 @@
 	$(document).ready(function() {
 		window.addEventListener("online", function() {
 			<!-- "Online" returns true even if connected to LAN but don't have actual internet, so test to see if you have internet -->
-			<?php /*
 			$.ajax({
 				url: "https://hawg-ops.com/images/favicon.png",
 				crossDomain: true,
@@ -33,11 +32,7 @@
 					$("#notify-online").removeClass("d-none");
 					$("#notify-offline").addClass("d-none");
 				}
-			});*/
-			?>
-			$("#notify-online").removeClass("d-none");
-			$("#notify-offline").addClass("d-none");
-			
+			});		
 		});
 		
 		window.addEventListener("offline", function() {
