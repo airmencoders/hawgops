@@ -9,6 +9,7 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 ## 1.5.4
 * Add a Online/Offline notification for users so that way if NIPR goes down they can tell that they won't be able to use the site.
+* Add a fail() function to the $.get function for elevation API that will allow the chit popups (As of 24 Oct, 19 the nationalmap.gov/epqs service is down)
 
 ## 1.5.3
 * Fix bug with elevation API to still allow popups for chits
