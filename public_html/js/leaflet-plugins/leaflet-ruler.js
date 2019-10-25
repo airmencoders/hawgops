@@ -38,7 +38,11 @@
       this._map = map;
       this._container = L.DomUtil.create('div', 'leaflet-bar');
       this._container.classList.add('leaflet-ruler');
-	  this._container.title = "Analysis Tool: Press ESC to finish, twice to exit";
+	  if(this.options.lengthUnit.display == "m") {
+		this._container.title = "Analysis Tool (meters): Press ESC to finish, twice to exit";
+	  } else {
+		this._container.title = "Analysis Tool (NM): Press ESC to finish, twice to exit";
+	  }
       L.DomEvent.disableClickPropagation(this._container);
       L.DomEvent.on(this._container, 'click', this._toggleMeasure, this);
       this._choice = false;

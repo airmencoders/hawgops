@@ -27,11 +27,21 @@ var mouse_coord_options = {
 	utmref: true
 };
 
-var ruler_options = {
+var nm_ruler_options = {
 	position: "topleft",
 	lengthUnit: {
 		factor: 0.539956803,
 		display: "NM",
+		decimal: 2,
+		label: "Distance:"
+	}
+};
+
+var m_ruler_options = {
+	position: "topleft",
+	lengthUnit: {
+		factor: 1000,
+		display: "m",
 		decimal: 2,
 		label: "Distance:"
 	}
@@ -128,7 +138,8 @@ var p518_options = {
 var map = L.map("map", map_options).setView([35.77, -93.34], 5);
 var scale = L.control.scale();
 var mouse_coords = L.control.mouseCoordinate(mouse_coord_options);
-var ruler = L.control.ruler(ruler_options);
+var nm_ruler = L.control.ruler(nm_ruler_options);
+var m_ruler = L.control.ruler(m_ruler_options);
 var drawControl = new L.Control.Draw(draw_control_options);
 
 /**
@@ -143,7 +154,7 @@ layer_polygons.addTo(map);
 layer_eas.addTo(map);
 layer_rozs.addTo(map);
 scale.addTo(map);
-ruler.addTo(map);
+nm_ruler.addTo(map);
 map.addControl(drawControl);
 
 /**
