@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.6.1
+* Remove "Known Issues" card from index
+
 ## 1.6.0
 * Update leaflet-ruler.js to show both NM and meters
 * Add "Known Issues" card to index
