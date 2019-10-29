@@ -33,7 +33,7 @@ var nm_ruler_options = {
 		factor: 0.539956803,
 		display: "NM",
 		decimal: 2,
-		label: "Distance:"
+		label: "NM:"
 	}
 };
 
