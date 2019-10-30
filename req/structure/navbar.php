@@ -1,5 +1,7 @@
 <?php
-	$name = getUserNameByID($_SESSION["id"]);
+	if(isLoggedIn()) {
+		$name = getUserNameByID($_SESSION["id"]);
+	}
 ?>
 
 <div id="class-banner" class="bg-success text-center">

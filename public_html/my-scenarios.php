@@ -3,14 +3,15 @@
 	require("../req/all/api-v1.php");
 	
 	if(!isLoggedIn()) {
-		logErrorMsg("User is not logged in. ($ERROR_UNAUTHORIZED)");
+		createLog("warning", $ERROR_UNAUTHORIZED, "my-scenarios", "-", "User not logged in", "-");
+		//logErrorMsg("User is not logged in. ($ERROR_UNAUTHORIZED)");
 		header("Location: /?s=$ERROR_UNAUTHORIZED");
 		closeLogs();
 	}
 	
 	$scenarioArray = getUserScenarios($_SESSION["id"]);
 	if(is_int($scenarioArray)) {
-		logErrorMsg("There was an error while getting user scenarios for user [".$_SESSION["id"]."]");
+		//logErrorMsg("There was an error while getting user scenarios for user [".$_SESSION["id"]."]");
 		header("Location: /?s=$scenarioArray");
 		closeLogs();
 	}

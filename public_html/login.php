@@ -3,7 +3,6 @@
 	require("../req/all/api-v1.php");
 	
 	if(isset($_GET["scenario"]) && $_GET["scenario"] != "" && isset($_GET["share"]) && $_GET["share"] == "1") {
-		logInfoMsg("Guest is logging in to view a scenario.");
 		$referText = "?scenario=".$_GET["scenario"]."&share=1";
 	} else {
 		$referText = "";

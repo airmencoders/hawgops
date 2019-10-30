@@ -4,9 +4,9 @@
 	
 	if(isset($_GET["scenario"])) {
 		if(!isLoggedIn()) {
-			logInfoMsg("Guest [".$_SERVER["REMOTE_ADDR"]."] attempted to load a scenario while not logged in.");
+			createLog("warning", "-", "cas", "-", "Guest attempted to load scenario while not logged in", "-");
+			//logInfoMsg("Guest [".$_SERVER["REMOTE_ADDR"]."] attempted to load a scenario while not logged in.");
 			if(isset($_GET["share"]) && $_GET["share"] == "1") {
-				logInfoMsg("Share flag was set, send to login.");
 				header("Location: /login?scenario=".$_GET["scenario"]."&share=1");
 				closeLogs();
 			} else {
@@ -14,19 +14,7 @@
 				closeLogs();
 			}
 		}
-		
-		$uid = $_SESSION["id"];
-		
-		if(isset($_GET["user"])) {
-			if(!isAdmin()) {
-				logInfoMsg("User [".$_SESSION["id"]."] attempted to load a scenario they did not own.");
-				header("Location: /cas?scenario=".$_GET["scenario"]);
-				closeLogs();			
-			} else {
-				$uid = $_GET["user"];
-			}
-		}
-		
+				
 		$scenario = getScenario($_GET["scenario"]);
 		if(is_int($scenario)) {
 			header("Location: /cas?s=$scenario");

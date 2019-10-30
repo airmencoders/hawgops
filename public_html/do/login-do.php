@@ -2,22 +2,23 @@
 	require("../../req/all/codes.php");
 	require("../../req/all/api-v1.php");
 	
-	logDoMsg("Logging in [TESTING ONLY]");
-	
 	$logPrefix = "[DO | login-do] ";
 	
 	if(!isset($_POST["email"]) || $_POST["email"] == "") {
-		logErrorMsg($logPrefix."Email address was not received. ($DO_LOGIN_EMAIL_NOT_RECEIVED)");
+		createLog("warning", $DO_LOGIN_EMAIL_NOT_RECEIVED, "DO", "login", "Failed to login user", "Email address not received");
+		//logErrorMsg($logPrefix."Email address was not received. ($DO_LOGIN_EMAIL_NOT_RECEIVED)");
 		return $DO_LOGIN_EMAIL_NOT_RECEIVED;
 	}
 	
 	if(!isset($_POST["password"]) || $_POST["password"] == "") {
-		logErrorMsg($logPrefix."Password was not received. ($DO_LOGIN_PASSWORD_NOT_RECEIVED)");
+		createLog("warning", $DO_LOGIN_PASSWORD_NOT_RECEIVED, "DO", "login", "Failed to login user", "Password not received");
+		//logErrorMsg($logPrefix."Password was not received. ($DO_LOGIN_PASSWORD_NOT_RECEIVED)");
 		return $DO_LOGIN_PASSWORD_NOT_RECEIVED;
 	}
 	
 	if(isset($_GET["scenario"]) && $_GET["scenario"] != "" && isset($_GET["share"]) && $_GET["share"] == "1") {
-		logInfoMsg($logPrefix."User logging in to view a shared scenario.");
+		createLog("info", "-", "DO", "login", "User logging in to view a shared scenario", "Scenario ID: [".$_GET["scenario"]."]");
+		//logInfoMsg($logPrefix."User logging in to view a shared scenario.");
 		$referText = "?scenario=".$_GET["scenario"];
 	} else {
 		$referText = "";

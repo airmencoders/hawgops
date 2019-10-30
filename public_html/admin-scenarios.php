@@ -3,26 +3,29 @@
 	require("../req/all/api-v1.php");
 	
 	if(!isLoggedIn()) {
-		logErrorMsg("User is not logged in. ($ERROR_UNAUTHORIZED)");
+		createLog("warning", $ERROR_UNAUTHORIZED, "admin-scenarios", "-", "User not logged in", "-");
+		//logErrorMsg("User is not logged in. ($ERROR_UNAUTHORIZED)");
 		header("Location: /?s=$ERROR_UNAUTHORIZED");
 		closeLogs();
 	}
 	
 	if(!isAdmin()) {
-		logErrorMsg("User ID [".$_SESSION["id"]."] attempted to view an Admin page without proper rights.");
+		createLog("warning", $ERROR_UNAUTHORIZED, "admin-scenarios", "-", "User not admin", "Email: ".getUserEmailByID($_SESSION["id"]));
+		//logErrorMsg("User ID [".$_SESSION["id"]."] attempted to view an Admin page without proper rights.");
 		header("Location: /my-scenarios?s=$ERROR_UNAUTHORIZED");
 		closeLogs();
 	}
 	
 	if(!isset($_GET["id"]) || $_GET["id"] == "") {
-		logErrorMsg("User ID was not received.");
+		createLog("warning", $ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECEIVED, "admin-scenarios", "-", "User ID not received", "-");
+		//logErrorMsg("User ID was not received.");
 		header("Location: /admin-users?s=$ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECEIVED");
 		closeLogs();
 	}
 	
 	$scenarioArray = getUserScenarios($_GET["id"]);
 	if(is_int($scenarioArray)) {
-		logErrorMsg("There was an error while getting user scenarios for user [".$_GET["id"]."]");
+		//logErrorMsg("There was an error while getting user scenarios for user [".$_GET["id"]."]");
 		header("Location: /admin-users?s=$scenarioArray");
 		closeLogs();
 	}

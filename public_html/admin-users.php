@@ -3,13 +3,15 @@
 	require("../req/all/api-v1.php");
 	
 	if(!isLoggedIn()) {
-		logErrorMsg("Guest [".$_SERVER["REMOTE_ADDR"]."] attempted to view page while not logged in.");
+		createLog("warning", $ERROR_UNAUTHORIZED, "admin-users", "-", "User not logged in", "-");
+		//logErrorMsg("Guest [".$_SERVER["REMOTE_ADDR"]."] attempted to view page while not logged in.");
 		header("Location: /login?s=$ERROR_UNAUTHORIZED");
 		closeLogs();
 	}
 	
 	if(!isAdmin()) {
-		logErrorMsg("User ID [".$_SESSION["id"]."] attempted to view an admin page without rights.");
+		createLog("warning", $ERROR_UNAUTHORIZED, "admin-users", "-", "User not admin", "Email: ".getUserEmailByID($_SESSION["id"]));
+		//logErrorMsg("User ID [".$_SESSION["id"]."] attempted to view an admin page without rights.");
 		header("Location: /my-scenarios?s=$ERROR_UNAUTHORIZED");
 		closeLogs();
 	}

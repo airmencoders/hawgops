@@ -7,6 +7,15 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.8.0
+* Updated logging functions to use JSON notation
+* Edited CAS scenario permissions to allow anyone to view any other CAS scenario as long as they are logged in
+* Removed erroneous sanitizeInput functions in API
+* Removed test pages from public_html
+* Removed bug where navbar attempted to get user's name even if they are not logged in
+* Created admin-view-log page
+* Created admin-logs page
+
 ## 1.7.0
 * Move to a self-hosted version of Font Awesome to avoid any TIMEOUT issues on NIPR where icons couldn't load.
 
