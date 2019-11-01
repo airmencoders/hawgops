@@ -6,26 +6,22 @@
 	require("../../req/all/codes.php");
 	require("../../req/all/api-v1.php");
 	
-	$logPrefix = "[DO | share-scenario-do] ";
 	$crlf = "\r\n";
 	
 	if(!isset($_POST["scenario-name"]) || $_POST["scenario-name"] == "") {
 		createLog("warning", $DO_SHARE_SCENARIO_NAME_NOT_RECEIVED, "DO", "shareScenario", "Failed to share scenario", "Scenario name not received");
-		//logErrorMsg($logPrefix."Scenario name was not received. ($DO_SHARE_SCENARIO_NAME_NOT_RECEIVED)");
 		header("Location: /my-scenarios?s=$DO_SHARE_SCENARIO_NAME_NOT_RECEIVED");
 		closeLogs();
 	}
 	
 	if(!isset($_POST["share-scenario-id"]) || $_POST["share-scenario-id"] == "") {
 		createLog("warning", $DO_SHARE_SCENARIO_ID_NOT_RECEIVED, "DO", "shareScenario", "Failed to share scenario", "Scenario ID not received");
-		//logErrorMsg($logPrefix."Scenario ID was not received. ($DO_SHARE_SCENARIO_ID_NOT_RECEIVED)");
 		header("Location: /my-scenarios?s=$DO_SHARE_SCENARIO_ID_NOT_RECEIVED");
 		closeLogs();
 	}
 	
 	if(!isset($_POST["email-share"]) || $_POST["email-share"] == "") {
 		createLog("warning", $DO_SHARE_SCENARIO_EMAIL_NOT_RECEIVED, "DO", "shareScenario", "Failed to share scenario", "Email address not received");
-		//logErrorMsg($logPrefix."Email address was not received. ($DO_SHARE_SCENARIO_EMAIL_NOT_RECEIVED)");
 		header("Location: /my-scenarios?s=$DO_SHARE_SCENARIO_EMAIL_NOT_RECEIVED");
 		closeLogs();
 	}
@@ -36,7 +32,6 @@
 	
 	if($fromName["fname"] == "") {
 		createLog("warning", "-", "DO", "shareScenario", "Unable to get name of sender", "-");
-		//logErrorMsg($logPrefix."Unable to get name of sender.");
 		$fromName["fname"] = "Hawg Ops";
 	}
 	
@@ -45,7 +40,6 @@
 	
 	if($toName["fname"] == "") {
 		createLog("warning", "-", "DO", "shareScenario", "Unable to get name of recipient", "-");
-		//logErrorMsg($logPrefix."Unable to get name of recipient.");
 		$toName["fname"] = "Hello";
 	}
 	$subject = $fromName["fname"]." shared a CAS Scenario with you";

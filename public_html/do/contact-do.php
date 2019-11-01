@@ -63,29 +63,7 @@
 			"password"=>$gPass));
 			
 	$mail = $smtp->send($to, $headers, $body);
-		
-	/**
-	 * Bitnami and AWS Lightsail don't really support email, so instead I'm making a pseudo-email
-	 * like function that looks and feels like an email is sent, but instead I'm going to make files
-	 * like Mr. Teel's logging that just makes a text file that I can later read.
-	 * Potentially add this to a database instead once I get that working so I can have "read" vs "unread"
-	 * flags
-	 */
-	/*$location = "/opt/bitnami/apache2/htdocs/mail/";
-	$date = date("Y-m-d");
-	$time = strftime("%R");
-	$filename = $location."unread-".$user_email."-".$subject."-".$date."-".$time.".txt";
-	$data = array();
-	$data["date"] = $date;
-	$data["time"] = $time;
-	$data["name"] = $user_name;
-	$data["email"] = $user_email;
-	$data["subject"] = $subject;
-	$data["message"] = $message;
-	$json = json_encode($data);
-	$mail_file = fopen($filename, "ab");
-	fwrite($mail_file, $json);
-	fclose($mail_file);*/
+
 	if(PEAR::isError($mail)) {
 		// Log here!
 		header("Location: /contact?s=$DO_CONTACT_EMAIL_NOT_SENT");

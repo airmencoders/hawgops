@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.8.2
+* Remove old logging functions from API/Do pages
+
 ## 1.8.1
 * Airspace update
 * Minor bug fixes

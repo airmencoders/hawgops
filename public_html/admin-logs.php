@@ -2,6 +2,8 @@
 	require("../req/all/codes.php");
 	require("../req/all/api-v1.php");
 	
+	createLog("info", "-", $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
+	
 	if(!isLoggedIn()) {
 		createLog("warning", $ERROR_UNAUTHORIZED, "admin-logs", "-", "User not logged in", "-");
 		header("Location: /?s=$ERROR_UNAUTHORIZED");

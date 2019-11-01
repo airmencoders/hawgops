@@ -2,6 +2,8 @@
 	require("../req/all/codes.php");
 	require("../req/all/api-v1.php");
 	
+	createLog("info", "-", $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
+	
 	if(isset($_GET["scenario"])) {
 		if(!isLoggedIn()) {
 			createLog("warning", "-", "cas", "-", "Guest attempted to load scenario while not logged in", "-");

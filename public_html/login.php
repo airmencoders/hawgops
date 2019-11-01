@@ -7,6 +7,8 @@
 	} else {
 		$referText = "";
 	}
+	
+	createLog("info", "-", $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
 ?>
 <!DOCTYPE html>
 <html lang="en">
