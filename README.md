@@ -7,6 +7,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.8.1
+* Airspace update
+* Minor bug fixes
+
 ## 1.8.0
 * Updated logging functions to use JSON notation
 * Edited CAS scenario permissions to allow anyone to view any other CAS scenario as long as they are logged in
