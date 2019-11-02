@@ -7,6 +7,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.8.3
+* Update security in /opt/bitnami/apache2/conf/httpd.conf
+* Create list of blacklisted IPs and deny access
+
 ## 1.8.2
 * Remove old logging functions from API/Do pages
 
