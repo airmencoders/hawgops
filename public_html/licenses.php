@@ -12,17 +12,13 @@
 		
 		<noscript><?php require("../req/structure/js-alert.php"); ?></noscript>
 		<div id="body-container" class="container">
-			<!--<div class="card" style="margin-top: 2rem;">
-				<h4 class="card-header">Ops Desk Tools License</h4>
-				<div class="card-body">
-					My License
-				</div>
-			</div>-->
-			<div class="card mt-5">
+			<div class="card my-5">
 				<h4 class="card-header">
 					Attribution
 				</h4>
 				<div class="card-body">
+					<h4>Hawg Ops</h4>
+					<p>Hawg Ops is created and owned by Porkins and is licensed under the GNU General Public License v3.0</p>
 					<h4>Framework</h4>
 					<p><a href="https://getbootstrap.com" target="_blank">Bootstrap (MIT / CC BY 3.0)</a></p>
 					<p><a href="https://fontawesome.com" target="_blank">Font Awesome (CC BY 4.0 / SIL OFL 1.1 / MIT)</a></p>
