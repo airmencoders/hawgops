@@ -13,6 +13,8 @@ var bldg_label_scale = 10;
 var minor_axis = 2 * 926;
 var tht_ring_dash_array = "12,12";
 
+var marker_id = 1;
+
 /**
  * Declare various options for map and map elements
  */
@@ -401,6 +403,7 @@ function addChit(img_src, ll_posit) {
 	var mgrs = ll.toUtm().toMgrs();
 	
 	var marker_options = {
+		id: marker_id,
 		icon: icon,
 		title: name,
 		riseOnHover: true,
@@ -409,6 +412,8 @@ function addChit(img_src, ll_posit) {
 		elevation: "",
 		data: null
 	};
+	
+	marker_id++;
 	
 	switch(img_src) {
 		case "chits/friendly/srv.svg":
@@ -511,6 +516,14 @@ function addChit(img_src, ll_posit) {
 		
 		marker.on("popupopen", chitClicked);
 	});	
+	
+	// Add to the tables at the bottom
+	var table_text = $("<tr id=\"marker-"+marker.options.id+"\"></tr>").html("<td id=\"marker-"+marker.options.id+"-title\">"+marker.options.title+"</td><td>"+marker.options.mgrs+"</td>");
+	if(marker.options.type == "hostile") {
+		$("#hostile-table").append(table_text);
+	} else {
+		$("#friendly-table").append(table_text);
+	}
 	
 	// Prevent making more than one chit at a time
 	stopListeningToChits();
@@ -700,6 +713,7 @@ function addThtRing(e) {
 		var circle = L.circle(ll_posit, circle_options).addTo(layer_threats);
 		
 		var marker_options = {
+			id: marker_id,
 			type: "threat",
 			msnThreat: msn_tht,
 			soverignty: soverignty,
@@ -713,6 +727,8 @@ function addThtRing(e) {
 			mgrs: mgrs + "",
 			data: null
 		};
+		
+		marker_id++;
 		
 		var msn_tht_label = msn_tht;
 		if(msn_tht_label == "custom") {
@@ -751,6 +767,10 @@ function addThtRing(e) {
 				$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
 			}
 		});
+		
+		// Add threat to the bottom table
+		var table_text = $("<tr id=\"marker-"+marker.options.id+"\"></tr>").html("<td id=\"marker-"+marker.options.id+"-title\">"+marker.options.title+"</td><td>"+marker.options.soverignty+"</td><td>"+marker.options.msnThreat+"</td><td>"+marker.options.mgrs+"</td>");
+		$("#threat-table").append(table_text);
 		
 		// Close the modal
 		$("#tht-ring-modal").modal("hide");
@@ -838,6 +858,7 @@ function chitClicked() {
 	
 	$(".btn-chit-del").click(function() {
 		layer_markers.removeLayer(tempMarker);
+		$("#marker-"+tempMarker.options.id).remove();
 	});
 	
 	$(".btn-chit-rename").click(function() {
@@ -866,6 +887,8 @@ function chitClicked() {
 			} else {
 				tempMarker.setPopupContent(new_name + "<br/>" + tempMarker.options.mgrs + "<br/>" + tempMarker.options.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
 			}
+			
+			$("#marker-"+tempMarker.options.id+"-title").text(new_name);
 		}
 	});
 	
@@ -908,6 +931,8 @@ function chitClicked() {
 			tempMarker.closePopup();
 			
 			tempMarker.setPopupContent("Callsign/Freq: " + tempMarker.options.data.callsign_freq + "<br/>Number of Objectives: " + tempMarker.options.data.num_objectives + "<br/>Location: " + tempMarker.options.data.mgrs + "<br/>Elevation: " + tempMarker.options.data.elevation + "<br/>Date/Time(Z): " + tempMarker.options.data.dtg + "<br/>Source: " + tempMarker.options.data.source + "<br/>Condition: " + tempMarker.options.data.condition + "<br/>Equipment: " + tempMarker.options.data.equipment + "<br/>PLS/HHRID: " + tempMarker.options.data.pls_hhrid + "<br/>Authentication: " + tempMarker.options.data.authentication + "<br/>Threats: " + tempMarker.options.data.threats + "<br/>PZ Description: " + tempMarker.options.data.pz_description + "<br/>On Scene CC: " + tempMarker.options.data.osc + "<br/>RV/Freq: " + tempMarker.options.data.rv_freq + "<br/>IP/Ingress: " + tempMarker.options.data.ip_ingress + "<br/>Rescort: " + tempMarker.options.data.rescort + "<br/>Objective Area Gameplan: " + tempMarker.options.data.obj_gp + "<br/>Recovery Signal: " + tempMarker.options.data.signal + "<br/>Egress Route: " + tempMarker.options.data.egress_rte + "<hr/><button class=\"btn btn-sm btn-warning btn-del-15-line\">Delete 15-Line</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+			
+			$("#marker-"+tempMarker.options.id+"-title").text(tempMarker.options.title);
 			
 			stopListeningToModals();
 		});
@@ -1016,6 +1041,12 @@ function clearMap() {
 	layer_polygons.clearLayers();
 	layer_eas.clearLayers();
 	layer_rozs.clearLayers();
+	
+	for(var i = 1; i <= marker_id; i++) {
+		$("#marker-"+i).remove();
+	}
+	
+	marker_id = 1;
 }
 
 /**
@@ -1169,8 +1200,11 @@ function loadScenario(input) {
 	var eas = input_json.eas;
 	var rozs = input_json.rozs;
 	
-	if(details.scenario_version == null || details.scenario_version != "2") {
-		alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 2");
+	// Reset the marker id
+	marker_id = 1;
+	
+	if(details.scenario_version == null || details.scenario_version != "3") {
+		alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 3");
 	}
 	
 	if(threat_markers == null) {					
@@ -1208,7 +1242,15 @@ function loadScenario(input) {
 				
 				var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
 				
+				if(ref.id === null) {
+					var id = marker_id;
+				} else {
+					var id = ref.id;
+				}
+				marker_id++;
+				
 				var marker_options = {
+					id: id,
 					type: ref.type,
 					msnThreat: ref.msnThreat,
 					soverignty: ref.soverignty,
@@ -1250,6 +1292,10 @@ function loadScenario(input) {
 					$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
 					$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
 				}
+				
+				// Add threat to the bottom table
+				var table_text = $("<tr id=\"marker-"+marker.options.id+"\"></tr>").html("<td id=\"marker-"+marker.options.id+"-title\">"+marker.options.title+"</td><td>"+marker.options.soverignty+"</td><td>"+marker.options.msnThreat+"</td><td>"+marker.options.mgrs+"</td>");
+				$("#threat-table").append(table_text);
 			}
 		});
 		
@@ -1285,7 +1331,16 @@ function loadScenario(input) {
 			
 			var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
 			
+			if(ref.id === null) {
+				var id = marker_id;
+			} else {
+				var id = ref.id;
+			}
+			
+			marker_id++;
+			
 			var marker_options = {
+				id: id,
 				type: ref.type,
 				msnThreat: ref.msnThreat,
 				soverignty: ref.soverignty,
@@ -1327,6 +1382,10 @@ function loadScenario(input) {
 				$(".threat-divicon").css("font-size", (tht_scale * map.getZoom()) / 2);
 				$(".threat-divicon").css("line-height", ((tht_scale * map.getZoom())) + "px");
 			}
+			
+			// Add threat to the bottom table
+			var table_text = $("<tr id=\"marker-"+marker.options.id+"\"></tr>").html("<td id=\"marker-"+marker.options.id+"-title\">"+marker.options.title+"</td><td>"+marker.options.soverignty+"</td><td>"+marker.options.msnThreat+"</td><td>"+marker.options.mgrs+"</td>");
+			$("#threat-table").append(table_text);
 		});
 	}
 					
@@ -1354,8 +1413,17 @@ function loadScenario(input) {
 				});
 			}
 			
+			if(ref.id === null) {
+				var id = marker_id;
+			} else {
+				var id = ref.id;
+			}
+			
+			marker_id++;
+			
 			// Make the marker
 			var marker_options = {
+				id: id,
 				type: ref.type,
 				icon: icon,
 				title: ref.title,
@@ -1389,6 +1457,14 @@ function loadScenario(input) {
 			if(ref.type == "div") {
 				$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
 				$(".bldg-label-divicon").css("line-height", ((chit_scale * map.getZoom())) + "px");
+			}
+			
+			// Add to the tables at the bottom
+			var table_text = $("<tr id=\"marker-"+marker.options.id+"\"></tr>").html("<td id=\"marker-"+marker.options.id+"-title\">"+marker.options.title+"</td><td>"+marker.options.mgrs+"</td>");
+			if(marker.options.type == "hostile") {
+				$("#hostile-table").append(table_text);
+			} else {
+				$("#friendly-table").append(table_text);
 			}
 		}
 	});
@@ -1626,6 +1702,7 @@ function resetCapModal() {
  */
 function resetSaveModal() {
 	$("#scenario-output").val("");
+	$("#scenario-name").val("");
 	$("#btn-copy-to-clipboard").html("Copy To Clipboard");
 	$("#btn-copy-to-clipboard").attr("disabled", false);
 }
@@ -1707,7 +1784,7 @@ function saveScenario() {
 	var scenario_details = {
 		classification: "UNCLASSIFIED",
 		date: today,
-		scenario_version: "2"
+		scenario_version: "3"
 	};
 
 	var scenario_markers = [];
@@ -1739,6 +1816,7 @@ function saveScenario() {
 		}
 		
 		var marker_ref = {
+			id: marker.options.id,
 			type: marker.options.type,
 			title: marker.options.title,
 			latlng: marker.getLatLng(),
@@ -1778,6 +1856,7 @@ function saveScenario() {
 
 		// Make the marker reference
 		var marker_ref = {
+			id: marker.options.id,
 			type: marker.options.type,
 			title: marker.options.title,
 			latlng: marker.getLatLng(),
@@ -1995,6 +2074,8 @@ function thtClicked() {
 	$(".btn-tht-del").click(function() {
 		layer_threats.removeLayer(thtRing);
 		layer_threat_markers.removeLayer(thtMarker);
+		
+		$("#marker-"+thtMarker.options.id).remove();
 	});
 	
 	$(".btn-tht-rename").click(function() {
@@ -2036,6 +2117,8 @@ function thtClicked() {
 			}
 			
 			thtMarker.setPopupContent(new_name + " (" + thtMarker.options.soverignty + ")<br/>Type: " + thtMarker.options.msnThreat + "<br/>Range: " + radius_label + " " + thtMarker.options.units + "<br/>" + thtMarker.options.mgrs + "<br/>" + thtMarker.options.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+			
+			$("#marker-"+thtMarker.options.id+"-title").text(new_name);
 		}
 	});
 	

@@ -7,6 +7,15 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.9.0
+* Added Friendly/Hostile/Threat tables at bottom of map
+* Updated cas-leaflet.js to handle adding/removing of markers to the new tables
+* Updated save/load functions to handle adding/removing of markers to the new tables
+* Added ID number to marker options
+* Updated scenario version to v3
+* Fix bug where when saving a scenario to account, scenario name would not clear with the modal reset
+* Requested by SPAWN/PINCH
+
 ## 1.8.4
 * Add LICENSE.md for github purposes
 
