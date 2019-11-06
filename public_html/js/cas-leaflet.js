@@ -1242,12 +1242,21 @@ function loadScenario(input) {
 				
 				var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
 				
-				if(ref.id === null) {
+				// If there was no ID in the reference, use the predetermined marker ID
+				// Increment to the next marker ID.
+				// This should work so that the marker ID is always 1 higher than the max marker ID
+				if(ref.id === undefined) {
 					var id = marker_id;
+					marker_id++;
 				} else {
 					var id = ref.id;
+					if(ref.id >= marker_id) {
+						marker_id = ref.id + 1;
+					} else {
+						id = marker_id;
+						marker_id++;
+					}
 				}
-				marker_id++;
 				
 				var marker_options = {
 					id: id,
@@ -1331,13 +1340,21 @@ function loadScenario(input) {
 			
 			var circle = L.circle(ref.latlng, circle_options).addTo(layer_threats);
 			
-			if(ref.id === null) {
+			// If there was no ID in the reference, use the predetermined marker ID
+			// Increment to the next marker ID.
+			// This should work so that the marker ID is always 1 higher than the max marker ID
+			if(ref.id === undefined) {
 				var id = marker_id;
+				marker_id++;
 			} else {
 				var id = ref.id;
+				if(ref.id >= marker_id) {
+					marker_id = ref.id + 1;
+				} else {
+					id = marker_id;
+					marker_id++;
+				}
 			}
-			
-			marker_id++;
 			
 			var marker_options = {
 				id: id,
@@ -1413,13 +1430,21 @@ function loadScenario(input) {
 				});
 			}
 			
-			if(ref.id === null) {
+			// If there was no ID in the reference, use the predetermined marker ID
+			// Increment to the next marker ID.
+			// This should work so that the marker ID is always 1 higher than the max marker ID
+			if(ref.id === undefined) {
 				var id = marker_id;
+				marker_id++;
 			} else {
 				var id = ref.id;
+				if(ref.id >= marker_id) {
+					marker_id = ref.id + 1;
+				} else {
+					id = marker_id;
+					marker_id++;
+				}
 			}
-			
-			marker_id++;
 			
 			// Make the marker
 			var marker_options = {

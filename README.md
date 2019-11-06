@@ -7,6 +7,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.9.2
+* Fixed bug comparing JSON object to null instead of undefined
+* Fixed bug when creating marker ID's: if none existed then assigns an ID, but if an ID exists that is < the current marker tracker, then re-assigns an ID to ensure unique IDs
+
 ## 1.9.1
 * Added link to IP address lookup in logs for easy viewing source for blacklisting purposes
 
