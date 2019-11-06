@@ -65,7 +65,7 @@
 					<tr class="table-<?php echo $log["level"]; ?>">
 						<td><?php echo $log["datetime"]; ?></td>
 						<td><?php echo $log["user"]; ?></td>
-						<td><?php echo $log["ip"]; ?></td>
+						<td><a href="https://whatismyipaddress.com/ip/<?php echo $log["ip"]; ?>" target="_blank"><?php echo $log["ip"]; ?></td>
 						<td><?php echo $log["caller"]; ?></td>
 						<td><?php echo $log["function"]; ?></td>
 						<td><?php echo $log["code"]; ?></td>

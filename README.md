@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.9.1
+* Added link to IP address lookup in logs for easy viewing source for blacklisting purposes
+
 ## 1.9.0
 * Added Friendly/Hostile/Threat tables at bottom of map
 * Updated cas-leaflet.js to handle adding/removing of markers to the new tables
