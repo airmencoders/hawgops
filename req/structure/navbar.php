@@ -43,6 +43,7 @@
 					<?php if(isAdmin()) { ?>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-users.php") ? "active" : ""; ?>" href="/admin-users">Users</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-logs.php") ? "active" : ""; ?>" href="/admin-logs">Logs</a>
+					<a class="dropdown-item" href="https://github.com/chris-m92/hawg-ops" target="_blank">Github</a>
 					<div class="dropdown-divider"></div>
 					<?php } ?>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/my-scenarios.php") ? "active" : ""; ?>" href="/my-scenarios">My Scenarios</a>
