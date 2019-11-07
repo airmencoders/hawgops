@@ -7,6 +7,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.9.4
+* Changed how createKey in the API functions to be more random
+* Updated airspace for BMGR in Arizona
+
 ## 1.9.3
 * Update error in previous commit message
 
