@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.9.7
+* Fixed typo in API>Login logging
+
 ## 1.9.6
 * Fixed BMGR conventional range / STAC No Impact area boundaries
 
