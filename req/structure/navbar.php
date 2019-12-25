@@ -41,6 +41,7 @@
 				</a>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-toggle">
 					<?php if(isAdmin()) { ?>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/my-account.php") ? "active" : ""; ?>" href="/my-account">My Account</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-users.php") ? "active" : ""; ?>" href="/admin-users">Users</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-logs.php") ? "active" : ""; ?>" href="/admin-logs">Logs</a>
 					<a class="dropdown-item" href="https://github.com/chris-m92/hawg-ops" target="_blank">Github</a>

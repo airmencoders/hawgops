@@ -35,6 +35,7 @@
 		<div id="body-container" class="container-fluid">
 			<div id="alert-container"><?php require("../req/structure/alert-container.php"); ?></div>
 			<div class="card my-5">
+				<h4 class="card-header"><?php echo getNumberOfUsers(); ?> Accounts Created</h4>
 				<div class="card-body">
 					<ul class="list-group">
 						<?php foreach($userArray as $user) { ?>
