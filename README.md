@@ -3,157 +3,33 @@ Private repository of website files.
 website located at https://hawg-ops.com
 
 ## CAS Planner
-Allows users to create CAS scenarios in order to mission plan for training missions.
+Allows users to create CAS scenarios in order to mission plan for training missions. 
 
-# Change Log
+### Chits
+In order to add chits to the map, either enter in MGRS grids in the top left box and click the "Fly to Coordinates" button or click anywhere on the map. Once the popup box shows on the map with the coordinates, that then signals that the map is listening to the images of chits on the left toolbar. Click on the chit to add it to the map.
+Any chit that is a threat, target, or hostile chit is able to hold 9-line information. Any survivor chit is able to hold 15-line information.
 
-## 1.9.8
-* Added an account counter in admin-users
-* Other misc. fixes
+### Threats
+When adding a threat to the map, a modal will display where the user can either enter in a custom threat with custom color, range, and units for the map. Whatever the user names the threat will display on the map. If the user chooses one of the UNCLASSIFIED preset threats, then the name and range will be automatically selected and cannot be changed.
 
-## 1.9.7
-* Fixed typo in API>Login logging
+### CAPs
+When adding a cap to the map, a modal will display where the user can choose the distance, angle, and color of a CAP ellipse to display on the map. NOTE: Where the user clicks will be the center point of the ellipse.
 
-## 1.9.6
-* Fixed BMGR conventional range / STAC No Impact area boundaries
+### Deleting Chits
+The user can either click on the chit to delete it, or delete all chits by clicking the "Clear" button
 
-## 1.9.5
-* Add Github link to Admin menu
+### Saving the scenario
+Clicking on the save button will display a modal with a text representation of the scenario. The user can either copy this and save it to their computer. However, if they are signed into the system, then they will be able to save the scenario text to their account which they can then subsequently load.
 
-## 1.9.4
-* Changed how createKey in the API functions to be more random
-* Updated airspace for BMGR in Arizona
+### Map settings
+Clicking on the map settings icon in the upper right of the map allows users to change the basemap imagery of the site. They can also turn on and off labels, roads, and airspace. They can also turn on and off chits, threat rings, and threat labels.
 
-## 1.9.3
-* Update error in previous commit message
+### Drawing on the map
+Drawing in the map, there are tools for FEBA, FLOT, EAs, ROZs, and other polygons. Simply click on the map to create the line. These lines and shapes are all saved in the scenario. They can be renamed and deleted in the same manner as chits.
 
-## 1.9.2
-* Fixed bug comparing JSON object to null instead of undefined
-* Fixed bug when creating marker ID's: if none existed then assigns an ID, but if an ID exists that is < the current marker tracker, then re-assigns an ID to ensure unique IDs
+### Using the Analysis tool
+Simply click on the analysis tool and then click anywhere on the map to start measuring. Then the next point you click will be the end of the tool. Continuing to click will simply add to the route. Press the ESC key to end the measuring. Pressing ESC a second time will exit the tool.
 
-## 1.9.1
-* Added link to IP address lookup in logs for easy viewing source for blacklisting purposes
-
-## 1.9.0
-* Added Friendly/Hostile/Threat tables at bottom of map
-* Updated cas-leaflet.js to handle adding/removing of markers to the new tables
-* Updated save/load functions to handle adding/removing of markers to the new tables
-* Added ID number to marker options
-* Updated scenario version to v3
-* Fix bug where when saving a scenario to account, scenario name would not clear with the modal reset
-* Requested by SPAWN/PINCH
-
-## 1.8.4
-* Add LICENSE.md for github purposes
-
-## 1.8.3
-* Update security in /opt/bitnami/apache2/conf/httpd.conf
-* Create list of blacklisted IPs and deny access
-* Add WX.php to start weather gonkulating
-
-## 1.8.2
-* Remove old logging functions from API/Do pages
-
-## 1.8.1
-* Airspace update
-* Minor bug fixes
-
-## 1.8.0
-* Updated logging functions to use JSON notation
-* Edited CAS scenario permissions to allow anyone to view any other CAS scenario as long as they are logged in
-* Removed erroneous sanitizeInput functions in API
-* Removed test pages from public_html
-* Removed bug where navbar attempted to get user's name even if they are not logged in
-* Created admin-view-log page
-* Created admin-logs page
-
-## 1.7.0
-* Move to a self-hosted version of Font Awesome to avoid any TIMEOUT issues on NIPR where icons couldn't load.
-
-## 1.6.1
-* Remove "Known Issues" card from index
-
-## 1.6.0
-* Update leaflet-ruler.js to show both NM and meters
-* Add "Known Issues" card to index
-
-## 1.5.4
-* Add a Online/Offline notification for users so that way if NIPR goes down they can tell that they won't be able to use the site.
-* Add a fail() function to the $.get function for elevation API that will allow the chit popups (As of 24 Oct, 19 the nationalmap.gov/epqs service is down)
-
-## 1.5.3
-* Fix bug with elevation API to still allow popups for chits
-
-## 1.5.2
-* Added Admin Scenarios page to view user scenarios
-* Added Admin Users page to view users
-* Updated API to handle admin functions
-
-## 1.5.1
-* Updated My Scenarios page to add a share button
-* Created Share modal to handle sharing of scenarios
-* Updated validation.js to handle new form validation
-* Updated API to add getUserNameByEmail, getUserEmailByID
-* Updated login.php to handle scenario parameter
-* Updated cas.php to handle scenario and share parameter
-
-## 1.5.0
-* Added user accounts
-* Added login/logout pages
-* Added My Scenarios page
-* Created private API to handle database/backend functions
-* Added DO pages to handle login/logout/save/load functions
-* Updated Scripts to use validation.js
-* Created Terms of Use
-* Created Privacy Policy
-* Created Cookie Policy
-
-
-## 1.4.0
-* Updated airspace
-* Added version control to the scenario save files
-* Updated save/load functions for version control
-* Added new layer group to hold threat markers 
-* Added GOB (Chits) and MOB (Threat Rings) to the layer options menu
-* Update save/load functions to handle new layer group
-* Gracefully handles loading without the new layer group
-* Added message warning users about loading an old version of a scenario
-* Requested by 74FS/DOI
-
-## 1.3.1
-* Added show/hide title buttons
-* Updated cas-leaflet.js to handle the showing/hiding of titles
-* Requested by GOV
-
-## 1.3.0
-* Added Building label chit
-* Added listeners/handlers for building label
-* Updated cas-leaflet.js to handle building label
-* Requested by JTACs
-
-## 1.2.1
-* Updated 15-Line formatting
-* Updated cas-leaflet.js to handle new 15-Line
-
-## 1.2.0
-* Added Leaflet.GeometryUtil.js - Used to get bearing between 2 points
-* Updated styling
-* Bug fixes
-* Added 9-Line modals
-* Added 15-Line modals
-* Updated cas-leaflet.js to handle additional functions
-
-## 1.1.1
-* Added SRV Chit
-* Added "data" field to markers (Used for 9-Lines / 15-Lines)
-* Updated Save/Load function to accept new "data" field
-
-## 1.1.0
-* Updated various stylings
-* Updated save & load functions to be more human readable
-* Updated "click" functions to add new options for save & load functions
-* Updated threat ring functions to allow different units
-* Updated threat ring functions, custom threats now put user input in center
-
-## 1.0.0
-* Initial commit
+### TIPS
+#### Stacking Chits
+For CSAR maps particularly, some SANDY01 pilots desire to display various rings to identify where the responsibilities are in the terminal area. However, if you click on the same spot on the map where a range ring exists, the system will register the click as clicking on the ring rather than creating a new one. To stack the rings, instead, copy the MGRS grids of the ring and then paste them to the "fly to coordinates" box and then create the new range ring. This way the rings will "stack" on each other on the same point in space.
