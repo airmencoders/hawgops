@@ -7,6 +7,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.9.8
+* Added an account counter in admin-users
+* Other misc. fixes
+
 ## 1.9.7
 * Fixed typo in API>Login logging
 
