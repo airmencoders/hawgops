@@ -59,7 +59,7 @@
 			</li>
 			<?php } ?>
 			<li class="nav-item">
-				<a class="nav-link <?php echo ($_SERVER["PHP_SELF"] == "/contact.php") ? "active" : ""; ?>" href="/contact">Contact Porkins</a>
+				<a class="nav-link <?php echo ($_SERVER["PHP_SELF"] == "/contact.php") ? "active" : ""; ?>" href="/talk-to-me">Contact Porkins</a>
 			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="policy-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
