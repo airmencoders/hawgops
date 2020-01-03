@@ -72,6 +72,7 @@
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses">Licenses</a>
 				</div>
 			</li>
+			<?php /* 
 			<li class="nav-item">
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="form-inline">
 					<input type="hidden" name="cmd" value="_donations" />
@@ -80,6 +81,7 @@
 					<button type="submit" name="submit" class="btn btn-sm btn-dark btn-donate nav-link"><i class="fab fa-2x fa-cc-paypal"></i></button>
 				</form>
 			</li>
+			*/ ?>
 		</ul>
 	</div>
 </nav>

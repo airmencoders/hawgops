@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.9.9
+* Removed PayPal link. It hasn't ever been used to donate and presents a vulnerability by releasing personal email address.
+
 ## 1.9.8.1
 * Changed name of Contact page from "contact.php" to "talk-to-me.php" in an attempt to confuse spam bots looking for contact forms.
 
