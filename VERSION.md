@@ -7,6 +7,15 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.10.0
+* Fixed typo in alert-container API_SAVE_SCENARIO_SCENARIO_ID_NOT_RECIEVED
+* Fixed accidental constant vs. function in API
+* Changed Admin-Users from a list to a table similar to admin-logs
+* Added lastLogin column to database
+* Updated login function in API to update lastLogin in database
+* Updated getAllUsers function in API to pass lastLogin from database
+* Added Last Login column to admin-users
+
 ## 1.9.9
 * Removed PayPal link. It hasn't ever been used to donate and presents a vulnerability by releasing personal email address.
 

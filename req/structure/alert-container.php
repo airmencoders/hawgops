@@ -49,7 +49,7 @@
 			case $ERROR_UNAUTHORIZED:
 				$text = "You are not authorized to perform that action.";
 				break;
-			case $ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECEIVED:
+			case $ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECIEVED:
 				$text = "User ID was not received.";
 				break;
 			// 401xx API

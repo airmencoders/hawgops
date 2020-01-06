@@ -34,34 +34,47 @@
 		
 		<div id="body-container" class="container-fluid">
 			<div id="alert-container"><?php require("../req/structure/alert-container.php"); ?></div>
-			<div class="card my-5">
-				<h4 class="card-header"><?php echo getNumberOfUsers(); ?> Accounts Created</h4>
-				<div class="card-body">
-					<ul class="list-group">
-						<?php foreach($userArray as $user) { ?>
-						<li class="list-group-item d-flex justify-content-between">
-							<?php echo $user["fname"]." ".$user["lname"]." [".$user["id"]."] [".$user["email"]."] Joined on ".date("d M, Y", strtotime($user["joined"]))." at ".date("H:i", strtotime($user["joined"]))." Z"; ?>
-							<div id="buttons" class="d-inline">
-								<a role="button" href="/admin-scenarios?id=<?php echo $user["id"]; ?>" class="btn btn-primary">View Scenarios</a>
-								<?php 
-									// Don't allow owner to be deleted/revoked, etc...
-									if($user["id"] == "17a11b7b97ecfa0b356e31c6dd75c6bf5a713ecc7932b5361de2913c0bf76080") { 
-								?>
-								<button type="button" class="btn btn-<?php echo ($user["disabled"]) ? "success" : "warning"; ?>" <?php echo ($user["disabled"]) ? "" : "disabled"; ?>><?php echo ($user["disabled"]) ? "Enable" : "Disable"; ?></button>
-								<button type="button" class="btn btn-<?php echo ($user["admin"]) ? "danger" : "success"; ?>" disabled><?php echo ($user["admin"]) ? "Revoke Admin" : "Grant Admin"; ?></button>
-								<button type="button" class="btn btn-danger" disabled>Delete User</button>
-								<?php } else { ?>
-								<button type="button" class="btn btn-<?php echo ($user["disabled"]) ? "success" : "warning"; ?>"><?php echo ($user["disabled"]) ? "Enable" : "Disable"; ?></button>
-								<button type="button" class="btn btn-<?php echo ($user["admin"]) ? "danger" : "success"; ?>"><?php echo ($user["admin"]) ? "Revoke Admin" : "Grant Admin"; ?></button>
-								<button type="button" class="btn btn-danger">Delete User</button>
-								<?php } ?>
-								
-							</div>
-						</li>
-						<?php } ?>
-					</ul>
-				</div>
-			</div>
+			
+			<table class="table table-striped table-light table-bordered my-5">
+				<thead>
+					<tr class="table-light">
+						<th scope="col">#</th>
+						<th scope="col">Name</th>
+						<th scope="col">ID</th>
+						<th scope="col">Email</th>
+						<th scope="col">Date Joined (Z)</th>
+						<th scope="col">Last Login (Z)</th>
+						<th scope="col">Scenarios</th>
+						<th scope="col">Disabled</th>
+						<th scope="col">Admin</th>
+						<th scope="col">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+						$user_count = 1;
+						foreach($userArray as $user) { 
+						
+							$owner = false;
+							if($user["id"] == "17a11b7b97ecfa0b356e31c6dd75c6bf5a713ecc7932b5361de2913c0bf76080") {
+								$owner = true;
+							}
+					?>
+						<tr>
+							<td><?php echo $user_count; $user_count++; ?></td>
+							<td><?php echo $user["fname"]." ".$user["lname"]; ?></td>
+							<td><?php echo $user["id"]; ?></td>
+							<td><?php echo $user["email"]; ?></td>
+							<td><?php echo $user["joined"]; ?></td>
+							<td><?php echo $user["lastLogin"]; ?></td>
+							<td><a role="button" class="btn btn-block btn-primary" href="/admin-scenarios?id=<?php echo $user["id"]; ?>" >Scenarios</a></td>
+							<td><button type="button" class="btn btn-block btn-<?php echo ($user["disabled"]) ? "success" : "warning"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["disabled"]) ? "Enable" : "Disable"; ?></button></td>
+							<td><button type="button" class="btn btn-block btn-<?php echo ($user["admin"]) ? "danger" : "success"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["admin"]) ? "Revoke" : "Grant"; ?></button></td>
+							<td><button type="button" class="btn btn-block btn-danger" <?php echo ($owner) ? "disabled" : ""; ?>>Delete</button></td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
 		</div>
     </body>
 </html>
