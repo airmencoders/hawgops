@@ -40,7 +40,7 @@
 					<tr class="table-light">
 						<th scope="col">#</th>
 						<th scope="col">Name</th>
-						<th scope="col">ID</th>
+						<th scope="col">ID (Click to view authenticated IPs)</th>
 						<th scope="col">Email</th>
 						<th scope="col">Date Joined (Z)</th>
 						<th scope="col">Last Login (Z)</th>
@@ -63,7 +63,7 @@
 						<tr>
 							<td><?php echo $user_count; $user_count++; ?></td>
 							<td><?php echo $user["fname"]." ".$user["lname"]; ?></td>
-							<td><?php echo $user["id"]; ?></td>
+							<td><a href="/admin-iplog?id=<?php echo $user["id"]; ?>"><?php echo $user["id"]; ?></a></td>
 							<td><?php echo $user["email"]; ?></td>
 							<td><?php echo $user["joined"]; ?></td>
 							<td><?php echo $user["lastLogin"]; ?></td>

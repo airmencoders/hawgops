@@ -7,6 +7,14 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.11.0
+* Fixed typos
+* Added iplog table to database
+* Added logIP to API
+* Added calls to logIP in createAccount and login in API
+* Added getIPLogByUser($user) to API
+* Created admin-iplog to view user's authenticated IP addresses, access by clicking on user's ID in admin-users
+
 ## 1.10.0
 * Fixed typo in alert-container API_SAVE_SCENARIO_SCENARIO_ID_NOT_RECIEVED
 * Fixed accidental constant vs. function in API

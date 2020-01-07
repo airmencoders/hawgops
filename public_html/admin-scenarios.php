@@ -19,7 +19,7 @@
 	}
 	
 	if(!isset($_GET["id"]) || $_GET["id"] == "") {
-		createLog("warning", $ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECEIVED, "admin-scenarios", "-", "User ID not received", "-");
+		createLog("warning", $ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECIEVED, "admin-scenarios", "-", "User ID not received", "-");
 		//logErrorMsg("User ID was not received.");
 		header("Location: /admin-users?s=$ERROR_ADMIN_SCENARIOS_USER_ID_NOT_RECEIVED");
 		closeLogs();
