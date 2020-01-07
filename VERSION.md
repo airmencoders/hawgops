@@ -7,6 +7,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.12.0
+* Added getNumberOfScenariosByUser($user) to API
+* Updated admin-users to include number of scenarios in the button text
+
 ## 1.11.0
 * Fixed typos
 * Added iplog table to database

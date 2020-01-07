@@ -59,6 +59,8 @@
 							if($user["id"] == "17a11b7b97ecfa0b356e31c6dd75c6bf5a713ecc7932b5361de2913c0bf76080") {
 								$owner = true;
 							}
+							
+							$scenarioCount = getNumberOfScenariosByUser($user["id"]);
 					?>
 						<tr>
 							<td><?php echo $user_count; $user_count++; ?></td>
@@ -67,7 +69,7 @@
 							<td><?php echo $user["email"]; ?></td>
 							<td><?php echo $user["joined"]; ?></td>
 							<td><?php echo $user["lastLogin"]; ?></td>
-							<td><a role="button" class="btn btn-block btn-primary" href="/admin-scenarios?id=<?php echo $user["id"]; ?>" >Scenarios</a></td>
+							<td><a role="button" class="btn btn-block btn-primary" href="/admin-scenarios?id=<?php echo $user["id"]; ?>" >Scenarios (<?php echo $scenarioCount; ?>)</a></td>
 							<td><button type="button" class="btn btn-block btn-<?php echo ($user["disabled"]) ? "success" : "warning"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["disabled"]) ? "Enable" : "Disable"; ?></button></td>
 							<td><button type="button" class="btn btn-block btn-<?php echo ($user["admin"]) ? "danger" : "success"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["admin"]) ? "Revoke" : "Grant"; ?></button></td>
 							<td><button type="button" class="btn btn-block btn-danger" <?php echo ($owner) ? "disabled" : ""; ?>>Delete</button></td>
