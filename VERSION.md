@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.12.1
+* Updated admin-iplog to have link to view location of IP address 
+
 ## 1.12.0
 * Added getNumberOfScenariosByUser($user) to API
 * Updated admin-users to include number of scenarios in the button text

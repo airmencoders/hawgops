@@ -62,7 +62,7 @@
 					?>
 						<tr>
 							<td><?php echo $ip_count; $ip_count++; ?></td>
-							<td><?php echo $ip["ip"]; ?></td>
+							<td><a href="https://whatismyipaddress.com/ip/<?php echo $ip["ip"]; ?>" target="_blank"><?php echo $ip["ip"]; ?></a></td>
 							<td><?php echo $ip["date"]; ?></td>
 						</tr>
 					<?php } ?>
