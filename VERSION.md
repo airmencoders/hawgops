@@ -7,8 +7,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.12.2
+* Fixed broken links in /do/contact-do where it was still sending responses to contact.php, now references talk-to-me correctly
+* Updated note in login.php so people understand better that an account is NOT required
+
 ## 1.12.1
-* Updated admin-iplog to have link to view location of IP address 
+* Updated admin-iplog to have link to view location of user's authenticated IP addresses 
 
 ## 1.12.0
 * Added getNumberOfScenariosByUser($user) to API

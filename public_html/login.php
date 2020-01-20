@@ -49,7 +49,7 @@
 			</div>
 			<div class="card card-sm mx-auto mt-3">
 				<div class="card-body">
-					<p class="card-text">An account will allow you to save CAS Scenarios to your account so you no longer have to save the generated text to send to yourself.</p>
+					<p class="card-text">An account is <strong>NOT</strong> required, however it will allow you to save CAS Scenarios to your account so you no longer have to save the generated text to send to yourself.</p>
 				</div>
 			</div>
 		</div>

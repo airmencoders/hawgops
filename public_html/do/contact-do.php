@@ -12,19 +12,19 @@
 	$crlf = "\r\n";
 	
 	if(!isset($_POST)) {
-		header("Location: /contact?s=$DO_CONTACT_DATA_NOT_RECEIVED");
+		header("Location: /talk-to-me?s=$DO_CONTACT_DATA_NOT_RECEIVED");
 		exit;
 	}
 	
 	if(!isset($_POST["user-name"]) || $_POST["user-name"] == "") {
-		header("Location: /contact?s=$DO_CONTACT_NAME_NOT_RECEIVED");
+		header("Location: /talk-to-me?s=$DO_CONTACT_NAME_NOT_RECEIVED");
 		exit;
 	} else {
 		$user_name = $_POST["user-name"];
 	}
 	
 	if(!isset($_POST["user-email"]) || $_POST["user-email"] == "") {
-		header("Location: /contact?s=$DO_CONTACT_EMAIL_NOT_RECEIVED");
+		header("Location: /talk-to-me?s=$DO_CONTACT_EMAIL_NOT_RECEIVED");
 		exit;
 	} else {
 		$user_email = $_POST["user-email"];
@@ -37,7 +37,7 @@
 	}
 	
 	if(!isset($_POST["message"]) || $_POST["message"] == "") {
-		header("Location: /contact?s=$DO_CONTACT_MESSAGE_NOT_RECEIVED");
+		header("Location: /talk-to-me?s=$DO_CONTACT_MESSAGE_NOT_RECEIVED");
 		exit;
 	} else {
 		$message = trim($_POST["message"]);
@@ -66,10 +66,10 @@
 
 	if(PEAR::isError($mail)) {
 		// Log here!
-		header("Location: /contact?s=$DO_CONTACT_EMAIL_NOT_SENT");
+		header("Location: /talk-to-me?s=$DO_CONTACT_EMAIL_NOT_SENT");
 	} else {
 		// Log here!
-		header("Location: /contact?s=$DO_CONTACT_EMAIL_SENT");
+		header("Location: /talk-to-me?s=$DO_CONTACT_EMAIL_SENT");
 	}
 	// closelogs here!!
 	exit;
