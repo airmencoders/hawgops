@@ -1,11 +1,23 @@
 <?php
 	require("../req/all/codes.php");
-	require("../req/all/api-v1.php");
+	require("../req/keys/mysql.php");
+	require("../req/keys/recaptcha.php");
+	require("../req/all/api-v1.php");	
 	
 	if(isset($_GET["scenario"]) && $_GET["scenario"] != "" && isset($_GET["share"]) && $_GET["share"] == "1") {
 		$referText = "?scenario=".$_GET["scenario"]."&share=1";
 	} else {
 		$referText = "";
+	}
+	
+	if(isLoggedIn()) {
+		if($referText == "") {
+			header("Location: /my-scenarios");
+			closeLogs();
+		} else {
+			header("Location: /cas".$referText);
+			closeLogs();
+		}
 	}
 	
 	createLog("info", "-", $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
@@ -15,6 +27,22 @@
     <head>
         <?php require("../req/head/head.php"); ?>
 		<script src="./js/validation.js"></script>
+		<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $site_key; ?>"></script>
+		<script>
+			$(document).ready(function() {
+				grecaptcha.ready(function() {
+					grecaptcha.execute("<?php echo $site_key; ?>", {action: "login"}).then(function(token) {
+						$.ajax({
+							url: "/do/recaptcha.php",
+							method: "POST",
+							data: {
+								"token": token
+							}
+						});
+					});
+				});
+			});
+		</script>
     </head>
     <body id="bg">
 		<?php require("../req/structure/navbar.php"); ?>
@@ -45,6 +73,7 @@
 				</div>
 				<div class="card-footer">
 					<a class="btn btn-block btn-success" href="/create-account" role="button">Create Account</a>
+					<small>This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</small>
 				</div>
 			</div>
 			<div class="card card-sm mx-auto mt-3">

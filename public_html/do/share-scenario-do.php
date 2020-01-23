@@ -3,6 +3,7 @@
 	require_once "Mail.php";
 	require_once "Mail/mime.php";
 	require("../../req/keys/smtp.php");
+	require("../../req/keys/mysql.php");
 	require("../../req/all/codes.php");
 	require("../../req/all/api-v1.php");
 	

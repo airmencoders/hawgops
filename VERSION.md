@@ -7,6 +7,17 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.13.0
+* Added reCAPTCHA v3 to login page
+* Added do/recaptcha to handle secure token passage to API
+* Added verifyRecaptcha() function to API to send token to Google
+* Created Google reCAPTCHA license page and added to About menu
+* Added Google license to login page
+* Removed mySQL credentials from API
+* Created keys/recaptcha credentials page
+* Created keys/mysql credentials page
+* Updated login page where if a user navigated to /login and they are already authenticated, they would go to /my-scenarios OR /cas if they were referred
+
 ## 1.12.2
 * Fixed broken links in /do/contact-do where it was still sending responses to contact.php, now references talk-to-me correctly
 * Updated note in login.php so people understand better that an account is NOT required

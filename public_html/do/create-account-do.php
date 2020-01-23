@@ -1,5 +1,6 @@
 <?php
 	require("../../req/all/codes.php");
+	require("../../req/keys/mysql.php");
 	require("../../req/all/api-v1.php");
 
 	$fname = "";
