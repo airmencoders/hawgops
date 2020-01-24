@@ -4,9 +4,11 @@
 	require("../../req/all/api-v1.php");
 	
 	if(!isset($_POST["token"]) || $_POST["token"] == "") {
-		return;
+		createLog("warning", "-", "DO", "recaptcha", "reCAPTCHA token not received", "Refer: ".$_POST["refer"]);
+		header("Location: /");
+		closeLogs();
 	}
 	
-	verifyRecaptcha($_POST["token"]);
-
+	echo verifyRecaptcha($_POST["token"]);
+	closeLogs();
 ?>

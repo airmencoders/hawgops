@@ -7,6 +7,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.14.0
+* Added reCAPTCHA to all pages
+* Finished verifyRecaptcha()
+* Finished do/recaptcha
+* Updated verifyRecaptcha to add the score to the loging. PROBLEM with this is that if there is rapid succession logging, then scores are not logged. 2 COAs are either to turn logging into a database, log all recaptcha scores as its own line, or create a whole new log with recaptcha scores
+
 ## 1.13.0
 * Added reCAPTCHA v3 to login page
 * Added do/recaptcha to handle secure token passage to API

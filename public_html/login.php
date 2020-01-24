@@ -36,7 +36,14 @@
 							url: "/do/recaptcha.php",
 							method: "POST",
 							data: {
-								"token": token
+								"token": token,
+								"refer": "login"
+							},
+							success: function(data, textStatus, jqXHR) {
+								// data is the API return value
+								if(parseFloat(data) <= <?php echo $thresh_login; ?>) {
+									window.location.replace("/failed-rc");
+								}
 							}
 						});
 					});

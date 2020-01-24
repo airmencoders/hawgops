@@ -1,6 +1,7 @@
 <?php
 	require("../req/all/codes.php");
 	require("../req/keys/mysql.php");
+	require("../req/keys/recaptcha.php");
 	require("../req/all/api-v1.php");
 	
 	createLog("info", "-", $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
@@ -20,6 +21,29 @@
     <head>
         <?php require("../req/head/head.php"); ?>
 		<script src="./js/validation.js"></script>
+		<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $site_key; ?>"></script>
+		<script>
+			$(document).ready(function() {
+				grecaptcha.ready(function() {
+					grecaptcha.execute("<?php echo $site_key; ?>", {action: "my_account"}).then(function(token) {
+						$.ajax({
+							url: "/do/recaptcha.php",
+							method: "POST",
+							data: {
+								"token": token,
+								"refer": "my_account"
+							},
+							success: function(data, textStatus, jqXHR) {
+								// data is the API return value
+								if(parseFloat(data) <= <?php echo $thresh_my_account; ?>) {
+									window.location.replace("/failed-rc");
+								}
+							}
+						});
+					});
+				});
+			});
+		</script>
     </head>
     <body id="bg">
 		<?php require("../req/structure/navbar.php"); ?>

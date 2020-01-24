@@ -2248,6 +2248,7 @@ function thtClicked() {
  * Various listeners that run all the time
  */
 $(document).ready(function() { 
+
 	// Initialize CAP Modal color picker
 	$("#cap-color").spectrum({
 		preferredFormat: "name",

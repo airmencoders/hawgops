@@ -1,13 +1,39 @@
 <?php
 	require("../req/all/codes.php");
 	require("../req/keys/mysql.php");
+	require("../req/keys/recaptcha.php");
 	require("../req/all/api-v1.php");
 	
 	createLog("danger", "HTTP/500", $_SERVER["REQUEST_URI"], "-", "Internal Server Error", "-");
 ?>
 <!DOCTYPE html>
 <html lang="en">
-	<head><?php require("../req/head/head.php"); ?></head>
+	<head>
+		<?php require("../req/head/head.php"); ?>
+		<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $site_key; ?>"></script>
+		<script>
+			$(document).ready(function() {
+				grecaptcha.ready(function() {
+					grecaptcha.execute("<?php echo $site_key; ?>", {action: "500"}).then(function(token) {
+						$.ajax({
+							url: "/do/recaptcha.php",
+							method: "POST",
+							data: {
+								"token": token,
+								"refer": "500"
+							},
+							success: function(data, textStatus, jqXHR) {
+								// data is the API return value
+								if(parseFloat(data) <= <?php echo $thresh_500; ?>) {
+									window.location.replace("/failed-rc");
+								}
+							}
+						});
+					});
+				});
+			});
+		</script>
+	</head>
 	<body id="bg">
 		<?php // Navigation ?>
 		<?php require("../req/structure/navbar.php"); ?>
