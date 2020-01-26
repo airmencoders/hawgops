@@ -3,7 +3,10 @@
 	require_once "Mail.php";
 	require_once "Mail/mime.php";
 	require("../../req/keys/smtp.php");
+	require("../../req/keys/mysql.php");
+	require("../../req/keys/recaptcha.php");
 	require("../../req/all/codes.php");
+	require("../../req/all/api-v1.php");
 	
 	$user_name = "";
 	$user_email = "";
@@ -12,20 +15,23 @@
 	$crlf = "\r\n";
 	
 	if(!isset($_POST)) {
+		createLog("danger", $DO_CONTACT_DATA_NOT_RECEIVED, "DO", "contact-do", "Data not received", "POST");
 		header("Location: /talk-to-me?s=$DO_CONTACT_DATA_NOT_RECEIVED");
-		exit;
+		closeLogs();
 	}
 	
 	if(!isset($_POST["user-name"]) || $_POST["user-name"] == "") {
+		createLog("danger", $DO_CONTACT_NAME_NOT_RECEIVED, "DO", "contact-do", "Data not received", "Name");
 		header("Location: /talk-to-me?s=$DO_CONTACT_NAME_NOT_RECEIVED");
-		exit;
+		closeLogs();
 	} else {
 		$user_name = $_POST["user-name"];
 	}
 	
 	if(!isset($_POST["user-email"]) || $_POST["user-email"] == "") {
+		createLog("danger", $DO_CONTACT_EMAIL_NOT_RECEIVED, "DO", "contact-do", "Data not received", "Email");
 		header("Location: /talk-to-me?s=$DO_CONTACT_EMAIL_NOT_RECEIVED");
-		exit;
+		closeLogs();
 	} else {
 		$user_email = $_POST["user-email"];
 	}
@@ -37,8 +43,9 @@
 	}
 	
 	if(!isset($_POST["message"]) || $_POST["message"] == "") {
+		createLog("danger", $DO_CONTACT_MESSAGE_NOT_RECEIVED, "DO", "contact-do", "Data not received", "Message");
 		header("Location: /talk-to-me?s=$DO_CONTACT_MESSAGE_NOT_RECEIVED");
-		exit;
+		closeLogs();
 	} else {
 		$message = trim($_POST["message"]);
 	}
@@ -72,5 +79,5 @@
 		header("Location: /talk-to-me?s=$DO_CONTACT_EMAIL_SENT");
 	}
 	// closelogs here!!
-	exit;
+	closeLogs();
 ?>

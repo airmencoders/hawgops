@@ -13,7 +13,7 @@
 		<script src="./js/validation.js"></script>
 		<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $site_key; ?>"></script>
 		<script>
-			$(document).ready(function() {
+			$(document).ready(function() {				
 				grecaptcha.ready(function() {
 					grecaptcha.execute("<?php echo $site_key; ?>", {action: "contact"}).then(function(token) {
 						$.ajax({
@@ -47,7 +47,7 @@
 				<h4 class="card-header text-center">
 					Contact Porkins
 				</h4>
-				<form method="POST" action="./do/contact-do.php" onsubmit="return validateContactForm()">
+				<form id="contact-form" method="POST" action="./do/contact-do.php" onsubmit="return validateContactForm()">
 					<div class="card-body">
 						<div class="form-group">
 							<label for="name">Your Name<span class="text-danger">*</span></label>

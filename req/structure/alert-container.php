@@ -98,6 +98,8 @@
 				break;
 			// 402xx CONTACT-DO.PHP
 			case $DO_CONTACT_DATA_NOT_RECEIVED:
+			case $DO_CONTACT_TOKEN_NOT_RECEIVED:
+			case $DO_CONTACT_ACTION_NOT_RECEIVED:
 				$text = "Message data was not received.";
 				break;
 			case $DO_CONTACT_NAME_NOT_RECEIVED:

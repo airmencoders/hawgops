@@ -1,29 +1,29 @@
 function validateContactForm() {
-	var name = $("#name").val();
-	var email = $("#email").val();
+	var name = $("#user-name").val();
+	var email = $("#user-email").val();
 	var message = $("#message").val();
-
-	$("#name").removeClass("is-invalid");
-	$("#name").removeClass("is-valid");
-	$("#email").removeClass("is-invalid");
-	$("#email").removeClass("is-valid");
+		
+	$("#user-name").removeClass("is-invalid");
+	$("#user-name").removeClass("is-valid");
+	$("#user-email").removeClass("is-invalid");
+	$("#user-email").removeClass("is-valid");
 	$("#message").removeClass("is-invalid");
 	$("#message").removeClass("is-valid");
 
 	var response = true;
 
 	if(name == "") {
-		$("#name").addClass("is-invalid");
+		$("#user-name").addClass("is-invalid");
 		response = false;
 	} else {
-		$("#name").addClass("is-valid");
+		$("#user-name").addClass("is-valid");
 	}
 
 	if(email == "") {
-		$("#email").addClass("is-invalid");
+		$("#user-email").addClass("is-invalid");
 		response = false;
 	} else {
-		$("#email").addClass("is-valid");
+		$("#user-email").addClass("is-valid");
 	}
 
 	if(message == "") {
@@ -32,7 +32,7 @@ function validateContactForm() {
 	} else {
 		$("#message").addClass("is-valid");
 	}
-
+	
 	return response;
 }
 
