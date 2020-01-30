@@ -70,7 +70,6 @@
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/privacy.php") ? "active" : ""; ?>" href="./privacy">Privacy Policy</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/cookies.php") ? "active" : ""; ?>" href="./cookies">Cookie Policy</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses">Licenses</a>
-					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/google.php") ? "active" : ""; ?>" href="./google">reCAPTCHA</a>
 				</div>
 			</li>
 			<?php /* 

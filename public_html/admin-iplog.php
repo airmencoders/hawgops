@@ -38,29 +38,6 @@
 <html lang="en">
     <head>
         <?php require("../req/head/head.php"); ?>
-		<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $site_key; ?>"></script>
-		<script>
-			$(document).ready(function() {
-				grecaptcha.ready(function() {
-					grecaptcha.execute("<?php echo $site_key; ?>", {action: "admin_iplog"}).then(function(token) {
-						$.ajax({
-							url: "/do/recaptcha.php",
-							method: "POST",
-							data: {
-								"token": token,
-								"refer": "admin_iplog"
-							},
-							success: function(data, textStatus, jqXHR) {
-								// data is the API return value
-								if(parseFloat(data) <= <?php echo $thresh_admin_iplog; ?>) {
-									window.location.replace("/failed-rc");
-								}
-							}
-						});
-					});
-				});
-			});
-		</script>
     </head>
     <body id="bg">
 		<?php require("../req/structure/navbar.php"); ?>

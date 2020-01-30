@@ -7,6 +7,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.15.0
+* Removed reCAPTCHA v3 from all pages due to multiple false positives (One is too many)
+
 ## 1.14.1
 * Fixed typo in verification.js where it wouldn't catch name/email
 

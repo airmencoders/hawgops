@@ -33,29 +33,6 @@
 			require("../req/head/head.php");
 			require("../req/head/cas-head.php");
 		?>
-		<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $site_key; ?>"></script>
-		<script>
-			$(document).ready(function() {
-				grecaptcha.ready(function() {
-					grecaptcha.execute("<?php echo $site_key; ?>", {action: "cas"}).then(function(token) {
-						$.ajax({
-							url: "/do/recaptcha.php",
-							method: "POST",
-							data: {
-								"token": token,
-								"refer": "cas"
-							},
-							success: function(data, textStatus, jqXHR) {
-								// data is the API return value
-								if(parseFloat(data) <= <?php echo $thresh_cas; ?>) {
-									window.location.replace("/failed-rc");
-								}
-							}
-						});
-					});
-				});
-			});
-		</script>
 	</head>
 	<body>
 		<?php require("../req/structure/navbar.php"); ?>

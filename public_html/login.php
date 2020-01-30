@@ -27,29 +27,6 @@
     <head>
         <?php require("../req/head/head.php"); ?>
 		<script src="./js/validation.js"></script>
-		<script src="https://www.google.com/recaptcha/api.js?render=<?php echo $site_key; ?>"></script>
-		<script>
-			$(document).ready(function() {
-				grecaptcha.ready(function() {
-					grecaptcha.execute("<?php echo $site_key; ?>", {action: "login"}).then(function(token) {
-						$.ajax({
-							url: "/do/recaptcha.php",
-							method: "POST",
-							data: {
-								"token": token,
-								"refer": "login"
-							},
-							success: function(data, textStatus, jqXHR) {
-								// data is the API return value
-								if(parseFloat(data) <= <?php echo $thresh_login; ?>) {
-									window.location.replace("/failed-rc");
-								}
-							}
-						});
-					});
-				});
-			});
-		</script>
     </head>
     <body id="bg">
 		<?php require("../req/structure/navbar.php"); ?>
@@ -77,10 +54,6 @@
 					<!--<div class="text-center mt-2">
 						<a href="/forgot-password">Forgot Password?</a>
 					</div>-->
-				</div>
-				<div class="card-footer">
-					<a class="btn btn-block btn-success" href="/create-account" role="button">Create Account</a>
-					<small>This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</small>
 				</div>
 			</div>
 			<div class="card card-sm mx-auto mt-3">
