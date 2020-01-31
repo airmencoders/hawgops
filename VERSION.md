@@ -1,11 +1,13 @@
 # Hawg Ops
-Private repository of website files.
-website located at https://hawg-ops.com
+https://hawg-ops.com
 
 ## CAS Planner
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+
+## 1.15.2
+* Fix typo in API
 
 ## 1.15.1
 * Re-added "create account" button that was erroneously removed when removing reCAPTCHA notice
