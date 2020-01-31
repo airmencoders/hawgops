@@ -55,6 +55,9 @@
 						<a href="/forgot-password">Forgot Password?</a>
 					</div>-->
 				</div>
+				<div class="card-footer">
+					<a class="btn btn-block btn-success" href="/create-account" role="button">Create Account</a>
+				</div>
 			</div>
 			<div class="card card-sm mx-auto mt-3">
 				<div class="card-body">
