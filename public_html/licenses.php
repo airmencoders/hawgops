@@ -22,7 +22,7 @@
 				</h4>
 				<div class="card-body">
 					<h4>Hawg Ops</h4>
-					<p>Hawg Ops is created and owned by Porkins and is licensed under the GNU General Public License v3.0</p>
+					<p>Hawg Ops is created by Porkins and owned by AirmenCoders (MIT)</p>
 					<h4>Framework</h4>
 					<p><a href="https://getbootstrap.com" target="_blank">Bootstrap (MIT / CC BY 3.0)</a></p>
 					<p><a href="https://fontawesome.com" target="_blank">Font Awesome (CC BY 4.0 / SIL OFL 1.1 / MIT)</a></p>
