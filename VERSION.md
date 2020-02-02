@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.16.1
+* Update Github links in navbar
+
 ## 1.16.0
 * Move MySQL tables/columns to private file not uploaded to git repo now that it is public
 * Update License
