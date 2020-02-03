@@ -4,7 +4,7 @@
 	require("../req/keys/recaptcha.php");
 	require("../req/all/api-v1.php");
 	
-	createLog("danger", "HTTP/500", $_SERVER["REQUEST_URI"], "-", "Internal Server Error", "-");
+	createLog("danger", $HTTP_SERVER_ERROR, $_SERVER["REQUEST_URI"], "-", "Internal Server Error", "-");
 ?>
 <!DOCTYPE html>
 <html lang="en">

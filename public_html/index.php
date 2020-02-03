@@ -4,7 +4,7 @@
 	require("../req/keys/recaptcha.php");
 	require("../req/all/api-v1.php");
 	
-	createLog("info", "-", $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
+	createLog("info", $HTTP_OK, $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
 ?>
 <!DOCTYPE html>
 <html lang="en">

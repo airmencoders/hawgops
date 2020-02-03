@@ -4,7 +4,7 @@
 	require("../req/keys/recaptcha.php");
 	require("../req/all/api-v1.php");
 	
-	createLog("warning", "HTTP/404", $_SERVER["REQUEST_URI"], "-", "Page Not Found", "-");
+	createLog("warning", $HTTP_NOT_FOUND, $_SERVER["REQUEST_URI"], "-", "Page Not Found", "-");
 ?>
 <!DOCTYPE html>
 <html lang="en">

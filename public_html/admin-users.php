@@ -4,7 +4,7 @@
 	require("../req/keys/recaptcha.php");
 	require("../req/all/api-v1.php");
 	
-	createLog("info", "-", $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
+	createLog("info", $HTTP_OK, $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
 	
 	if(!isLoggedIn()) {
 		createLog("warning", $ERROR_UNAUTHORIZED, "admin-users", "-", "User not logged in", "-");
@@ -40,13 +40,13 @@
 					<tr class="table-light">
 						<th scope="col">#</th>
 						<th scope="col">Name</th>
-						<th scope="col">ID (Click to view authenticated IPs)</th>
 						<th scope="col">Email</th>
 						<th scope="col">Date Joined (Z)</th>
 						<th scope="col">Last Login (Z)</th>
 						<th scope="col">Scenarios</th>
 						<th scope="col">Disabled</th>
 						<th scope="col">Admin</th>
+						<th scope="col">Settings</th>
 						<th scope="col">Delete</th>
 					</tr>
 				</thead>
@@ -64,14 +64,26 @@
 					?>
 						<tr>
 							<td><?php echo $user_count; $user_count++; ?></td>
-							<td><?php echo $user["fname"]." ".$user["lname"]; ?></td>
-							<td><a href="/admin-iplog?id=<?php echo $user["id"]; ?>"><?php echo $user["id"]; ?></a></td>
+							<td><a href="/admin-iplog?id=<?php echo $user["id"]; ?>" data-toggle="tooltip" title="User ID: <?php echo $user["id"]; ?>"><?php echo $user["fname"]." ".$user["lname"]; ?></a></td>
 							<td><?php echo $user["email"]; ?></td>
 							<td><?php echo $user["joined"]; ?></td>
 							<td><?php echo $user["lastLogin"]; ?></td>
 							<td><a role="button" class="btn btn-block btn-primary" href="/admin-scenarios?id=<?php echo $user["id"]; ?>" >Scenarios (<?php echo $scenarioCount; ?>)</a></td>
-							<td><button type="button" class="btn btn-block btn-<?php echo ($user["disabled"]) ? "success" : "warning"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["disabled"]) ? "Enable" : "Disable"; ?></button></td>
-							<td><button type="button" class="btn btn-block btn-<?php echo ($user["admin"]) ? "danger" : "success"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["admin"]) ? "Revoke" : "Grant"; ?></button></td>
+							<td>
+								<form method="POST" action="/do/user-toggle-enabled.php">
+									<input type="hidden" id="user-<?php echo $user["id"]; ?>" name="user" value="<?php echo $user["id"]; ?>">
+									<input type="hidden" id="user-<?php echo $user["id"]; ?>-action" name="action" value="<?php echo ($user["disabled"]) ? "enable" : "disable"; ?>">
+									<button type="submit" class="btn btn-block btn-<?php echo ($user["disabled"]) ? "success" : "warning"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["disabled"]) ? "Enable" : "Disable"; ?></button>
+								</form>
+							</td>
+							<td>
+								<form method="POST" action="/do/user-toggle-admin.php">
+									<input type="hidden" id="toggle-admin-<?php echo $user["id"]; ?>" name="user" value="<?php echo $user["id"]; ?>">
+									<input type="hidden" id="toggle-admin-<?php echo $user["id"]; ?>-action" name="action" value="<?php echo ($user["admin"]) ? "revoke" : "grant"; ?>">
+									<button type="submit" class="btn btn-block btn-<?php echo ($user["admin"]) ? "danger" : "success"; ?>" <?php echo ($owner) ? "disabled" : ""; ?>><?php echo ($user["admin"]) ? "Revoke" : "Grant"; ?></button>
+								</form>
+							</td>
+							<td><button type="button" class="btn btn-block btn-info" <?php echo ($owner) ? "disabled" : ""; ?>>Settings</button></td>
 							<td><button type="button" class="btn btn-block btn-danger" <?php echo ($owner) ? "disabled" : ""; ?>>Delete</button></td>
 						</tr>
 					<?php } ?>

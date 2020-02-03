@@ -6,6 +6,18 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.17.0
+* Add enable/disable accounts to API
+* Add grant/revoke admin to API
+* Update admin-users to use new functions
+* Update createLog
+* Bring API back to speed after erroneous removal
+* Updated Codes
+* Updated Navigation logs
+* Moved User ID to a tooltip in admin-users
+* Added settings button in admin-users
+* Cleaned up codes / alert-bar 
+
 ## 1.16.1
 * Update Github links in navbar
 
