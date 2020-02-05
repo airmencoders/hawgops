@@ -940,8 +940,18 @@ function login($email, $password) {
 		
 		if($db_loginAttempts > 5) {
 			createLog("danger", $API_LOGIN_DISABLING_ACCOUNT, "API", "login", "Disabling account due to over 5 failed login attempts", "[$email]");
-			//disableAccount(getUserIDByEmail($email));
-			//return $API_LOGIN_DISABLING_ACCOUNT;
+			
+			$query = "UPDATE $tbl_users SET $col_user_disabled = 1 WHERE $col_user_id = ?";
+			if($statement = $db->prepare($query)) {
+				$statement->bind_param("s", $db_id);
+				$statement->execute();
+				$statement->close();
+				createLog("danger", $API_LOGIN_DISABLING_ACCOUNT, "API", "login", "Too many incorrect password attempts, disabling account", "[$email]");
+				return $API_LOGIN_DISABLING_ACCOUNT;
+			} else {
+				createLog("danger", $ERROR_MYSQL, "API", "login", "Failed to prepare query", $db->error." (".$db->errno.")");
+				return $ERROR_MYSQL;
+			}
 		}
 		return $API_LOGIN_INCORRECT_PASSWORD;
 	}
