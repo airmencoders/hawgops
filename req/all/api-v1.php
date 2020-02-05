@@ -869,7 +869,7 @@ function login($email, $password) {
 		return $ERROR_MYSQL;
 	}
 	
-	if($db_userDisabled == "1") {
+	if($db_userDisabled == 1) {
 		createLog("warning", $API_LOGIN_ACCOUNT_DISABLED, "API", "login", "Account currently disabled", "[$email]");
 		return $API_LOGIN_ACCOUNT_DISABLED;
 	}
@@ -946,7 +946,6 @@ function login($email, $password) {
 				$statement->bind_param("s", $db_id);
 				$statement->execute();
 				$statement->close();
-				createLog("danger", $API_LOGIN_DISABLING_ACCOUNT, "API", "login", "Too many incorrect password attempts, disabling account", "[$email]");
 				return $API_LOGIN_DISABLING_ACCOUNT;
 			} else {
 				createLog("danger", $ERROR_MYSQL, "API", "login", "Failed to prepare query", $db->error." (".$db->errno.")");
