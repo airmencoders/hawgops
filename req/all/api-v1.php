@@ -920,6 +920,17 @@ function login($email, $password) {
 			createLog("danger", $ERROR_MYSQL, "API", "login", "Failed to prepare query", $db->error." (".$db->errno.")");
 		}
 		
+		// Update the last login time for the user
+		$loginDate = date("Y-m-d H:i:s");
+		$query = "UPDATE $tbl_users SET $col_user_last_login = ? WHERE $col_user_id = ?";
+		if($statement = $db->prepare($query)) {
+			$statement->bind_param("ss", $loginDate, $db_id);
+			$statement->execute();
+			$statement->close();
+		} else {
+			createLog("danger", $ERROR_MYSQL, "API", "login", "Failed to prepare query", $db->error." (".$db->errno.")");
+		}
+		
 		createLog("success", $API_LOGIN_USER_AUTHENTICATED, "API", "login", "User logged in", "[$email]");
 		return $API_LOGIN_USER_AUTHENTICATED;
 	} else {

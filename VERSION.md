@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.17.3
+* Re-add the update of userLastLogin in login() in API
+
 ## 1.17.2
 * Removed redundant logging in login function
 
