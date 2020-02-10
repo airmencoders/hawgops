@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.18.0
+* Add CO MOAs and Ranges
+* Requested by Fort Carson ASOS
+
 ## 1.17.3
 * Re-add the update of userLastLogin in login() in API
 
