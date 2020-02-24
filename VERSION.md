@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.19.0
+* Added DD MM.MMMM Lat/Long to map popup when clicking map or using the Fly to coordinates button
+* Requested by Gov (WSEP)
+
 ## 1.18.0
 * Add CO MOAs and Ranges
 * Requested by Fort Carson ASOS

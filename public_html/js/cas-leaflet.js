@@ -1150,12 +1150,15 @@ function flyToCoordinates() {
 	var utm = mgrs_ref.toUtm();
 	var ll_posit = mgrs_ref.toUtm().toLatLon();
 
+	var latDM = Dms.toLat(ll_posit.lat, "dm", 4);
+	var longDM = Dms.toLon(ll_posit.lon, "dm", 4);
+
 	// Fly to Lat Lon and zoom in
 	map.flyTo([ll_posit.lat, ll_posit.lon], 13);
 	
 	var fly_popup = L.popup()
 		.setLatLng([ll_posit.lat, ll_posit.lon])
-		.setContent(zone_digits.substr(0,3) + " " + zone_digits.substr(3) + " " + first_digits + " " + second_digits + "<br/>" + ll_posit)
+		.setContent(zone_digits.substr(0,3) + " " + zone_digits.substr(3) + " " + first_digits + " " + second_digits + "<br/>" + ll_posit + "<br/>" + latDM + ", " + longDM)
 		.openOn(map);
 	
 	// Listen if the user wants to add a CAP
@@ -1632,10 +1635,13 @@ function mapClick(e) {
 		var lon_posit = Dms.parse(ll_posit.lng);
 		var ll = LatLon.parse(lat_posit, lon_posit);
 		var mgrs = ll.toUtm().toMgrs();
+
+		var latDM = Dms.toLat(lat_posit, "dm", 4);
+		var longDM = Dms.toLon(lon_posit, "dm", 4);
 					
 		var popup = L.popup()
 			.setLatLng(ll_posit)
-			.setContent(mgrs + "<br/>" + ll)
+			.setContent(mgrs + "<br/>" + ll + "<br/>" + latDM + ", " + longDM)
 			.openOn(map);
 
 		$(".chit-bldg-label").click({ll_posit}, addBldgLabel);
