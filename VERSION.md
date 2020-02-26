@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.21.1
+* Created Chit List Modal
+* Moved Chit Lists from the bottom of the screen to new modal
+* Created "View Chit List" button on right side of screen
+* Updated instructions to note that some components may not display correctly if user does not have the window full-screen
+
 ## 1.21.0
 * Added White Sands / Fort Bliss Airspace
 * Requested by Gator

@@ -8,6 +8,10 @@
 				</button>
 			</div>
 			<div class="modal-body">
+				<h5>Window Size</h5>
+				<hr/>
+				<p>It is important that you use the CAS Planner full screen on your computer. If you do not, then there is a possibility that the various components may not display correctly.</p>
+				<hr/>
 				<h5>Adding chits</h5>
 				<hr/>
 				<p>

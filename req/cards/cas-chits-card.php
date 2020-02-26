@@ -60,6 +60,7 @@
 			<button type="button" id="btn-show-titles" class="btn btn-sm btn-success">Show Titles</button>
 			<button type="button" id="btn-hide-titles" class="btn btn-sm btn-warning">Hide Titles</button>
 		</div>
-		<button type="button" id="btn-instructions" class="btn btn-block btn-sm btn-info" data-toggle="modal" data-target="#instructions-modal">Instructions</button>
+		<button type="button" id="btn-view-chit-list" class="btn btn-block btn-sm btn-info mb-1" data-toggle="modal" data-target="#chit-list-modal">View Chit List</button>
+		<button type="button" id="btn-instructions" class="btn btn-block btn-sm btn-info mt-0" data-toggle="modal" data-target="#instructions-modal">Instructions</button>
 	</div>
 </div>
