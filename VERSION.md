@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.21.0
+* Added White Sands / Fort Bliss Airspace
+* Requested by Gator
+
 ## 1.20.0
 * Added Thailand Airspace for CG Exercise
 * Requested by South/Basic/White from 25FS
