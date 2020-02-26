@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.21.2
+* Added close button to Chit List Modal
+
 ## 1.21.1
 * Created Chit List Modal
 * Moved Chit Lists from the bottom of the screen to new modal
