@@ -430,6 +430,7 @@ function getNumberOfScenariosByUser($uid) {
 		return $ERROR_MYSQL;
 	}
 }
+
 /**
  * getUsers
  *
@@ -449,8 +450,7 @@ function getAllUsers() {
 	
 	global $ERROR_MYSQL;
 	global $ERROR_UNAUTHORIZED;
-	
-	$logPrefix = "[API | getAllUsers] ";
+
 	if(!isAdmin()) {
 		createLog("warning", $ERROR_UNAUTHORIZED, "API", "getAllUsers", "User not authorized to view all users", getUserEmailByID($_SESSION["id"]));
 		return $ERROR_UNAUTHORIZED;
@@ -528,8 +528,6 @@ function getUserEmailByID($uid) {
 	global $ERROR_UNAUTHORIZED;
 	global $ERROR_MYSQL;
 	
-	$logPrefix = "[API | getUserEmailByID] ";
-	
 	if(!isset($uid) || $uid == "") {
 		createLog("warning", $API_GET_USER_EMAIL_BY_ID_ID_NOT_RECEIVED, "API", "getUserEmailByID", "Data not received", "User ID");
 		return $API_GET_USER_EMAIL_BY_ID_ID_NOT_RECEIVED;
@@ -569,9 +567,8 @@ function getUserNameByEmail($email) {
 	
 	global $API_GET_USER_NAME_BY_EMAIL_EMAIL_ADDRESS_NOT_RECEIVED;
 	global $API_GET_USER_NAME_BY_EMAIL_ACCOUNT_DOES_NOT_EXIST;
+	global $ERROR_UNAUTHORIZED;
 	global $ERROR_MYSQL;
-	
-	$logPrefix = "[API | getUserNameByEmail] ";
 	
 	if(!isset($email) | $email == "") {
 		createLog("warning", $API_GET_USER_NAME_BY_EMAIL_EMAIL_ADDRESS_NOT_RECEIVED, "API", "getUserNameByEmail", "Data not received", "Email address");
@@ -621,8 +618,6 @@ function getUserNameByID($uid) {
 	global $API_GET_USER_NAME_BY_ID_ACCOUNT_DOES_NOT_EXIST;
 	global $ERROR_MYSQL;
 	
-	$logPrefix = "[API | getUserNameByID] ";
-	
 	if(!isset($uid) || $uid == "") {
 		createLog("warning", $API_GET_USER_NAME_BY_ID_ID_NOT_RECEIVED, "API", "getUserNameByID", "Data not received", "User ID");
 		return array("fname"=>"", "lname"=>"");
@@ -665,8 +660,6 @@ function getUserScenarios($id) {
 	global $API_GET_USER_SCENARIOS_USER_ID_NOT_RECEIVED;
 	global $ERROR_UNAUTHORIZED;
 	global $ERROR_MYSQL;
-	
-	$logPrefix = "[API | getUserScenarios] ";
 	
 	if(!isset($id) || $id == "") {
 		createLog("warning", $API_GET_USER_SCENARIOS_USER_ID_NOT_RECEIVED, "API", "getUserScenarios", "Data not received", "User ID");
@@ -762,7 +755,6 @@ function isAdmin() {
 	return ($db_admin == "1");
 }
  
-
 /**
  * isLoggedIn()
  *
@@ -838,7 +830,6 @@ function login($email, $password) {
 	
 	global $ERROR_MYSQL;
 	
-	$logPrefix = "[API | login] ";
 	// Ensure that data is received
 	if(!isset($email) || $email == "") {
 		createLog("warning", $API_LOGIN_EMAIL_NOT_RECEIVED, "API", "login", "Data not received", "Email address");
@@ -984,6 +975,40 @@ function logout() {
 	session_destroy();
 }
 
+function recoverAccount($email) {
+	global $db;
+	global $tbl_users;
+	global $col_user_email;
+
+	global $API_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVED;
+	global $API_RECOVER_ACCOUNT_ACCOUNT_DOES_NOT_EXIST;
+	global $API_RECOVER_ACCOUNT_ACCOUNT_EXISTS;
+	global $ERROR_MYSQL;
+
+	if(!isset($email) || $email == "") {
+		createLog("warning", $API_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVED, "API", "recoverAccount", "Data not received", "Email address");
+		return $API_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVED;
+	}
+
+	// First, check to see if the email is in the system
+	$query = "SELECT $col_user_email FROM $tbl_users WHERE $col_user_email = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $email);
+		$statement->execute();
+		$statement->bind_result($db_email);
+		if($statement->fetch() == null) {
+			createLog("warning", $API_RECOVER_ACCOUNT_ACCOUNT_DOES_NOT_EXIST, "API", "recoverAccount", "Account Does Not Exist", "[$email]");
+			return $API_RECOVER_ACCOUNT_ACCOUNT_DOES_NOT_EXIST;
+		}
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "recoverAccount", "Failed to prepare query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
+
+	// Email is going to be sent from the recover-account-do file
+	return $API_RECOVER_ACCOUNT_ACCOUNT_EXISTS;
+}
+
 /**
  * resetPassword
  *
@@ -995,7 +1020,6 @@ function logout() {
  * Validates Reset Password Token and changes password
  */
 function resetPassword($id, $password) {
-	
 }
 
 function revokeAdmin($uid) {
@@ -1056,7 +1080,6 @@ function saveScenario($id, $name, $data) {
 	global $API_SAVE_SCENARIO_SCENARIO_SAVED;
 	global $ERROR_MYSQL;
 	
-	$logPrefix = "[API | saveScenario] ";
 	$date = date("Y-m-d H:i:s");
 	
 	if(!isset($id) || $id == "") {
@@ -1105,7 +1128,6 @@ function saveScenario($id, $name, $data) {
  * @param String $data Scenario Data
  */
 function updateScenario($uid, $sid, $name, $date, $data) {
-	
 }
 
 /**

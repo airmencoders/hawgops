@@ -6,6 +6,18 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.22.1
+* Removed Online/Offline div from Navbar
+
+## 1.22.0
+* Removed the online/offline functionality (wasn't doing anything at this time - might revisit later)
+* Added recover-account functionality for accounts that are disabled to recover
+* Added /recover-account.php
+* Added /do/recover-account-do.php
+* Added recoverAccount() function to api-v1.php
+* Added emails/ folder to hold email templates
+* Created emails/recover-account-mail.php email template
+
 ## 1.21.2
 * Added close button to Chit List Modal
 

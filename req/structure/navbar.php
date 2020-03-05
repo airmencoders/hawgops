@@ -27,13 +27,13 @@
 			</li>
 		</ul>
 		<ul class="navbar-nav">
-			<li class="nav-item" id="notify-online">
+			<!--<li class="nav-item" id="notify-online">
 				<a class="nav-link" href="#"><i class="fas fa-check-circle text-success"></i> Online</a>
 			</li>
 			<li class="nav-item d-none" id="notify-offline">
 				<a class="nav-link" href="#"><i class="fas fa-exclamation-circle text-danger"></i> Offline</a>
 			</li>
-			</li>
+			</li>-->
 			<?php if(isLoggedIn()) { ?>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="account-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

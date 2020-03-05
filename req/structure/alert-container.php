@@ -105,24 +105,24 @@
 				break;
 			case $API_LOGIN_ACCOUNT_DISABLED:
 			case $API_LOGIN_DISABLING_ACCOUNT:
-				$text = "Your account is disabled due to too many failed login attempts. Please <a href=\"contact\" class=\"alert-link\">contact us</a> to unlock your account.";
+				$text = "Your account is disabled due to too many failed login attempts. <a href=\"talk-to-me\" class=\"alert-link\">Contact Us</a> to recover your account.";
 				break;
 			// SAVE SCENARIO
 			case $API_SAVE_SCENARIO_USER_ID_NOT_RECEIVED:
 			case $API_SAVE_SCENARIO_SCENARIO_ID_NOT_RECEIVED:
 			case $API_SAVE_SCENARIO_DATA_NOT_RECEIVED:
-				$text = "There was an error saving your scenario. <a href=\"contact\" target=\"_blank\" class=\"alert-link\">Contact us</a> if the problem persists.";
+				$text = "There was an error saving your scenario. <a href=\"talk-to-me\" target=\"_blank\" class=\"alert-link\">Contact us</a> if the problem persists.";
 				break;
 			// GET SCENARIO
 			case $API_GET_SCENARIO_SCENARIO_ID_NOT_RECEIVED:
 			case $API_GET_SCENARIO_SCENARIO_DOES_NOT_EXIST:
-				$text = "There was an error retrieving your requested scenario. <a href=\"contact\" class=\"alert-link\">Contact us</a> if the problem persists.";
+				$text = "There was an error retrieving your requested scenario. <a href=\"talk-to-me\" class=\"alert-link\">Contact us</a> if the problem persists.";
 				break;
 			// DELETE SCENARIO
 			case $API_DELETE_SCENARIO_ID_NOT_RECEIVED:
 			case $API_DELETE_SCENARIO_SCENARIO_DOES_NOT_EXIST:
 			case $DO_DEL_SCENARIO_ID_NOT_RECEIVED:
-				$text = "There was an error deleting your scenario. <a href=\"contact\" class=\"alert-link\">Contact us</a> if the problem persists.";
+				$text = "There was an error deleting your scenario. <a href=\"talk-to-me\" target=\"_blank\" class=\"alert-link\">Contact us</a> if the problem persists.";
 				break;
 			// GET IPLOG
 			case $API_GET_IPLOG_ID_NOT_RECEIVED:
@@ -224,6 +224,25 @@
 				break;
 			case $DO_TOGGLE_ADMIN_INVALID_ACTION:
 				$text = "Could not toggle admin status, invalid action received.";
+				break;
+			//-------------------------------
+			// 408xx RECOVER-ACCOUNT-DO.PHP
+			//-------------------------------
+			case $DO_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVIED:
+				$text = "Email address was not received.";
+				break;
+			case $DO_RECOVER_ACCOUNT_EMAIL_NOT_SENT:
+			case $DO_RECOVER_ACCOUNT_EMAIL_SENT:
+				$text = "";
+				break;
+			//-------------------------------
+			// 409xx LOGIN-DO.PHP
+			//-------------------------------
+			case $DO_LOGIN_EMAIL_NOT_RECEIVED:
+				$text = "Email address was not received.";
+				break;
+			case $DO_LOGIN_PASSWORD_NOT_RECEIVED:
+				$text = "Password was not received.";
 				break;
 		}
 	}
