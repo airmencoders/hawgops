@@ -72,12 +72,9 @@
 	$mail = $smtp->send($to, $headers, $body);
 
 	if(PEAR::isError($mail)) {
-		// Log here!
 		header("Location: /talk-to-me?s=$DO_CONTACT_EMAIL_NOT_SENT");
 	} else {
-		// Log here!
 		header("Location: /talk-to-me?s=$DO_CONTACT_EMAIL_SENT");
 	}
-	// closelogs here!!
 	closeLogs();
 ?>
