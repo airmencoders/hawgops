@@ -8,6 +8,12 @@
 	require("../../req/all/api-v1.php");
 	
 	$crlf = "\r\n";
+
+	if(!isLoggedIn()) {
+		createLog("warning", $ERROR_UNAUTHORIZED, "DO", "shareScenario", "Unauthenticated user attempted to share a scenario", $_SERVER["REMOTE_ADDR"]);
+		header("Location: /index?s=$ERROR_UNAUTHORIZED");
+		closeLogs();
+	}	
 	
 	if(!isset($_POST["scenario-name"]) || $_POST["scenario-name"] == "") {
 		createLog("warning", $DO_SHARE_SCENARIO_NAME_NOT_RECEIVED, "DO", "shareScenario", "Failed to share scenario", "Scenario name not received");
