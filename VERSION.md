@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.22.2
+* Moved the faa-users file to non-respository directory
+* Thanks to @tylerthetiger for the issue
+
 ## 1.22.1
 * Removed Online/Offline div from Navbar
 
