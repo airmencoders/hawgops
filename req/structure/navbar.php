@@ -67,10 +67,10 @@
 					About
 				</a>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="policy-toggle">
-					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/terms.php") ? "active" : ""; ?>" href="./terms">Terms of Use</a>
-					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/privacy.php") ? "active" : ""; ?>" href="./privacy">Privacy Policy</a>
-					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/cookies.php") ? "active" : ""; ?>" href="./cookies">Cookie Policy</a>
-					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses">Licenses</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/terms.php") ? "active" : ""; ?>" href="./terms" target="_blank">Terms of Use</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/privacy.php") ? "active" : ""; ?>" href="./privacy" target="_blank">Privacy Policy</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/cookies.php") ? "active" : ""; ?>" href="./cookies" target="_blank">Cookie Policy</a>
+					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses" target="_blank">Licenses</a>
 				</div>
 			</li>
 			<?php /* 

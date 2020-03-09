@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.22.4
+* Update legal links to open in new tab
+
 ## 1.22.3
 * /do/contact-do.php now requires user to be logged in
 * Thanks to @tylerthetiger for the bug report
