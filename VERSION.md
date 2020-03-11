@@ -8,6 +8,8 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 ## 1.24.0
 * Removed all of ```VERSION 1.23.0```, Could not get Leaflet FileLayer to function due to some compatibility issues, will re-attack with a new plugin.
+* Changed hosting of Leaflet.js from self-hosted to a CDN.
+* Updated Leaflet.js to 1.6.0
 * Updated license attribution
 
 ## 1.23.2
