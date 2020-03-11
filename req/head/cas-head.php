@@ -33,6 +33,7 @@
 <script src="./js/leaflet-plugins/leaflet-ruler.js"></script>
 <script src="./js/leaflet-plugins/leaflet.geometryutil.js"></script>
 <script src="./js/leaflet-plugins/Leaflet.fullscreen.js"></script>
+<script src="./js/leaflet-plugins/L.KML.js"></script>
 
 <!-- Leaflet Draw -->
 <script src="./js/leaflet-plugins/leaflet-draw/Leaflet.draw.js"></script>

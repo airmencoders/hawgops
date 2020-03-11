@@ -1180,6 +1180,17 @@ function hideTitles() {
 	});
 }
 
+function loadKML() {
+	fetch("./kml/Moody Airspace v2.kml")
+		.then(res => res.text())
+		.then(kmltext => {
+			const parser = new DOMParser();
+			const kml = parser.parseFromString(kmltext, 'text/xml');
+			const overlays = new L.KML(kml);
+			map.addLayer(overlays);
+		})
+}
+
 /**
  *
  */
@@ -2294,4 +2305,4 @@ $(document).ready(function() {
 	});
 });
 
-export {loadScenario};
+export {loadScenario, loadKML};

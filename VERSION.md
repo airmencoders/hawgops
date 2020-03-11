@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.25.0
+* Added Leaflet KML plugin to load KML files. The difference with this one is that it requires the KML to be uploaded to the server to pull the information whereas the FileLayer plugin would parse it into an actual leaflet layer to then be used via normal Leaflet Polygons. There are other plugins that do that functionality, but I think that this will work fine.
+* Updated license attribution
+* Future update would be to change the save/load process to save the user ID and the filename of the KML within the stored text which would then load the KML when loading the saved scenario. Ideally, it would translate the KML into a polygon so that the save/load process would not need to be changed. Further research required for that. 
+* At this time, this is published but only available to administrators
+
 ## 1.24.0
 * Removed all of ```VERSION 1.23.0```, Could not get Leaflet FileLayer to function due to some compatibility issues, will re-attack with a new plugin.
 * Changed hosting of Leaflet.js from self-hosted to a CDN.

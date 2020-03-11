@@ -39,6 +39,7 @@
 					<p><a href="https://github.com/Leaflet/Leaflet.draw" target="_blank">Leaflet Draw (Modified by Porkins) by Leaflet (MIT)</a></p>
 					<p><a href="https://github.com/makinacorpus/Leaflet.GeometryUtil" target="_blank">Leaflet Geometry Util by makinacorpus (BSD-3-Clause)</a></p>
 					<p><a href="https://github.com/Leaflet/Leaflet.fullscreen" target="_blank">Leaflet Fullscreen by Leaflet (ISC)</a></p>
+					<p><a href="https://github.com/windycom/leaflet-kml" target="_blank">Leaflet KML by windycom (MIT)</a></p>
 				</div>
 			</div>
 		</div>
