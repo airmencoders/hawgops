@@ -6,6 +6,24 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.26.0
+* Okay, so this is what was decided...
+* Removed Leaflet KML plugin and references
+* Added toGeoJSON plugin
+* User will upload a KML file that will then be parsed into a GeoJSON feature set and added to the map. Then, when the user saves the scenario, the function will save the GeoJSON layer to the text to be saved.
+* User will have the option to view/manage their KML files within the system to add to other scenarios or delete.
+* TODO: Modify the save/load functionality as follows:
+**SAVE FUNCTION**
+1. Save the filename/location of the KML file
+**LOAD FUNCTION**
+1. Attempt to load the KML file, fail gracefully if it isn't found (alert the user that they may have deleted it and will need to re-save to stop the error or re-upload as required and re-save)
+2. If successfully loaded, load KML as normal to the ```labels_kml``` layer so that the user can upload multiple KML files to the scenario
+* TODO: Export all airspace into a KML file for download
+* TODO: Create a ```/my-kmls``` page where the user can manage their KML files (view, delete, download)
+* TODO: When a user uploads a ```.kml``` it will go to the ```/public_html/kml/<user_id>/``` folder or create one if it doesn't exist. Then the filename will be whatever they choose. Implement something if the file already exists, then it will ask if they want to overwrite or not with a warning that if they have another scenario that uses this same KML, it may have adverse affects and WILL change the overlays in that scenario as well. OPTIONS: add an upload-time so that this doesn't happen, PRO: easier for users, CON: I can see this getting to where storage is an issue.
+* TODO: implement RECAPTCHAv2 for file uploads!!! (and contact/share)
+* Updated ```licenses.php```
+
 ## 1.25.0
 * Added Leaflet KML plugin to load KML files. The difference with this one is that it requires the KML to be uploaded to the server to pull the information whereas the FileLayer plugin would parse it into an actual leaflet layer to then be used via normal Leaflet Polygons. There are other plugins that do that functionality, but I think that this will work fine.
 * Updated license attribution

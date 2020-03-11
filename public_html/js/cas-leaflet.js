@@ -3,6 +3,7 @@
  */
 import Mgrs, { LatLon } from "./geodesy/mgrs.js";
 import Dms from "./geodesy/dms.js";
+import * as togeojson from "./leaflet-plugins/togeojson/index.js";
 
 /**
  * Site Options
@@ -159,6 +160,7 @@ var basemap_firefly = L.esri.basemapLayer("ImageryFirefly");
 var labels_imagery = L.esri.basemapLayer("ImageryLabels");
 var labels_roads = L.esri.basemapLayer("ImageryTransportation");
 var labels_airspace = L.layerGroup();
+var labels_kml = L.layerGroup();
 var mgrs_grids = L.grids.mgrs();
 
 /**
@@ -186,6 +188,7 @@ var label_layers = {
 	"Map Labels": labels_imagery,
 	"Road Labels": labels_roads,
 	"Airspace": labels_airspace,
+	"KML": labels_kml,
 	"MGRS Grids": mgrs_grids,
 	"Threat Rings": layer_master_threats,
 	"Chits": layer_markers
@@ -198,6 +201,7 @@ var label_layers = {
 basemap_firefly.addTo(map);
 labels_imagery.addTo(map);
 labels_airspace.addTo(map);
+labels_kml.addTo(map);
 //mgrs_grids.addTo(map);
 L.control.layers(basemap_layers, label_layers).addTo(map);
 
@@ -1181,14 +1185,26 @@ function hideTitles() {
 }
 
 function loadKML() {
-	fetch("./kml/Moody Airspace v2.kml")
+	fetch("./kml/Korean Airspace.kml")
 		.then(res => res.text())
 		.then(kmltext => {
 			const parser = new DOMParser();
 			const kml = parser.parseFromString(kmltext, 'text/xml');
-			const overlays = new L.KML(kml);
-			map.addLayer(overlays);
-		})
+			//const overlays = new L.KML(kml);
+			const overlays = togeojson.kml(kml);
+			console.log(overlays);
+			L.geoJSON(overlays, {
+				style: function(feature) {
+					return {
+						color: feature.properties["stroke"],
+						weight: feature.properties["stroke-width"],
+						stroke: true,
+						fillOpacity: feature.properties["fill-opacity"],
+						fillColor: feature.properties["fill"]
+					}
+				}
+			}).addTo(labels_kml);
+		});
 }
 
 /**
