@@ -1,6 +1,7 @@
 <!-- Vendor CSS -->
 <!-- Leaflet -->
-<link rel="stylesheet" href="./js/leaflet/leaflet.css">
+<!--<link rel="stylesheet" href="./js/leaflet/leaflet.css">-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
 <!-- ESRI -->
 <link rel="stylesheet" href="https://js.arcgis.com/4.11/esri/themes/light/main.css">
 
@@ -13,7 +14,8 @@
 <!-- Vendor jQuery / Popper.js / Bootstrap JS / Leaflet JS -->
 
 <!-- Leaflet -->
-<script src="./js/leaflet/leaflet-src.js"></script>
+<!--<script src="./js/leaflet/leaflet-src.js"></script>-->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 
 <!-- Leaflet Grids -->
 <script src="./js/leaflet-grids/mgrs.js"></script>
@@ -31,8 +33,6 @@
 <script src="./js/leaflet-plugins/leaflet-ruler.js"></script>
 <script src="./js/leaflet-plugins/leaflet.geometryutil.js"></script>
 <script src="./js/leaflet-plugins/Leaflet.fullscreen.js"></script>
-<script src="./js/leaflet-plugins/togeojson/index.js" type="module"></script>
-<script src="./js/leaflet-plugins/leaflet.filelayer.js"></script>
 
 <!-- Leaflet Draw -->
 <script src="./js/leaflet-plugins/leaflet-draw/Leaflet.draw.js"></script>

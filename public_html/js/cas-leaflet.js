@@ -42,16 +42,6 @@ var nm_ruler_options = {
 	}
 };
 
-var m_ruler_options = {
-	position: "topleft",
-	lengthUnit: {
-		factor: 1000,
-		display: "m",
-		decimal: 2,
-		label: "Distance:"
-	}
-};
-
 var draw_control_options = {
 	draw: {
 		flot: true,
@@ -145,17 +135,6 @@ var scale = L.control.scale();
 var mouse_coords = L.control.mouseCoordinate(mouse_coord_options);
 var nm_ruler = L.control.ruler(nm_ruler_options);
 var drawControl = new L.Control.Draw(draw_control_options);
-/*var fileLayerControl = L.Control.fileLayerLoad({
-	layer: L.geoJson,
-	layerOptions: {
-		style: {color:'yellow'}
-	},
-	addToMap: true,
-	fileSizeLimit: 1024,
-	formats: [
-		'.kml'
-	]
-}).addTo(map);*/
 
 /**
  * Drawing layers are initialized globally in cas-head.php
@@ -170,7 +149,6 @@ layer_eas.addTo(map);
 layer_rozs.addTo(map);
 scale.addTo(map);
 nm_ruler.addTo(map);
-//fileLayerControl.addTo(map);
 map.addControl(drawControl);
 
 /**

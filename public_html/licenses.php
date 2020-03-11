@@ -35,12 +35,10 @@
 					<p><a href="https://github.com/PowerPan/leaflet.mouseCoordinate" target="_blank">Leaflet Mouse Coordinates by PowerPan (MIT)</a></p>
 					<p><a href="https://github.com/trailbehind/leaflet-grids" target="_blank">Leaflet Grids (Modified by Porkins) by trailbehind (MIT)</a></p>
 					<p><a href="https://github.com/jdfergason/Leaflet.Ellipse" target="_blank">Leaflet Ellipse by jdfergason (Apache 2.0)</a></p>
-					<p><a href="https://github.com/gokertanrisever/leaflet-ruler" target="_blank">Leaflet Ruler by gokertanrisever (MIT)</a></p>
+					<p><a href="https://github.com/gokertanrisever/leaflet-ruler" target="_blank">Leaflet Ruler (Modified by Porkins) by gokertanrisever (MIT)</a></p>
 					<p><a href="https://github.com/Leaflet/Leaflet.draw" target="_blank">Leaflet Draw (Modified by Porkins) by Leaflet (MIT)</a></p>
 					<p><a href="https://github.com/makinacorpus/Leaflet.GeometryUtil" target="_blank">Leaflet Geometry Util by makinacorpus (BSD-3-Clause)</a></p>
 					<p><a href="https://github.com/Leaflet/Leaflet.fullscreen" target="_blank">Leaflet Fullscreen by Leaflet (ISC)</a></p>
-					<p><a href="https://github.com/makinacorpus/Leaflet.FileLayer" target="_blank">Leaflet File Layer by Makin a Corpus (MIT)</a></p>
-					<p><a href="https://github.com/tmw/togeojson" target="_blank">Leaflet togeojson by TMCW (BSD-2)</a></p>
 				</div>
 			</div>
 		</div>
