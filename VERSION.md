@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.22.5
+* Add China Lake MOA / Restricted areas
+* Requested by PUMA
+
 ## 1.22.4
 * Update legal links to open in new tab
 
