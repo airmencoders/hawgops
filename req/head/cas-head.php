@@ -31,6 +31,8 @@
 <script src="./js/leaflet-plugins/leaflet-ruler.js"></script>
 <script src="./js/leaflet-plugins/leaflet.geometryutil.js"></script>
 <script src="./js/leaflet-plugins/Leaflet.fullscreen.js"></script>
+<script src="./js/leaflet-plugins/togeojson/index.js" type="module"></script>
+<script src="./js/leaflet-plugins/leaflet.filelayer.js"></script>
 
 <!-- Leaflet Draw -->
 <script src="./js/leaflet-plugins/leaflet-draw/Leaflet.draw.js"></script>

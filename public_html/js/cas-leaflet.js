@@ -13,6 +13,9 @@ var bldg_label_scale = 10;
 var minor_axis = 2 * 926;
 var tht_ring_dash_array = "12,12";
 
+/**
+ * Initialize the marker_id
+ */ 
 var marker_id = 1;
 
 /**
@@ -141,8 +144,18 @@ var map = L.map("map", map_options).setView([35.77, -93.34], 5);
 var scale = L.control.scale();
 var mouse_coords = L.control.mouseCoordinate(mouse_coord_options);
 var nm_ruler = L.control.ruler(nm_ruler_options);
-var m_ruler = L.control.ruler(m_ruler_options);
 var drawControl = new L.Control.Draw(draw_control_options);
+/*var fileLayerControl = L.Control.fileLayerLoad({
+	layer: L.geoJson,
+	layerOptions: {
+		style: {color:'yellow'}
+	},
+	addToMap: true,
+	fileSizeLimit: 1024,
+	formats: [
+		'.kml'
+	]
+}).addTo(map);*/
 
 /**
  * Drawing layers are initialized globally in cas-head.php
@@ -157,6 +170,7 @@ layer_eas.addTo(map);
 layer_rozs.addTo(map);
 scale.addTo(map);
 nm_ruler.addTo(map);
+//fileLayerControl.addTo(map);
 map.addControl(drawControl);
 
 /**

@@ -6,6 +6,17 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.23.1
+* Remove reference to m_ruler from cas-leaflet.js. This was an old reference that was put into the main NM ruler.
+
+## 1.23.0
+* Add Leaflet FileLayer plugin by Makin a Corpus (MIT)
+* Add toGeoJSON by tmcw (BSD-2) (Dependency of Leaflet FileLayer)
+* Update license attribution
+* Update /req/head/cas-head.php to include the Leaflet.FileLayer plugin
+* Update /req/head/cas-head.php to include togeojson
+* Edited ```index.js``` / ```gpx.js``` / ```kml.js``` / ```shared.js``` in ```togeojson``` to include the ```.js``` in filenames
+
 ## 1.22.5
 * Add China Lake MOA / Restricted areas
 * Requested by PUMA
