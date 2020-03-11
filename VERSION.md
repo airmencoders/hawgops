@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.23.2
+* Updated ```VERSION.md``` formatting
+
 ## 1.23.1
 * Remove reference to m_ruler from cas-leaflet.js. This was an old reference that was put into the main NM ruler.
 
@@ -25,11 +28,11 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 * Update legal links to open in new tab
 
 ## 1.22.3
-* /do/contact-do.php now requires user to be logged in
+* ```/do/contact-do.php``` now requires user to be logged in
 * Thanks to @tylerthetiger for the bug report
 
 ## 1.22.2
-* Moved the faa-users file to non-respository directory
+* Moved the ```faa-users``` file to non-respository directory
 * Thanks to @tylerthetiger for the issue
 
 ## 1.22.1
@@ -38,11 +41,11 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 ## 1.22.0
 * Removed the online/offline functionality (wasn't doing anything at this time - might revisit later)
 * Added recover-account functionality for accounts that are disabled to recover
-* Added /recover-account.php
-* Added /do/recover-account-do.php
-* Added recoverAccount() function to api-v1.php
-* Added emails/ folder to hold email templates
-* Created emails/recover-account-mail.php email template
+* Added ```/recover-account.php```
+* Added ```/do/recover-account-do.php```
+* Added recoverAccount() function to ```api-v1.php```
+* Added ```emails/``` folder to hold email templates
+* Created ```emails/recover-account-mail.php``` email template
 
 ## 1.21.2
 * Added close button to Chit List Modal
@@ -107,28 +110,28 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 * Removed reCAPTCHA v3 from all pages due to multiple false positives (One is too many)
 
 ## 1.14.1
-* Fixed typo in verification.js where it wouldn't catch name/email
+* Fixed typo in ```verification.js``` where it wouldn't catch name/email
 
 ## 1.14.0
 * Added reCAPTCHA to all pages
 * Finished verifyRecaptcha()
-* Finished do/recaptcha
+* Finished ```do/recaptcha```
 * Updated verifyRecaptcha to add the score to the loging. PROBLEM with this is that if there is rapid succession logging, then scores are not logged. 2 COAs are either to turn logging into a database, log all recaptcha scores as its own line, or create a whole new log with recaptcha scores
 
 ## 1.13.0
 * Added reCAPTCHA v3 to login page
-* Added do/recaptcha to handle secure token passage to API
+* Added ```do/recaptcha``` to handle secure token passage to API
 * Added verifyRecaptcha() function to API to send token to Google
 * Created Google reCAPTCHA license page and added to About menu
 * Added Google license to login page
 * Removed mySQL credentials from API
-* Created keys/recaptcha credentials page
-* Created keys/mysql credentials page
-* Updated login page where if a user navigated to /login and they are already authenticated, they would go to /my-scenarios OR /cas if they were referred
+* Created ```keys/recaptcha``` credentials page
+* Created ```keys/mysql``` credentials page
+* Updated login page where if a user navigated to ```/login``` and they are already authenticated, they would go to ```/my-scenarios``` OR ```/cas``` if they were referred
 
 ## 1.12.2
-* Fixed broken links in /do/contact-do where it was still sending responses to contact.php, now references talk-to-me correctly
-* Updated note in login.php so people understand better that an account is NOT required
+* Fixed broken links in ```/do/contact-do.php``` where it was still sending responses to ```contact.php```, now references ```talk-to-me.php``` correctly
+* Updated note in ```login.php``` so people understand better that an account is NOT required
 
 ## 1.12.1
 * Updated admin-iplog to have link to view location of user's authenticated IP addresses 
@@ -158,7 +161,7 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 * Removed PayPal link. It hasn't ever been used to donate and presents a vulnerability by releasing personal email address.
 
 ## 1.9.8.1
-* Changed name of Contact page from "contact.php" to "talk-to-me.php" in an attempt to confuse spam bots looking for contact forms.
+* Changed name of Contact page from ```contact.php``` to ```talk-to-me.php``` in an attempt to confuse spam bots looking for contact forms.
 
 ## 1.9.8
 * Added an account counter in admin-users
@@ -189,7 +192,7 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 ## 1.9.0
 * Added Friendly/Hostile/Threat tables at bottom of map
-* Updated cas-leaflet.js to handle adding/removing of markers to the new tables
+* Updated ```cas-leaflet.js``` to handle adding/removing of markers to the new tables
 * Updated save/load functions to handle adding/removing of markers to the new tables
 * Added ID number to marker options
 * Updated scenario version to v3
@@ -197,12 +200,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 * Requested by SPAWN/PINCH
 
 ## 1.8.4
-* Add LICENSE.md for github purposes
+* Add ```LICENSE.md``` for github purposes
 
 ## 1.8.3
-* Update security in /opt/bitnami/apache2/conf/httpd.conf
+* Update security in ```/opt/bitnami/apache2/conf/httpd.conf```
 * Create list of blacklisted IPs and deny access
-* Add WX.php to start weather gonkulating
+* Add ```WX.php``` to start weather gonkulating
 
 ## 1.8.2
 * Remove old logging functions from API/Do pages
@@ -215,10 +218,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 * Updated logging functions to use JSON notation
 * Edited CAS scenario permissions to allow anyone to view any other CAS scenario as long as they are logged in
 * Removed erroneous sanitizeInput functions in API
-* Removed test pages from public_html
+* Removed test pages from ```public_html```
 * Removed bug where navbar attempted to get user's name even if they are not logged in
-* Created admin-view-log page
-* Created admin-logs page
+* Created ```admin-view-log``` page
+* Created ```admin-logs``` page
 
 ## 1.7.0
 * Move to a self-hosted version of Font Awesome to avoid any TIMEOUT issues on NIPR where icons couldn't load.
@@ -227,7 +230,7 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 * Remove "Known Issues" card from index
 
 ## 1.6.0
-* Update leaflet-ruler.js to show both NM and meters
+* Update ```leaflet-ruler.js``` to show both NM and meters
 * Add "Known Issues" card to index
 
 ## 1.5.4
@@ -245,10 +248,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 ## 1.5.1
 * Updated My Scenarios page to add a share button
 * Created Share modal to handle sharing of scenarios
-* Updated validation.js to handle new form validation
+* Updated ```validation.js``` to handle new form validation
 * Updated API to add getUserNameByEmail, getUserEmailByID
-* Updated login.php to handle scenario parameter
-* Updated cas.php to handle scenario and share parameter
+* Updated ```login.php``` to handle scenario parameter
+* Updated ```cas.php``` to handle scenario and share parameter
 
 ## 1.5.0
 * Added user accounts
@@ -275,26 +278,26 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 ## 1.3.1
 * Added show/hide title buttons
-* Updated cas-leaflet.js to handle the showing/hiding of titles
+* Updated ```cas-leaflet.js``` to handle the showing/hiding of titles
 * Requested by GOV
 
 ## 1.3.0
 * Added Building label chit
 * Added listeners/handlers for building label
-* Updated cas-leaflet.js to handle building label
+* Updated ```cas-leaflet.js``` to handle building label
 * Requested by JTACs
 
 ## 1.2.1
 * Updated 15-Line formatting
-* Updated cas-leaflet.js to handle new 15-Line
+* Updated ```cas-leaflet.js``` to handle new 15-Line
 
 ## 1.2.0
-* Added Leaflet.GeometryUtil.js - Used to get bearing between 2 points
+* Added ```Leaflet.GeometryUtil.js``` - Used to get bearing between 2 points
 * Updated styling
 * Bug fixes
 * Added 9-Line modals
 * Added 15-Line modals
-* Updated cas-leaflet.js to handle additional functions
+* Updated ```cas-leaflet.js``` to handle additional functions
 
 ## 1.1.1
 * Added SRV Chit
