@@ -7,7 +7,7 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 # Change Log
 
 ## 1.24.0
-* Removed all of ```VERSION 1.23.0```, Could not get Leavlet FileLayer to function due to some compatibility issues, will re-attack with a new plugin.
+* Removed all of ```VERSION 1.23.0```, Could not get Leaflet FileLayer to function due to some compatibility issues, will re-attack with a new plugin.
 * Updated license attribution
 
 ## 1.23.2
