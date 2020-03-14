@@ -105,7 +105,7 @@
 				break;
 			case $API_LOGIN_ACCOUNT_DISABLED:
 			case $API_LOGIN_DISABLING_ACCOUNT:
-				$text = "Your account is disabled due to too many failed login attempts. <a href=\"talk-to-me\" class=\"alert-link\">Contact Us</a> to recover your account.";
+				$text = "Your account is disabled due to too many failed login attempts. <a href=\"recover-account\" class=\"alert-link\">Click here</a> to recover your account.";
 				break;
 			// SAVE SCENARIO
 			case $API_SAVE_SCENARIO_USER_ID_NOT_RECEIVED:
@@ -228,7 +228,7 @@
 			//-------------------------------
 			// 408xx RECOVER-ACCOUNT-DO.PHP
 			//-------------------------------
-			case $DO_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVIED:
+			case $DO_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVED:
 				$text = "Email address was not received.";
 				break;
 			case $DO_RECOVER_ACCOUNT_EMAIL_NOT_SENT:

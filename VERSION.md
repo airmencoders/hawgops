@@ -6,6 +6,28 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.27.0
+* Updated ```/my-scenarios.php``` to flex-wrap each list scenario item to make it look better on smaller screens
+* Updated ```/do/recover-account-do.php``` To properly encode HTML email as UTF-8
+* Created Recover Account Email template (Used for disabled accounts)
+* Created Share Scenario Email template
+* Created Account Details Changed email template
+* Updated variable MySQL Variable names
+* Updated multiple functions in ```API``` allowing for the account recovery process to function properly
+* Updated ```do/reset-password-do.php``` to work the password reset function
+* Password Recovery Function
+1. User is locked out or forgets password, goes to ```/recover-account```
+2. User enters email address, that information goes to ```/do/recover-account-do.php```, email is sent to user (if account exists)
+3. User gets email, clicks on link back to ```/recover-account```, token is validated 
+4. User inputs new passwords, this is sent to the ```/do/reset-password.php``` script to be validated and change the password
+5. Email is sent to user that account details were changed and password is reset and account is enabled.
+**TODO**
+* Clean up API, looks like a lot of things that could be re-written or compartmentalized better
+* Potentially get rid of the scripts in the ```/do/``` directory and instead, have the POST data go to the calling file
+* Work for more / better authentication, usage of flags for API functions so that things that could and should have protections for only allowing accounts/admin to have access to should.
+* Write the CRON script that will clean out stale reset pass tokens every hour
+* Update ```alert-container.php``` so that new codes are included
+
 ## 1.26.0
 * Okay, so this is what was decided...
 * Removed Leaflet KML plugin and references

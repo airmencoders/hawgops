@@ -146,6 +146,7 @@ function validateCreateAccountForm() {
 		response = false;
 	} else {
 		$("#confirm-password").addClass("is-valid");
+		$("#confirm-feedback").html("");
 	}
 	
 	if(!policies) {
@@ -214,7 +215,63 @@ function validateChangePasswordForm() {
 		response = false;
 	} else {
 		$("#confirm-password").addClass("is-valid");
+		$("#confirm-feedback").html("");
 	}			
+
+	return response;
+}
+
+function validateRecoverAccountForm() {
+	var newPassword = $("#new-password").val();
+	var confirmPassword = $("#confirm-password").val();
+	var response = true;
+
+	$("#new-password").removeClass("is-invalid");
+	$("#new-password").removeClass("is-valid");
+	$("#new-password-feedback").html("");
+	$("#confirm-password").removeClass("is-invalid");
+	$("#confirm-password").removeClass("is-valid");
+	$("#confirm-password-feedback").html("");
+
+	var upperPattern = new RegExp("[A-Z]");
+	var lowerPattern = new RegExp("[a-z]");
+	var numberPattern = new RegExp("[0-9]");
+	var specialPattern = new RegExp("[!@#$%^&*]");
+
+	var uppercase = upperPattern.test(newPassword);
+	var lowercase = lowerPattern.test(newPassword);
+	var number = numberPattern.test(newPassword);
+	var special = specialPattern.test(newPassword);
+	
+	if(newPassword == "") {
+		$("#new-password").addClass("is-invalid");
+		$("#new-password-feedback").html("Password is required.");
+		response = false;
+	} else if(newPassword.length < 8) {
+		$("#new-password").addClass("is-invalid");
+		$("#new-password-feedback").html("Password is too short.");
+		response = false;
+	} else if(!uppercase || !lowercase || !number || !special) {
+		$("#new-password").addClass("is-invalid");
+		$("#new-password-feedback").html("Password is too simple.");
+		response = false;
+	} else {
+		$("#new-password").addClass("is-valid");
+		$("#new-password-feedback").html("");
+	}
+
+	if(confirmPassword == "") {
+		$("#confirm-password").addClass("is-invalid");
+		$("#confirm-password-feedback").html("You must confirm your new password.");
+		response = false;
+	} else if(confirmPassword != newPassword) {
+		$("#confirm-password").addClass("is-invalid");
+		$("#confirm-password-feedback").html("Passwords do not match.");
+		response = false;
+	} else {
+		$("#confirm-password").addClass("is-valid");
+		$("#confirm-password-feedback").html("");
+	}
 
 	return response;
 }

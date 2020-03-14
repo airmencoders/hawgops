@@ -51,9 +51,9 @@
 						</div>
 						<button type="submit" class="btn btn-block btn-primary mt-2">Login</button>
 					</form>
-					<!--<div class="text-center mt-2">
-						<a href="/forgot-password">Forgot Password?</a>
-					</div>-->
+					<div class="text-center mt-2">
+						<a href="/recover-account">Forgot Password?</a>
+					</div>
 				</div>
 				<div class="card-footer">
 					<a class="btn btn-block btn-success" href="/create-account" role="button">Create Account</a>

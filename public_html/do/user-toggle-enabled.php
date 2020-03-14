@@ -28,7 +28,7 @@
 	}
 	
 	if($_POST["action"] == "enable") {
-		$api_response = enableAccount($_POST["user"]);
+		$api_response = enableAccount($_POST["user"], false, null, null);
 		header("Location: /admin-users?s=$api_response");
 		closeLogs();
 	} else if($_POST["action"] == "disable") {

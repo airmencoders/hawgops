@@ -29,15 +29,92 @@ if(!$logFile) {
 //==============================================================
 
 /**
- * changePassword
+ * changePassword()
  *
  * @param String $id User ID
- * @param String $password User password
+ * @param String $email User Email (Only used when resetting the password from a recoverAccount situation)
+ * @param String $newPassword User password
  *
  * @return Integer Status code
  */
-function changePassword($id, $password) {
-	
+function changePassword($id, $email, $token, $newPassword) {
+	global $db;
+	global $tbl_reset;
+	global $tbl_users;
+	global $col_reset_email;
+	global $col_user_id;
+	global $col_user_password;
+
+	global $API_CHANGE_PASSWORD_KEYS_NOT_RECEIVED;
+	global $API_CHANGE_PASSWORD_TOKEN_NOT_RECEIVED;
+	global $API_CHANGE_PASSWORD_NEW_PASSWORD_NOT_RECEIVED;
+	global $API_CHANGE_PASSWORD_COULD_NOT_GET_USER_ID;
+	global $API_CHANGE_PASSWORD_COULD_NOT_ENABLE_ACCOUNT;
+	global $API_CHANGE_PASSWORD_PASSWORD_CHANGED;
+	global $API_ENABLE_ACCOUNT_ACCOUNT_ENABLED;
+	global $ERROR_MYSQL;
+
+	if((!isset($id) || $id == "") && (!isset($email) || $email == "")) {
+		createLog("warning", $API_CHANGE_PASSWORD_KEYS_NOT_RECEIVED, "API", "changePassword", "Data not received", "Email Address and User ID");
+		return $API_CHANGE_PASSWORD_KEYS_NOT_RECEIVED;
+	}
+
+	if(isset($email) && $email != "") {
+		if(!isset($token) || $token == "") {
+			createLog("warning", $API_CHANGE_PASSWORD_TOKEN_NOT_RECEIVED, "API", "changePassword", "Data not received", "Token");
+			return $API_CHANGE_PASSWORD_TOKEN_NOT_RECEIVED;
+		}
+	}
+
+	if(!isset($newPassword) || $newPassword == "") {
+		createLog("warning", $API_CHANGE_PASSWORD_NEW_PASSWORD_NOT_RECEIVED, "API", "changePassword", "Data not received", "New Password");
+		return $API_CHANGE_PASSWORD_NEW_PASSWORD_NOT_RECEIVED;
+	}
+
+	// Assume that we've already done the work to confirm the email and token by this point
+	if(isset($email)) {
+				// Re-enable the user's account
+		// First get the user ID (this assumes that $id is null because this occurs when in a recover-account status)
+		$id = getUserIDByEmail($email);
+		if(is_numeric($id)) {
+			createLog("warning", $API_CHANGE_PASSWORD_COULD_NOT_GET_USER_ID, "API", "changePassword", "Recovering account, could not get user's ID to re-enable account", "Email:[$email] // Code: [$id]");
+			return $id; // Return whatever getUserIDByEmail() returned
+		}
+
+		$enabled = enableAccount($id, true, $email, $token);
+		if($enabled != $API_ENABLE_ACCOUNT_ACCOUNT_ENABLED) {
+			createLog("warning", $API_CHANGE_PASSWORD_COULD_NOT_ENABLE_ACCOUNT, "API", "changePassword", "Recovering account, could not enable user's account", "Email: [$email] // ID: [$id] // Code: [$enabled]");
+			return $enabled; // Return whatever enableAccount() returned
+		}
+
+		// Remove the user's token from the database
+		$query = "DELETE FROM $tbl_reset WHERE $col_reset_email = ?";
+		if($statement = $db->prepare($query)) {
+			$statement->bind_param("s", $email);
+			$statement->execute();
+			$statement->close();
+		} else {
+			createLog("danger", $ERROR_MYSQL, "API", "changePassword", "Failed to prepare query", $db->error." (".$db->errno.")");
+			return $ERROR_MYSQL;
+		}
+	}
+
+	// Assuming at this point that either the recover-password-do or the change-password-do have already enforced password rules
+	$password = password_hash($newPassword, PASSWORD_DEFAULT);
+
+	// Change the password
+	// By this point, $id is either set from the function, or set when doing all the previous information with the getUserIDByEmail() function
+	$query = "UPDATE $tbl_users SET $col_user_password = ? WHERE $col_user_id = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("ss", $password, $id);
+		$statement->execute();
+		$statement->close();
+
+		return $API_CHANGE_PASSWORD_PASSWORD_CHANGED;
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "changePassword", "Failed to prepare query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
 }
 
 /** 
@@ -324,7 +401,7 @@ function disableAccount($uid) {
  *
  * Enable's a user's account
  */
-function enableAccount($uid) {
+function enableAccount($uid, $recoveryMode, $email, $token) {
 	global $db;
 	global $tbl_users;
 	global $col_user_id;
@@ -332,17 +409,47 @@ function enableAccount($uid) {
 	
 	global $API_ENABLE_ACCOUNT_ACCOUNT_ENABLED;
 	global $API_ENABLE_ACCOUNT_ID_NOT_RECEIVED;
+	global $API_ENABLE_ACCOUNT_MODE_NOT_SET;
+	global $API_ENABLE_ACCOUNT_EMAIL_NOT_RECEIVED;
+	global $API_ENABLE_ACCOUNT_TOKEN_NOT_RECEIVED;
+	global $API_VALIDATE_RECOVERY_TOKEN_TOKEN_VALID;
+	global $API_ENABLE_ACCOUNT_INVALID_TOKEN;
 	global $ERROR_UNAUTHORIZED;
 	global $ERROR_MYSQL;
 	
-	if(!isAdmin()) {
-		createLog("warning", $ERROR_UNAUTHORIZED, "API", "enableAccount", "User not authorized to enable accounts", getUserEmailByID($_SESSION["id"]));
-		return $ERROR_UNAUTHORIZED;
+
+	if(!isset($recoveryMode)) {
+		createLog("warning", $API_ENABLE_ACCOUNT_MODE_NOT_SET, "API", "enableAccount", "Recovery mode not set", "-");
+		return $API_ENABLE_ACCOUNT_MODE_NOT_SET;
 	}
-	
-	if(!isset($uid) || $uid == "") {
-		createLog("warning", $API_ENABLE_ACCOUNT_ID_NOT_RECEIVED, "API", "enableAccount", "Data not received", "User ID");
-		return $API_ENABLE_ACCOUNT_ID_NOT_RECEIVED;
+
+	if($recoveryMode) {
+		if(!isset($email) || $email == "") {
+			createLog("warning", $API_ENABLE_ACCOUNT_EMAIL_NOT_RECEIVED, "API", "enableAccount", "[RECOVERY MODE] Data not received", "Email Address");
+			return $API_ENABLE_ACCOUNT_EMAIL_NOT_RECEIVED;
+		}
+
+		if(!isset($token) || $token == "") {
+			createLog("warning", $API_ENABLE_ACCOUNT_TOKEN_NOT_RECEIVED, "API", "enableAccount", "[RECOVERY MODE] Data not received", "Token");
+			return $API_ENABLE_ACCOUNT_TOKEN_NOT_RECEIVED;
+		}
+
+		// validate the token
+		$validToken = validateRecoveryToken($email, $token);
+		if($validToken != $API_VALIDATE_RECOVERY_TOKEN_TOKEN_VALID) {
+			createLog("warning", $API_ENABLE_ACCOUNT_INVALID_TOKEN, "API", "enableAccount", "[RECOVERY MODE] Invalid token combination", "Email: [$email] // Token: [$token] // Code: [$validToken]");
+			return $validToken;
+		}
+	} else {
+		if(!isAdmin()) {
+			createLog("warning", $ERROR_UNAUTHORIZED, "API", "enableAccount", "User not authorized to enable accounts", getUserEmailByID($_SESSION["id"]));
+			return $ERROR_UNAUTHORIZED;
+		}
+		
+		if(!isset($uid) || $uid == "") {
+			createLog("warning", $API_ENABLE_ACCOUNT_ID_NOT_RECEIVED, "API", "enableAccount", "Data not received", "User ID");
+			return $API_ENABLE_ACCOUNT_ID_NOT_RECEIVED;
+		}
 	}
 	
 	$query = "UPDATE $tbl_users SET $col_user_disabled = 0 WHERE $col_user_id = ?";
@@ -533,10 +640,12 @@ function getUserEmailByID($uid) {
 		return $API_GET_USER_EMAIL_BY_ID_ID_NOT_RECEIVED;
 	}
 	
+	/*
 	if(!isAdmin() && $uid != $_SESSION["id"]) {
-		createLog("warning", $ERROR_UNAUTHORIZED, "API", "getUserEmailByID", "User unauhtorized to view other email addresses", getUserEmailByID($_SESION["id"]));
+		createLog("warning", $ERROR_UNAUTHORIZED, "API", "getUserEmailByID", "User unauthorized to view other email addresses", getUserEmailByID($_SESION["id"]));
 		return $ERROR_UNAUTHORIZED;
 	}
+	*/
 	
 	$query = "SELECT $col_user_email FROM $tbl_users WHERE $col_user_id = ?";
 	if($statement = $db->prepare($query)) {
@@ -558,6 +667,40 @@ function getUserEmailByID($uid) {
 	}
 }
 
+function getUserIDByEmail($email) {
+	global $db;
+	global $tbl_users;
+	global $col_user_id;
+	global $col_user_email;
+
+	global $API_GET_USER_ID_BY_EMAIL_EMAIL_NOT_RECEIVED;
+	global $API_GET_USER_ID_BY_EMAIL_ACCOUNT_DOES_NOT_EXIST;
+	global $ERROR_MYSQL;
+
+	if(!isset($email) || $email == "") {
+		createLog("warning", $API_GET_USER_ID_BY_EMAIL_EMAIL_NOT_RECEIVED, "API", "getUserIDByEmail", "Data not received", "Email address");
+		return $API_GET_USER_ID_BY_EMAIL_EMAIL_NOT_RECEIVED;
+	}
+
+	// Not going to enforced logged in / admin at this point because this is called when trying to recover account
+	$query = "SELECT $col_user_id FROM $tbl_users WHERE $col_user_email = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $email);
+		$statement->execute();
+		$statement->bind_result($db_user_id);
+		if($statement->fetch() == null) {
+			$statement->close();
+			createLog("warning", $API_GET_USER_ID_BY_EMAIL_ACCOUNT_DOES_NOT_EXIST, "API", "getUserIDByEmail", "Account does not exist for Email Address Provided", "[$email]");
+			return $API_GET_USER_ID_BY_EMAIL_ACCOUNT_DOES_NOT_EXIST;
+		}
+		$statement->close();
+		return $db_user_id;
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "getUserIDByEmail", "Failed to prepare query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
+}
+
 function getUserNameByEmail($email) {
 	global $db;
 	global $tbl_users;
@@ -576,11 +719,12 @@ function getUserNameByEmail($email) {
 	}
 	
 	// Don't check for admin as this is called when sharing a scenario
-	if(!isLoggedIn()) {
+	// Called when not logged in when trying to recover the account
+	/*if(!isLoggedIn()) {
 		createLog("warning", $ERROR_UNAUTHORIZED, "API", "getUserNameByEmail", "User Not logged in", "-");
 		//return $ERROR_UNAUTHORIZED;
 		return array("fname"=>"", "lname"=>"");
-	}
+	}*/
 	
 	$query = "SELECT $col_user_fname, $col_user_lname FROM $tbl_users WHERE $col_user_email = ?";
 	if($statement = $db->prepare($query)) {
@@ -978,11 +1122,14 @@ function logout() {
 function recoverAccount($email) {
 	global $db;
 	global $tbl_users;
+	global $tbl_reset;
 	global $col_user_email;
+	global $col_reset_id;
+	global $col_reset_email;
+	global $col_reset_token;
 
-	global $API_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVED;
 	global $API_RECOVER_ACCOUNT_ACCOUNT_DOES_NOT_EXIST;
-	global $API_RECOVER_ACCOUNT_ACCOUNT_EXISTS;
+	global $API_RECOVER_ACCOUNT_EMAIL_NOT_RECEIVED;
 	global $ERROR_MYSQL;
 
 	if(!isset($email) || $email == "") {
@@ -1000,26 +1147,56 @@ function recoverAccount($email) {
 			createLog("warning", $API_RECOVER_ACCOUNT_ACCOUNT_DOES_NOT_EXIST, "API", "recoverAccount", "Account Does Not Exist", "[$email]");
 			return $API_RECOVER_ACCOUNT_ACCOUNT_DOES_NOT_EXIST;
 		}
+		$statement->close();
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "recoverAccount", "Failed to prepare query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
+
+	// Create a token for the database
+	$token = createKey();
+	$tokenID = createKey();
+
+	// Check to see if a reset password token already exists
+	$tokenExists = false;
+	$query = "SELECT $col_reset_id FROM $tbl_reset WHERE $col_reset_email = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $email);
+		$statement->execute();
+		$statement->bind_result($db_reset_id);
+		if($statement->fetch() == null) {
+			$tokenExists = false;
+		} else {
+			$tokenExists = true;
+		}
+		$statement->close();
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "recoverAccount", "Failed to prepare query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
+
+	// Update or insert the token
+	// No need to update the created column becuase the SQL is set up to CURRENT_TIMESTAMP on UPDATE and the default value is CURRENT_TIMESTAMP 
+	if($tokenExists) {
+		$query = "UPDATE $tbl_reset SET $col_reset_token = ? WHERE $col_reset_email = ?";
+	} else {
+		$query = "INSERT INTO $tbl_reset ($col_reset_id, $col_reset_email, $col_reset_token) VALUES (?, ?, ?)"; 
+	}
+	if($statement = $db->prepare($query)) {
+		if($tokenExists) {
+			$statement->bind_param("ss", $token, $email);
+		} else {
+			$statement->bind_param("sss", $tokenID, $email, $token);
+		}
+		$statement->execute();
+		$statement->close();
 	} else {
 		createLog("danger", $ERROR_MYSQL, "API", "recoverAccount", "Failed to prepare query", $db->error." (".$db->errno.")");
 		return $ERROR_MYSQL;
 	}
 
 	// Email is going to be sent from the recover-account-do file
-	return $API_RECOVER_ACCOUNT_ACCOUNT_EXISTS;
-}
-
-/**
- * resetPassword
- *
- * @param String $id User ID
- * @param String $password New Password
- *
- * @return Integer Status code
- *
- * Validates Reset Password Token and changes password
- */
-function resetPassword($id, $password) {
+	return $token;
 }
 
 function revokeAdmin($uid) {
@@ -1128,6 +1305,74 @@ function saveScenario($id, $name, $data) {
  * @param String $data Scenario Data
  */
 function updateScenario($uid, $sid, $name, $date, $data) {
+}
+
+function validateRecoveryToken($email, $token) {
+	global $db;
+	global $tbl_reset;
+	global $col_reset_id;
+	global $col_reset_email;
+	global $col_reset_token;
+	global $col_reset_created;
+
+	global $ERROR_MYSQL;
+	global $API_VALIDATE_RECOVERY_TOKEN_EMAIL_NOT_RECEIVED;
+	global $API_VALIDATE_RECOVERY_TOKEN_TOKEN_NOT_RECEIVED;
+	global $API_VALIDATE_RECOVERY_TOKEN_COMBINATION_DOES_NOT_EXIST;
+	global $API_VALIDATE_RECOVERY_TOKEN_TOKEN_EXPIRED;
+	global $API_VALIDATE_RECOVERY_TOKEN_TOKEN_VALID;
+
+	if(!isset($email) || $email == "") {
+		createLog("warning", $API_VALIDATE_RECOVERY_TOKEN_EMAIL_NOT_RECEIVED, "API", "validateRecoveryToken", "Data not received", "Email address");
+		return $API_VALIDATE_RECOVERY_TOKEN_EMAIL_NOT_RECEIVED;
+	}
+
+	if(!isset($token) || $token == "") {
+		createLog("warning", $API_VALIDATE_RECOVERY_TOKEN_TOKEN_NOT_RECEIVED, "API", "validateRecoveryToken", "Data not received", "Token");
+		return $API_VALIDATE_RECOVERY_TOKEN_TOKEN_NOT_RECEIVED;
+	}
+
+	// Select the ID and the creation date for the token
+	// I don't need to reselect the email and the token
+	$query = "SELECT $col_reset_id, $col_reset_created FROM $tbl_reset WHERE $col_reset_email = ? AND $col_reset_token = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("ss", $email, $token);
+		$statement->execute();
+		$statement->bind_result($db_reset_id, $db_reset_created);
+		if($statement->fetch() == null) {
+			$statement->close();
+			createLog("warning", $API_VALIDATE_RECOVERY_TOKEN_COMBINATION_DOES_NOT_EXIST, "API", "validateRecoveryToken", "Invalid token combination", "[$email] // [$token]");
+			return $API_VALIDATE_RECOVERY_TOKEN_COMBINATION_DOES_NOT_EXIST;
+		} else {
+			$statement->close();
+		}
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "validateRecoveryToken", "Failed to prepare the query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
+
+	// The combination of the email address and the token are correct, so now we check that it is still valid
+	$current_time = time();
+	$check_time = strtotime("+30 minutes", strtotime($db_reset_created));
+
+	// If Current time is > 30 minutes beyond the created time
+	if ($current_time > $check_time) {
+		// Remove the database entry
+		$query = "DELETE FROM $tbl_reset WHERE $col_reset_id = ?";
+		if($statement = $db->prepare($query)) {
+			$statement->bind_param("s", $db_reset_id);
+			$statement->execute();
+			$statement->close();
+
+			createLog("warning", $API_VALIDATE_RECOVERY_TOKEN_TOKEN_EXPIRED, "API", "validateRecoveryToken", "Token Expired", "[$email]");
+			return $API_VALIDATE_RECOVERY_TOKEN_TOKEN_EXPIRED;
+		} else {
+			createLog("danger", $ERROR_MYSQL, "API", "validateRecoveryToken", "Failed to prepare query", $db->error." (".$db->errno.")");
+			return $ERROR_MYSQL;			
+		}
+	} else {
+		return $API_VALIDATE_RECOVERY_TOKEN_TOKEN_VALID;
+	}
 }
 
 /**
