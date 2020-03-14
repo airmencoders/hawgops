@@ -33,13 +33,12 @@
 		closeLogs();
 	}
 	
-	$sender = "hawg.ops@gmail.com";
-	$fromEmail = getUserEmailByID($_SESSION["id"]);
-	$fromName = getUserNameByEmail($fromEmail);
+	$from = "hawg.ops@gmail.com";
+	$fromName = getUserNameByID($_SESSION["id"]);
 	
 	if($fromName["fname"] == "") {
 		createLog("warning", "-", "DO", "shareScenario", "Unable to get name of sender", "-");
-		$fromName["fname"] = "Hawg Ops";
+		$fromName["fname"] = "A user";
 	}
 	
 	$toEmail = $_POST["email-share"];
@@ -47,15 +46,19 @@
 	
 	if($toName["fname"] == "") {
 		createLog("warning", "-", "DO", "shareScenario", "Unable to get name of recipient", "-");
-		$toName["fname"] = "Hello";
+		$toName["fname"] = "Greetings";
 	}
-	$subject = $fromName["fname"]." shared a CAS Scenario with you";
-	$message = "<p>".$toName["fname"].",<br/><br/>".$fromName["fname"]." shared their CAS scenario ".$_POST["scenario-name"]." with you. Click on or copy/paste the link below to view the scenario. Note that you must be logged into Hawg Ops in order to view the scenario.<br/><br/><a href=\"https://hawg-ops.com/cas?scenario=".$_POST["share-scenario-id"]."&share=1\">https://hawg-ops.com/cas?scenario=".$_POST["share-scenario-id"]."&share=1</a><br/><br/>Hawg Ops</p>";
+
+	$full_message = file_get_contents("../../req/emails/share-scenario-template.php");
+	$full_message = str_replace("__SHAREDTO__", $toName["fname"], $full_message);
+	$full_message = str_replace("__SHAREDBY__", $fromName["fname"], $full_message);
+	$full_message = str_replace("__SCENARIOID__", $_POST["share-scenario-id"], $full_message);
+	$full_message = str_replace("__SCENARIONAME__", $_POST["scenario-name"], $full_message);
 	
-	$headers = array("From" => $sender, "To" => $toEmail, "Subject" => $subject);
+	$headers = array("From" => $from, "To" => $toEmail, "Subject" => "Hawg Ops | Scenario Shared With You", "Content-Type" => "text/html; charset=UTF-8");
 	
-	$mime = new Mail_mime(array("eol" => $crlf));
-	$mime->setHTMLBody($message);
+	$mime = new Mail_mime(array("eol" => $crlf, "text_charset" => "UTF-8", "html_charset" => "UTF-8", "head_charset" => "UTF-8"));
+	$mime->setHTMLBody($full_message);
 	
 	$body = $mime->get();
 	$headers = $mime->headers($headers);

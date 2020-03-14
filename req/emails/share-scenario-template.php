@@ -755,7 +755,7 @@
 																					<tr>
 																						<td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; width: 100%; margin: 0; padding: 20px;" align="left">
 																							<div>
-																								<h3 style="margin-top: 0; margin-bottom: 0; font-weight: 500; color: inherit; vertical-align: baseline; font-size: 28px; line-height: 33.6px;" align="left">Greetings,</h3>
+																								<h3 style="margin-top: 0; margin-bottom: 0; font-weight: 500; color: inherit; vertical-align: baseline; font-size: 28px; line-height: 33.6px;" align="left">__SHAREDTO__,</h3>
 																								<table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 																									<tbody>
 																										<tr>
@@ -764,7 +764,7 @@
 																										</tr>
 																									</tbody>
 																								</table>
-																								<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">Christopher has shared a Hawg Ops CAS Scenario with you titled BAF East River Range. Please click on the button below to view the scenario.</p>
+																								<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">__SHAREDBY__ has shared a Hawg Ops CAS Scenario with you titled __SCENARIONAME__. Please click on the button below to view the scenario.</p>
 																								<table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 																									<tbody>
 																										<tr>
@@ -777,7 +777,7 @@
 																									<tbody>
 																										<tr>
 																											<td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-radius: 4px; margin: 0;" align="center" bgcolor="#007bff">
-																												<a href="https://hawg-ops.com/cas?scenario=&amp;share=1" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4px; line-height: 20px; display: inline-block; font-weight: normal; white-space: nowrap; background-color: #007bff; color: #ffffff; padding: 8px 12px; border: 1px solid #007bff;">View Scenario</a>
+																												<a href="https://hawg-ops.com/cas?scenario=__SCENARIOID__&share=1" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4px; line-height: 20px; display: inline-block; font-weight: normal; white-space: nowrap; background-color: #007bff; color: #ffffff; padding: 8px 12px; border: 1px solid #007bff;">View Scenario</a>
 																											</td>
 																										</tr>
 																									</tbody>
@@ -801,7 +801,7 @@
 																									</table>
 																								</div>
 																								<small>If you are having trouble trouble clicking the button, copy and paste the following URL into your web browser.</small>
-																								<a href="https://hawg-ops.com/cas?scenario=&amp;share=1"><small>https://hawg-ops.com/cas?scenario=&amp;share=1</small></a>
+																								<a href="https://hawg-ops.com/cas?scenario=__SCENARIOID__&share=1"><small>https://hawg-ops.com/cas?scenario=__SCENARIOID__&share=1</small></a>
 																								<table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 																									<tbody>
 																										<tr>

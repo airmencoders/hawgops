@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.28.0
+* Update ```/do/share-scenario-do.php``` to use new email template form
+
 ## 1.27.0
 * Updated ```/my-scenarios.php``` to flex-wrap each list scenario item to make it look better on smaller screens
 * Updated ```/do/recover-account-do.php``` To properly encode HTML email as UTF-8
