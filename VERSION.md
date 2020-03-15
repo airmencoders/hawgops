@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.29.0
+* Created new ```CRON``` job: Runs ```/cron/flush-reset-pass-tokens.php``` every hour to clean the database of any stale tokens that are older than 30 minutes.
+* Logs to ```/cron/logs```
+
 ## 1.28.0
 * Update ```/do/share-scenario-do.php``` to use new email template form
 
