@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.29.1
+* Loading a scenario now pans the map to the Lat/Lng of the first item of the scenario (marker/line/EA/Roz/Threat etc...)
+* Changed zoom factor of fly/pan from 13 to 10
+* Added Pilsung range to Korea restricted areas
+* Fixed Korea LLZ-5 errors
+
 ## 1.29.0
 * Created new ```CRON``` job: Runs ```/cron/flush-reset-pass-tokens.php``` every hour to clean the database of any stale tokens that are older than 30 minutes.
 * Logs to ```/cron/logs```

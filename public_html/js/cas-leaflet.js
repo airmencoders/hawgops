@@ -1150,7 +1150,7 @@ function flyToCoordinates() {
 	var longDM = Dms.toLon(ll_posit.lon, "dm", 4);
 
 	// Fly to Lat Lon and zoom in
-	map.flyTo([ll_posit.lat, ll_posit.lon], 13);
+	map.flyTo([ll_posit.lat, ll_posit.lon], 10);
 	
 	var fly_popup = L.popup()
 		.setLatLng([ll_posit.lat, ll_posit.lon])
@@ -1224,6 +1224,8 @@ function loadScenario(input) {
 	
 	// Reset the marker id
 	marker_id = 1;
+
+	var centered = false;
 	
 	if(details.scenario_version == null || details.scenario_version != "3") {
 		alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 3");
@@ -1231,6 +1233,12 @@ function loadScenario(input) {
 	
 	if(threat_markers == null) {					
 		markers.forEach(function(ref) {
+
+			if(!centered) {
+				map.setZoom(10);
+				map.panTo(ref.latlng);
+				centered = true;
+			}
 			// Make the Marker
 			// Marker is a threat
 			if(ref.type == "threat") {
@@ -1332,6 +1340,13 @@ function loadScenario(input) {
 		
 	} else {				
 		threat_markers.forEach(function(ref) {
+
+			if(!centered) {
+				map.setZoom(10);
+				map.panTo(ref.latlng);
+				centered = true;
+			}
+
 			// Make the icon
 			// Preset threat, icon is image
 			if(ref.icon.type == "img") {
@@ -1429,6 +1444,13 @@ function loadScenario(input) {
 	}
 					
 	markers.forEach(function(ref) {
+
+		if(!centered) {
+			map.setZoom(10);
+			map.panTo(ref.latlng);
+			centered = true;
+		}
+
 		// Make the Marker
 		// Marker is a threat
 		if(ref.type == "threat") {
@@ -1517,6 +1539,12 @@ function loadScenario(input) {
 	});
 					
 	ellipses.forEach(function(ref) {
+
+		if(!centered) {
+			map.setZoom(10);
+			map.panTo(ref.latlng);
+			centered = true;
+		}
 		
 		var ellipse_options = {
 			type: ref.type,
@@ -1535,7 +1563,14 @@ function loadScenario(input) {
 		ellipse.on("popupopen", capClicked);
 	});
 	
-	lines.forEach(function(ref) {					
+	lines.forEach(function(ref) {	
+		
+		if(!centered) {
+			map.setZoom(10);
+			map.panTo(ref.latlngs[0]);
+			centered = true;
+		}
+
 		var line_options = {
 			type: ref.type,
 			title: ref.title,
@@ -1560,6 +1595,12 @@ function loadScenario(input) {
 	})
 	
 	polygons.forEach(function(ref) {
+
+		if(!centered) {
+			map.setZoom(10);
+			map.panTo(ref.latlngs[0]);
+			centered = true;
+		}
 		
 		var polygon_options = {
 			type: ref.type,
@@ -1577,7 +1618,14 @@ function loadScenario(input) {
 		polygon.on("popupopen", polygonClicked);
 	});
 	
-	eas.forEach(function(ref) {					
+	eas.forEach(function(ref) {			
+		
+		if(!centered) {
+			map.setZoom(10);
+			map.panTo(ref.latlngs[0][0]);
+			centered = true;
+		}
+
 		var ea_options = {
 			type: ref.type,
 			title: ref.title,
@@ -1594,7 +1642,14 @@ function loadScenario(input) {
 		rectangle.on("popupopen", eaClicked);
 	});
 	
-	rozs.forEach(function(ref) {				
+	rozs.forEach(function(ref) {	
+		
+		if(!centered) {
+			map.setZoom(10);
+			map.panTo(ref.latlng);
+			centered = true;
+		}
+
 		var roz_options = {
 			type: ref.type,
 			title: ref.title,
@@ -1614,7 +1669,6 @@ function loadScenario(input) {
 		circle.on("popupopen", rozClicked);
 	});
 }
-
 
 /**
  *
