@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.29.2
+* Remove old Ops Desk Tools reference in navbar
+
 ## 1.29.1
 * Loading a scenario now pans the map to the Lat/Lng of the first item of the scenario (marker/line/EA/Roz/Threat etc...)
 * Changed zoom factor of fly/pan from 13 to 10
