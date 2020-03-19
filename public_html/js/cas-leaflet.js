@@ -1752,6 +1752,17 @@ function polygonClicked() {
 	});
 }
 
+function printAirspaceKML() {
+	var airspaceGeoJSON = labels_airspace.toGeoJSON();
+	var KML = tokml(airspaceGeoJSON, {
+		name: 'name',
+		description: 'description',
+		DocumentName: 'Hawg Ops Airspace',
+		DocumentDescription: 'MOAs, Restricted Areas, and Warning Areas for use with CAS Planners.'
+	});
+	return KML;
+}
+
 /**
  * Resets the Add 9-Line modal
  */
@@ -2375,4 +2386,4 @@ $(document).ready(function() {
 	});
 });
 
-export {loadScenario, loadKML};
+export {loadScenario, loadKML, printAirspaceKML};

@@ -23,6 +23,9 @@
 				<a class="nav-link <?php echo ($_SERVER["PHP_SELF"] == "/cas.php") ? "active" : ""; ?>" href="/cas">CAS Planner</a>
 			</li>
 			<li class="nav-item">
+				<a class="nav-link <?php echo ($_SERVER["PHP_SELF"] == "/airspace-kml.php") ? "active" : ""; ?>" href="/airspace-kml">Airspace KML</a>
+			</li>
+			<li class="nav-item">
 				<a class="nav-link" href="https://badbirdbook.com" target="_blank">A-10 Bad Bird Book <i class="fas fa-external-link-alt"></i></a>
 			</li>
 		</ul>
@@ -44,8 +47,6 @@
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/my-account.php") ? "active" : ""; ?>" href="/my-account">My Account</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-users.php") ? "active" : ""; ?>" href="/admin-users">Users</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/admin-logs.php") ? "active" : ""; ?>" href="/admin-logs">Logs</a>
-					<a class="dropdown-item" href="https://github.com/chris-m92/hawg-ops" target="_blank">Personal Github</a>
-					<a class="dropdown-item" href="https://github.com/airmencoders/hawgops" target="_blank">AC Github</a>
 					<div class="dropdown-divider"></div>
 					<?php } ?>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/my-scenarios.php") ? "active" : ""; ?>" href="/my-scenarios">My Scenarios</a>
@@ -73,16 +74,9 @@
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses" target="_blank">Licenses</a>
 				</div>
 			</li>
-			<?php /* 
 			<li class="nav-item">
-				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="form-inline">
-					<input type="hidden" name="cmd" value="_donations" />
-					<input type="hidden" name="business" value="DW3ED6VK2DGKW" />
-					<input type="hidden" name="currency_code" value="USD" />
-					<button type="submit" name="submit" class="btn btn-sm btn-dark btn-donate nav-link"><i class="fab fa-2x fa-cc-paypal"></i></button>
-				</form>
+				<a class="nav-link" href="https://github.com/airmencoders/hawgops" target="_blank"><i class="fab fa-2x fa-github"></i></a>
 			</li>
-			*/ ?>
 		</ul>
 	</div>
 </nav>

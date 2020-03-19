@@ -6,6 +6,22 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.30
+* Added Airspace KML Link to Navbar
+* Created ```/airspace-kml.php``` to allow users to download a KML of the current airspace. It takes the javascript, changes it from JS variables to PHP variables and then makes a KML file and outputs it to a downloaded file.
+* Removed ```/google.php``` Privacy Policy / Terms until ReCaptcha v2 is implemented.
+* Added GitHub link to ```/navbar.php```
+* TODO:
+- [] Allow KML upload to all users (not just Admin)
+- [] Rename ```talk-to-me.php``` back to ```contact.php``` and all references
+- [] Add RECAPTCHA v2 to ```contact.php```
+- [] Add RECPATCHA v2 to KML Upload page
+- [] Add RECAPTCHA v2 to ```create-account.php```
+- [] Add RECAPTCHA v2 to ```recover-account.php```
+- [] Figure out why CRON job to remove old reset password tokens isn't working
+- [] Once done with previous CRON job, create a new one to disable/delete old accounts
+
+
 ## 1.29.2
 * Remove old Ops Desk Tools reference in navbar
 
