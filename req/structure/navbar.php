@@ -75,7 +75,7 @@
 				</div>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="https://github.com/airmencoders/hawgops" target="_blank"><i class="fab fa-2x fa-github"></i></a>
+				<a class="nav-link" href="https://github.com/airmencoders/hawgops" target="_blank"><i class="fab fa-github"></i></a>
 			</li>
 		</ul>
 	</div>

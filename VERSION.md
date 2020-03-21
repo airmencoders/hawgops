@@ -6,7 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
-## 1.30
+## 1.30.1
+* Changed size of Github link in Navbar
+
+## 1.30.0
 * Added Airspace KML Link to Navbar
 * Created ```/airspace-kml.php``` to allow users to download a KML of the current airspace. It takes the javascript, changes it from JS variables to PHP variables and then makes a KML file and outputs it to a downloaded file.
 * Removed ```/google.php``` Privacy Policy / Terms until ReCaptcha v2 is implemented.
