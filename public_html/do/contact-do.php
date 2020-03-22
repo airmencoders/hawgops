@@ -51,12 +51,23 @@
 	}
 
 	$to = "hawg.ops@gmail.com";
+
+	$message = filter_var($message, FILTER_SANITIZE_EMAIL);
+
+	$full_message = file_get_contents("../../req/emails/contact-template.php");
+	$full_message = str_replace("__NAME__", $user_name, $full_message);
+	$full_message = str_replace("__EMAIL__", $user_email, $full_message);
+	$full_message = str_replace("__SUBJECT__", $subject, $full_message);
+	$full_message = str_replace("__ALERTLEVEL__", $alertLevel, $full_message);
+	$full_message = str_replace("__ALERTTEXT__", $alertText, $full_message);
+	$full_message = str_replace("__ALERTCOLOR__", $alertColor, $full_message);
+	$full_message = str_replace("__TEXT__", $message, $full_message);
 	
-	$full_message = "<p>$message</p><br/><p><strong>$user_name</strong></p><p>$user_email</p>";
+	//$full_message = "<p>$message</p><br/><p><strong>$user_name</strong></p><p>$user_email</p>";
 	
-	$headers = array("From" => $from, "To" => $to, "Subject" => $subject);
+	$headers = array("From" => $from, "To" => $to, "Subject" => $subject, "Reply-To" => $user_email, "Content-Type" => "text/html; charset=UTF-8");
 	
-	$mime = new Mail_mime(array("eol" => $crlf));
+	$mime = new Mail_mime(array("eol" => $crlf, "text_charset" => "UTF-8", "html_charset" => "UTF-8", "head_charset" => "UTF-8"));
 	$mime->setHTMLBody($full_message);
 	
 	$body = $mime->get();

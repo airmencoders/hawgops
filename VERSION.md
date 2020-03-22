@@ -6,6 +6,14 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.32.0
+* Created ```contact-template.php``` for contact email formatting
+* Modified ```contact-do.php``` to use the new template
+* Added email sanitation to filter out any HTML characters to avoid any injects that shouldn't be there
+
+## 1.31.1
+* Added ```flex-wrap``` class to ```admin-scenarios``` list
+
 ## 1.31.0
 * Updated the Map Overlays
 * Added unique layers for IP/friendly/hostile/survivor/bldg labels

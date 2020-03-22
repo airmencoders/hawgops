@@ -78,7 +78,7 @@
 						<?php
 							foreach($scenarioArray as $scenario) {
 						?>
-						<li class="list-group-item d-flex justify-content-between">
+						<li class="list-group-item d-flex flex-wrap justify-content-between">
 							<?php echo $scenario["name"]." (Created On ".date("d M, Y", strtotime($scenario["date"]))." at ".date("H:i", strtotime($scenario["date"]))." Z)"; ?> 
 							<div id="buttons" class="d-inline">
 								<a class="btn btn-success" href="/cas?scenario=<?php echo $scenario["id"];?>" role="button">Load</a>
