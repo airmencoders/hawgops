@@ -72,6 +72,8 @@
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/privacy.php") ? "active" : ""; ?>" href="./privacy" target="_blank">Privacy Policy</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/cookies.php") ? "active" : ""; ?>" href="./cookies" target="_blank">Cookie Policy</a>
 					<a class="dropdown-item <?php echo ($_SERVER["PHP_SELF"] == "/licenses.php") ? "active" : ""; ?>" href="./licenses" target="_blank">Licenses</a>
+					<div class="dropdown-divider"></div>
+					<div class="dropdown-item">v<?php require("../VERSION.md"); ?></div>
 				</div>
 			</li>
 			<li class="nav-item">
