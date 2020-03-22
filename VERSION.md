@@ -6,6 +6,16 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.31.0
+* Updated the Map Overlays
+* Added unique layers for IP/friendly/hostile/survivor/bldg labels
+* Added unique layers for Drawing objects
+* Updated Show/Hide titles to handle new unique layers
+* Updated Save function (v4) to handle new layers
+* Updated Load function (v4) to handle new layers
+* Gracefully "fails" by still being able to use older scenarios with new unique layers
+* Requested by CLEAVER
+
 ## 1.30.1
 * Changed size of Github link in Navbar
 

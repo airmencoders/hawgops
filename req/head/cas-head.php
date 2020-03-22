@@ -104,6 +104,10 @@
 <script>
 // Create a layer group for markers
 	var layer_markers = L.layerGroup();
+	var layer_bldg_markers = L.layerGroup();
+	var layer_friendly_markers = L.layerGroup();
+	var layer_hostile_markers = L.layerGroup();
+	var layer_survivor_markers = L.layerGroup();
 	var layer_master_threats = L.layerGroup();
 	var layer_threat_markers = L.layerGroup();
 	var layer_threats = L.layerGroup();

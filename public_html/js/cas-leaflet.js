@@ -142,6 +142,10 @@ var drawControl = new L.Control.Draw(draw_control_options);
  * Add them to the map here
  */
 layer_markers.addTo(map);
+layer_bldg_markers.addTo(map);
+layer_friendly_markers.addTo(map);
+layer_hostile_markers.addTo(map);
+layer_survivor_markers.addTo(map);
 layer_master_threats.addTo(map);
 layer_caps.addTo(map);
 layer_lines.addTo(map);
@@ -191,9 +195,17 @@ var label_layers = {
 	"KML": labels_kml,
 	"MGRS Grids": mgrs_grids,
 	"Threat Rings": layer_master_threats,
-	"Chits": layer_markers
+	"Friendly Chits": layer_friendly_markers,
+	"Hostile Chits": layer_hostile_markers,
+	"Survivor Chits": layer_survivor_markers,
+	"IPs": layer_markers,
+	"Bldg Labels": layer_bldg_markers,
+	"CAPs": layer_caps,
+	"FEBA/FLOTs": layer_lines,
+	"Polygons": layer_polygons,
+	"Engagement Areas": layer_eas,
+	"ROZs": layer_rozs
 };
-
 /**
  * Add default basemap, labels, and MGRS grid to map
  * Add Layer control to map
@@ -267,7 +279,7 @@ function addBldgLabel(e) {
 			data: null
 		}
 		
-		var marker = L.marker(ll_posit, marker_options).addTo(layer_markers);
+		var marker = L.marker(ll_posit, marker_options).addTo(layer_bldg_markers);
 		
 		// Attempt to get elevation data
 		// https://nationalmap.gov/epqs/
@@ -466,7 +478,16 @@ function addChit(img_src, ll_posit) {
 			marker_options.type = "chit";
 	}
 
-	var marker = L.marker(ll_posit, marker_options).addTo(layer_markers);
+	if(marker_options.type == "friendly") {
+		var marker = L.marker(ll_posit, marker_options).addTo(layer_friendly_markers);
+	} else if(marker_options.type == "hostile") {
+		var marker = L.marker(ll_posit, marker_options).addTo(layer_hostile_markers);
+	} else if(marker_options.type == "srv") {
+		var marker = L.marker(ll_posit, marker_options).addTo(layer_survivor_markers);
+	} else {
+		// These are the IPs, no reason to really change it right now
+		var marker = L.marker(ll_posit, marker_options).addTo(layer_markers);
+	}
 	
 	// Attempt to get elevation data
 	// https://nationalmap.gov/epqs/
@@ -1182,6 +1203,22 @@ function hideTitles() {
 	layer_markers.eachLayer(function(marker) {
 		marker.unbindTooltip();
 	});
+
+	layer_bldg_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+	});
+
+	layer_friendly_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+	});
+
+	layer_hostile_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+	});
+
+	layer_survivor_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+	});
 }
 
 function loadKML() {
@@ -1214,6 +1251,10 @@ function loadScenario(input) {
 	var input_json = JSON.parse(input);
 	var details = input_json.details;
 	var markers = input_json.markers;
+	var bldg_markers = input_json.bldg_markers;
+	var friendly_markers = input_json.friendly_markers;
+	var hostile_markers = input_json.hostile_markers;
+	var survivor_markers = input_json.survivor_markers;
 	var threat_markers = input_json.threat_markers;
 	var circles = input_json.circles;
 	var ellipses = input_json.ellipses;
@@ -1227,8 +1268,8 @@ function loadScenario(input) {
 
 	var centered = false;
 	
-	if(details.scenario_version == null || details.scenario_version != "3") {
-		alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 3");
+	if(details.scenario_version == null || details.scenario_version != "4") {
+		alert("You loaded an old version of a Hawg Ops CAS Scenario. Some functions may no longer work as desired. Please verify your scenario and re-save. Your version: " + details.scenario_version + ". Current version: 4");
 	}
 	
 	if(threat_markers == null) {					
@@ -1442,7 +1483,8 @@ function loadScenario(input) {
 			$("#threat-table").append(table_text);
 		});
 	}
-					
+	
+	// IPs (or all if using an older save format)
 	markers.forEach(function(ref) {
 
 		if(!centered) {
@@ -1503,7 +1545,17 @@ function loadScenario(input) {
 				data: ref.data
 			};
 			
-			var marker = L.marker(ref.latlng, marker_options).addTo(layer_markers);
+			if(ref.type == "friendly") {
+				var marker = L.marker(ref.latlng, marker_options).addTo(layer_friendly_markers);
+			} else if(ref.type == "hostile") {
+				var marker = L.marker(ref.latlng, marker_options).addTo(layer_hostile_markers);
+			} else if(ref.type == "srv") {
+				var marker = L.marker(ref.latlng, marker_options).addTo(layer_survivor_markers);
+			} else if(ref.type == "bldg_label") {
+				var marker = L.marker(ref.latlng, marker_options).addTo(layer_bldg_markers);
+			} else {
+				var marker = L.marker(ref.latlng, marker_options).addTo(layer_markers);
+			}
 			
 			if(marker.options.type == "hostile") {
 				if(marker.options.data == null) {
@@ -1525,7 +1577,7 @@ function loadScenario(input) {
 			
 			if(ref.type == "div") {
 				$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
-				$(".bldg-label-divicon").css("line-height", ((chit_scale * map.getZoom())) + "px");
+				$(".bldg-label-divicon").css("line-height", (chit_scale * map.getZoom()) + "px");
 			}
 			
 			// Add to the tables at the bottom
@@ -1537,6 +1589,249 @@ function loadScenario(input) {
 			}
 		}
 	});
+
+	if(bldg_markers != null) {
+		bldg_markers.forEach(function(ref) {
+
+			if(!centered) {
+				map.setZoom(10);
+				map.panTo(ref.latlng);
+				centered = true;
+			}
+
+			// Make the Icon
+			var icon = L.divIcon({
+				type: ref.icon.type,
+				html: "<div class=\"bldg-label-divicon-text\">" + ref.title + "</div>",
+				iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()],
+				className: "bldg-label-divicon"
+			});
+
+			if(ref.id === undefined) {
+				var id = marker_id;
+				marker_id++;
+			} else {
+				var id = ref.id;
+				if(ref.id >= marker_id) {
+					marker_id = ref.id + 1;
+				} else {
+					id = marker_id;
+					marker_id++;
+				}
+			}
+
+			// Make the marker
+			var marker_options = {
+				id: id,
+				type: ref.type,
+				icon: icon,
+				title: ref.title,
+				riseOnHover: true,
+				latlng: ref.latlng,
+				mgrs: ref.mgrs,
+				elevation: ref.elevation,
+				data: ref.data
+			};
+
+			// Add marker to the layer
+			var marker = L.marker(ref.latlng, marker_options).addTo(layer_bldg_markers);
+
+			// Create the popup
+			marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+
+			// Bind listener
+			marker.on("popupopen", chitClicked);
+
+			// Do some CSS formatting
+			$(".bldg-label-divicon").css("font-size", (chit_scale * map.getZoom()) / 2);
+			$(".bldg-label-divicon").css("line-height", (chit_scale * map.getZoom()) + "px");
+
+			// DO NOT add Building labels to the chit tables
+		});
+	}
+
+	if(friendly_markers != null) {
+		friendly_markers.forEach(function(ref) {
+			if(!centered) {
+				map.setZoom(10);
+				map.panTo(ref.latlng);
+				centered = true;
+			}
+
+			// Make the Icon
+			var icon = L.icon({
+				type: ref.icon.type,
+				iconUrl: ref.icon.iconUrl,
+				iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()]	
+			});
+
+			// Set the ID
+			if(ref.id === undefined) {
+				var id = marker_id;
+				marker_id++;
+			} else {
+				var id = ref.id;
+				if(ref.id >= marker_id) {
+					marker_id = ref.id + 1;
+				} else {
+					id = marker_id;
+					marker_id++;
+				}
+			}
+
+			// Make the marker
+			var marker_options = {
+				id: id,
+				type: ref.type,
+				icon: icon,
+				title: ref.title,
+				riseOnHover: true,
+				latlng: ref.latlng,
+				mgrs: ref.mgrs,
+				elevation: ref.elevation,
+				data: ref.data
+			};
+
+			// Add to the layer
+			var marker = L.marker(ref.latlng, marker_options).addTo(layer_friendly_markers);
+
+			// Create the popup
+			marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+
+			// Bind the listener
+			marker.on("popupopen", chitClicked);
+
+			// Add to the friendly table
+			var table_text = $("<tr id=\"marker-"+marker.options.id+"\"></tr>").html("<td id=\"marker-"+marker.options.id+"-title\">"+marker.options.title+"</td><td>"+marker.options.mgrs+"</td>");
+
+			$("#friendly-table").append(table_text);
+		});
+	}
+
+	if(hostile_markers != null) {
+		hostile_markers.forEach(function(ref) {
+			
+			// Center the map
+			if(!centered) {
+				map.setZoom(10);
+				map.panTo(ref.latlng);
+				centered = true;
+			}
+
+			// Make the Icon
+			var icon = L.icon({
+				type: ref.icon.type,
+				iconUrl: ref.icon.iconUrl,
+				iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()]
+			});
+
+			// Set the ID
+			if(ref.id === undefined) {
+				var id = marker_id;
+				marker_id++;
+			} else {
+				var id = ref.id;
+				if(ref.id >= marker_id) {
+					marker_id = ref.id + 1;
+				} else {
+					id = marker_id;
+					marker_id++;
+				}
+			}
+
+			// Make the marker
+			var marker_options = {
+				id: id,
+				type: ref.type,
+				icon: icon,
+				title: ref.title,
+				riseOnHover: true,
+				latlng: ref.latlng,
+				mgrs: ref.mgrs,
+				elevation: ref.elevation,
+				data: ref.data
+			};
+
+			// Add to the layer
+			var marker = L.marker(ref.latlng, marker_options).addTo(layer_hostile_markers);
+
+			// Set the popup
+			if(marker.options.data == null) {
+				marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
+			} else {
+				marker.bindPopup("GFC Intent: " + ref.data.gfc_intent + "<br/>Type/Control: " + ref.data.type_control + "<br/>IP/Heading/Distance: " + ref.data.ip_hdg_dist + "<br/>Elevation: " + ref.data.elevation + "<br/>Description: " + ref.data.description + "<br/>Location: " + ref.data.location_data + "<br/>Mark: " + ref.data.mark + "<br/>Friendlies: " + ref.data.friendlies + "<br/>Egress: " + ref.data.egress + "<br/>Remarks/Restrictions: " + ref.data.remarks_restrictions + "<br/>TOT: " + ref.data.tot + "<hr/><button class=\"btn btn-sm btn-warning btn-del-9-line\">Delete 9-Line</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+			}
+
+			// Bind the popup listener
+			marker.on("popupopen", chitClicked);
+
+			// Add to the hostile table
+			var table_text = $("<tr id=\"marker-"+marker.options.id+"\"></tr>").html("<td id=\"marker-"+marker.options.id+"-title\">"+marker.options.title+"</td><td>"+marker.options.mgrs+"</td>");
+			$("#hostile-table").append(table_text);
+
+		});
+	}
+
+	if(survivor_markers != null) {
+		survivor_markers.forEach(function(ref) {
+
+			// Center the map
+			if(!centered) {
+				map.setZoom(10);
+				map.panTo(ref.latlng);
+				centered = true;
+			}
+
+			// Make the Icon
+			var icon = L.icon({
+				type: ref.icon.type,
+				iconUrl: ref.icon.iconUrl,
+				iconSize: [chit_scale * map.getZoom(), chit_scale * map.getZoom()]
+			});
+
+			// Set the ID
+			if(ref.id === undefined) {
+				var id = marker_id;
+				marker_id++;
+			} else {
+				var id = ref.id;
+				if(ref.id >= marker_id) {
+					marker_id = ref.id + 1;
+				} else {
+					id = marker_id;
+					marker_id++;
+				}
+			}
+
+			// Make the marker
+			var marker_options = {
+				id: id,
+				type: ref.type,
+				icon: icon,
+				title: ref.title,
+				riseOnHover: true,
+				latlng: ref.latlng,
+				mgrs: ref.mgrs,
+				elevation: ref.elevation,
+				data: ref.data
+			};
+
+			var marker = L.marker(ref.latlng, marker_options).addTo(layer_survivor_markers);
+
+			// Create the popup
+			if(marker.options.data == null) {
+				marker.bindPopup(ref.title + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control chit-rename\"><button class=\"btn btn-sm btn-warning btn-chit-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-15-line\">Add 15-Line</button>");
+			} else {
+				marker.bindPopup("Callsign/Freq: " + marker.options.data.callsign_freq + "<br/>Number of Objectives: " + marker.options.data.num_objectives + "<br/>Location: " + marker.options.data.mgrs + "<br/>Elevation: " + marker.options.data.elevation + "<br/>Date/Time(Z): " + marker.options.data.dtg + "<br/>Source: " + marker.options.data.source + "<br/>Condition: " + marker.options.data.condition + "<br/>Equipment: " + marker.options.data.equipment + "<br/>PLS/HHRID: " + marker.options.data.pls_hhrid + "<br/>Authentication: " + marker.options.data.authentication + "<br/>Threats: " + marker.options.data.threats + "<br/>PZ Description: " + marker.options.data.pz_description + "<br/>On Scene CC: " + marker.options.data.osc + "<br/>RV/Freq: " + marker.options.data.rv_freq + "<br/>IP/Ingress: " + marker.options.data.ip_ingress + "<br/>Rescort: " + marker.options.data.rescort + "<br/>Objective Area Gameplan: " + marker.options.data.obj_gp + "<br/>Recovery Signal: " + marker.options.data.signal + "<br/>Egress Route: " + marker.options.data.egress_rte + "<hr/><button class=\"btn btn-sm btn-warning btn-del-15-line\">Delete 15-Line</button><button class=\"btn btn-sm btn-danger btn-chit-del\">Delete</button>");
+			}
+
+			// Bind the popup listener
+			marker.on("popupopen", chitClicked);
+
+			// Add to the friendly table
+			$("#friendly-table").append(table_text);
+		});
+	}
 					
 	ellipses.forEach(function(ref) {
 
@@ -1899,10 +2194,15 @@ function saveScenario() {
 	var scenario_details = {
 		classification: "UNCLASSIFIED",
 		date: today,
-		scenario_version: "3"
+		scenario_version: "4"
 	};
 
+	// IPs
 	var scenario_markers = [];
+	var scenario_bldg_markers = [];
+	var scenario_friendly_markers = [];
+	var scenario_hostile_markers = [];
+	var scenario_survivor_markers = [];
 	var scenario_threat_markers = [];
 	var scenario_circles = [];
 	var scenario_ellipses = [];
@@ -1982,6 +2282,142 @@ function saveScenario() {
 		};
 		
 		scenario_markers.push(marker_ref);
+	});
+
+	layer_bldg_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		
+		// Make the icon reference
+		if(marker_icon.options.type == "img") {
+			var icon = {
+				type: marker_icon.options.type,
+				iconUrl: marker_icon.options.iconUrl
+				// iconSize default
+			};
+		} else {
+			var icon = {
+				type: marker_icon.options.type
+				// html uses label
+				// iconSize default
+				// className default
+			};
+		}
+
+		// Make the marker reference
+		var marker_ref = {
+			id: marker.options.id,
+			type: marker.options.type,
+			title: marker.options.title,
+			latlng: marker.getLatLng(),
+			mgrs: marker.options.mgrs,
+			elevation: marker.options.elevation,
+			icon: icon,
+			data: marker.options.data
+		};
+		
+		scenario_bldg_markers.push(marker_ref);
+	});
+
+	layer_friendly_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		
+		// Make the icon reference
+		if(marker_icon.options.type == "img") {
+			var icon = {
+				type: marker_icon.options.type,
+				iconUrl: marker_icon.options.iconUrl
+				// iconSize default
+			};
+		} else {
+			var icon = {
+				type: marker_icon.options.type
+				// html uses label
+				// iconSize default
+				// className default
+			};
+		}
+
+		// Make the marker reference
+		var marker_ref = {
+			id: marker.options.id,
+			type: marker.options.type,
+			title: marker.options.title,
+			latlng: marker.getLatLng(),
+			mgrs: marker.options.mgrs,
+			elevation: marker.options.elevation,
+			icon: icon,
+			data: marker.options.data
+		};
+		
+		scenario_friendly_markers.push(marker_ref);
+	});
+
+	layer_hostile_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		
+		// Make the icon reference
+		if(marker_icon.options.type == "img") {
+			var icon = {
+				type: marker_icon.options.type,
+				iconUrl: marker_icon.options.iconUrl
+				// iconSize default
+			};
+		} else {
+			var icon = {
+				type: marker_icon.options.type
+				// html uses label
+				// iconSize default
+				// className default
+			};
+		}
+
+		// Make the marker reference
+		var marker_ref = {
+			id: marker.options.id,
+			type: marker.options.type,
+			title: marker.options.title,
+			latlng: marker.getLatLng(),
+			mgrs: marker.options.mgrs,
+			elevation: marker.options.elevation,
+			icon: icon,
+			data: marker.options.data
+		};
+		
+		scenario_hostile_markers.push(marker_ref);
+	});
+
+	layer_survivor_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		
+		// Make the icon reference
+		if(marker_icon.options.type == "img") {
+			var icon = {
+				type: marker_icon.options.type,
+				iconUrl: marker_icon.options.iconUrl
+				// iconSize default
+			};
+		} else {
+			var icon = {
+				type: marker_icon.options.type
+				// html uses label
+				// iconSize default
+				// className default
+			};
+		}
+
+		// Make the marker reference
+		var marker_ref = {
+			id: marker.options.id,
+			type: marker.options.type,
+			title: marker.options.title,
+			latlng: marker.getLatLng(),
+			mgrs: marker.options.mgrs,
+			elevation: marker.options.elevation,
+			icon: icon,
+			data: marker.options.data
+		};
+		
+		scenario_survivor_markers.push(marker_ref);
 	});
 
 	layer_caps.eachLayer(function(ellipse) {
@@ -2065,6 +2501,10 @@ function saveScenario() {
 		details: scenario_details,
 		threat_markers: scenario_threat_markers,
 		markers: scenario_markers,
+		bldg_markers: scenario_bldg_markers,
+		friendly_markers: scenario_friendly_markers,
+		hostile_markers: scenario_hostile_markers,
+		survivor_markers: scenario_survivor_markers,
 		ellipses: scenario_ellipses,
 		lines: scenario_lines,
 		polygons: scenario_polygons,
@@ -2146,6 +2586,26 @@ function showTitles() {
 	});
 	
 	layer_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+		marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
+	});
+
+	layer_bldg_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+		marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
+	});
+
+	layer_friendly_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+		marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
+	});
+
+	layer_hostile_markers.eachLayer(function(marker) {
+		marker.unbindTooltip();
+		marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
+	});
+
+	layer_survivor_markers.eachLayer(function(marker) {
 		marker.unbindTooltip();
 		marker.bindTooltip(marker.options.title, {permanent: true,opacity:1.0}).openTooltip();
 	});
