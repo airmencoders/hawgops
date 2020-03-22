@@ -510,6 +510,42 @@ function getScenario($sid) {
 	}
 }
 
+function getScenarioName($sid) {
+	global $db;
+	global $tbl_scenarios;
+	global $col_scenario_id;
+	global $col_scenario_name;
+
+	global $ERROR_MYSQL;
+	global $API_GET_SCENARIO_NAME_SCENARIO_ID_NOT_RECEIVED;
+	global $API_GET_SCENARIO_NAME_SCENARIO_DOES_NOT_EXIST;
+
+	if(!isset($sid) || $sid == "") {
+		createLog("warning", $API_GET_SCENARIO_NAME_SCENARIO_ID_NOT_RECEIVED, "API", "getScenarioName", "Data not received", "Scenario ID");
+		return $API_GET_SCENARIO_NAME_SCENARIO_ID_NOT_RECEIVED;
+	}
+
+	$query = "SELECT $col_scenario_name FROM $tbl_scenarios WHERE $col_scenario_id = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $sid);
+		$statement->execute();
+		$statement->bind_result($db_name);
+
+		if($statement->fetch() == null) {
+			$statement->close();
+			createLog("warning", $API_GET_SCENARIO_NAME_SCENARIO_DOES_NOT_EXIST, "API", 
+			"getScenarioName", "Scenario does not exist", "ID: [$sid]");
+			return $API_GET_SCENARIO_NAME_SCENARIO_DOES_NOT_EXIST;
+		}
+
+		$statement->close();
+		return $db_name;
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "getScenarioName", "Failed to prepare query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
+}
+
 function getNumberOfScenariosByUser($uid) {
 	global $db;
 	global $tbl_scenarios;
@@ -1301,10 +1337,64 @@ function saveScenario($id, $name, $data) {
  * @param String $uid User ID
  * @param String $sid Scenario ID
  * @param String $name Scenario Name
- * @param String $date Scenario Date
  * @param String $data Scenario Data
  */
-function updateScenario($uid, $sid, $name, $date, $data) {
+function updateScenario($uid, $sid, $name, $data) {
+	global $db;
+	global $tbl_scenarios;
+	global $col_scenario_id;
+	global $col_scenario_name;
+	//global $col_scenario_user;
+	global $col_scenario_created;
+	global $col_scenario_data;
+
+	global $API_UPDATE_SCENARIO_USER_ID_NOT_RECEIVED;
+	global $API_UPDATE_SCENARIO_SCENARIO_ID_NOT_RECEIVED;
+	global $API_UPDATE_SCENARIO_NAME_NOT_RECEIVED;
+	global $API_UPDATE_SCENARIO_DATA_NOT_RECEIVED;
+	global $API_UPDATE_SCENARIO_SCENARIO_UPDATED;
+	global $ERROR_UNAUTHORIZED;
+	global $ERROR_MYSQL;
+
+	$date = date("Y-m-d H:i:s");
+
+	if(!isset($uid) || $uid == "") {
+		createLog("warning", $API_UPDATE_SCENARIO_USER_ID_NOT_RECEIVED, "API", "updateScenario", "Data not received", "User ID");
+		return $API_UPDATE_SCENARIO_USER_ID_NOT_RECEIVED;
+	}
+
+	if(!isset($sid) || $sid == "") {
+		createLog("warning", $API_UPDATE_SCENARIO_SCENARIO_ID_NOT_RECEIVED, "API", "updateScenario", "Data not received", "Scenario ID");
+		return $API_UPDATE_SCENARIO_SCENARIO_ID_NOT_RECEIVED;
+	}
+
+	if(!isset($name) || $name == "") {
+		createLog("info", $API_UPDATE_SCENARIO_NAME_NOT_RECEIVED, "API", "updateScenario", "Data not received", "Scenario Name");
+		$name = "Scenario ".$date;
+	}
+
+	if(!isset($data) || $data == "") {
+		createLog("warning", $API_UPDATE_SCENARIO_DATA_NOT_RECEIVED, "API", "updateScenario", "Data not received", "Mission data");
+		return $API_UPDATE_SCENARIO_DATA_NOT_RECEIVED;
+	}
+
+	// Only the owner can overwrite the scenario, not even an admin can do this
+	if($uid != $_SESSION["id"]) {
+		createLog("danger", $ERROR_UNAUTHORIZED, "API", "updateScenario", "User not authorized to update scenario", getUserEmailByID($_SESSION["id"]));
+		return $ERROR_UNAUTHORIZED;
+	}
+
+	$query = "UPDATE $tbl_scenarios SET $col_scenario_name = ?, $col_scenario_created = ?, $col_scenario_data = ? WHERE $col_scenario_id = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("ssss", $name, $date, $data, $sid);
+		$statement->execute();
+		$statement->close();
+
+		return $API_UPDATE_SCENARIO_SCENARIO_UPDATED;
+	} else {
+		createLog("danger", $ERROR_MYSQL, "API", "updateScenario", "Failed to prepare query", $db->error." (".$db->errno.")");
+		return $ERROR_MYSQL;
+	}
 }
 
 function validateRecoveryToken($email, $token) {

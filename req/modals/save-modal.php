@@ -8,20 +8,26 @@
 				</button>
 			</div>
 			<div id="save-scenario-body" class="modal-body">
+				<?php if(isset($_GET["scenario"])) { ?>
+				<input type="hidden" id="scenario-id" name="scenario-id" value="<?php echo $_GET["scenario"]; ?>">
+				<?php } ?>
 				<?php if(isLoggedIn()) { ?>
 				<div class="form-group">
 					<label>Scenario Name</label>
-					<input id="scenario-name" name="scenario-name" class="form-control">
+					<input type="text" id="scenario-name" name="scenario-name" class="form-control" value="<?php echo $scenarioName; ?>">
 				</div>
 				<?php } ?>
 				<div class="form-group">
 					<label>Copy and Paste to Save</label>
-					<input id="scenario-output" name="scenario-output" class="form-control">
+					<input type="text" id="scenario-output" name="scenario-output" class="form-control">
 				</div>
 			</div>
 			<div id="save-scenario-footer" class="modal-footer d-block">
 				<?php if(isLoggedIn()) { ?>
-				<button id="btn-save-to-account" class="btn btn-block btn-success">Save To Account</button>
+				<button id="btn-save-to-account" class="btn btn-block btn-success"><?php echo(isset($_GET["scenario"])) ? "Save new version to Account" : "Save to Account"; ?></button>
+				<?php if(isset($_GET["scenario"])) { ?>
+				<button id="btn-update-scenario" class="btn btn-block btn-warning">Overwrite and Update Scenario</button>
+				<?php } ?>
 				<?php } ?>
 				<button id="btn-copy-to-clipboard" class="btn btn-block btn-secondary">Copy To Clipboard</button>
 			</div>

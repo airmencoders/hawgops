@@ -875,6 +875,9 @@ function chitClicked() {
 	
 	$(".btn-chit-del").click(function() {
 		layer_markers.removeLayer(tempMarker);
+		layer_friendly_markers.removeLayer(tempMarker);
+		layer_hostile_markers.removeLayer(tempMarker);
+		layer_survivor_markers.removeLayer(tempMarker);
 		$("#marker-"+tempMarker.options.id).remove();
 	});
 	
@@ -2112,7 +2115,9 @@ function resetCapModal() {
  */
 function resetSaveModal() {
 	$("#scenario-output").val("");
-	$("#scenario-name").val("");
+	if(!update) {
+		$("#scenario-name").val("");
+	}
 	$("#btn-copy-to-clipboard").html("Copy To Clipboard");
 	$("#btn-copy-to-clipboard").attr("disabled", false);
 }
@@ -2543,7 +2548,7 @@ function saveScenario() {
 					responseText = "Scenario " + name + " saved to your account.";
 				} else {
 					responseLevel = "danger";
-					responseText = "There was an error saving the scenario to your account.";
+					responseText = "There was an error saving the scenario to your account. (" + data + ")";
 				}
 				
 				$("#alert-container").html("<div class=\"alert alert-" + responseLevel + " alert-dismissible fade show\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label\"Close\"><i class=\"fa fa-times\"></i></button>" + responseText + "</div>");
@@ -2553,6 +2558,35 @@ function saveScenario() {
 		});
 		
 		$("#btn-save-to-account").off("click");
+	});
+
+	$("#btn-update-scenario").click(function() {
+		var name = $("#scenario-name").val();
+
+		$.ajax({
+			url: "/do/update-scenario-do.php",
+			method: "POST",
+			data: {
+				"id": $("#scenario-id").val(),
+				"name": name,
+				"data": $("#scenario-output").val()
+			},
+			success: function(data, textStatus, jqXHR) {
+				var responseText = "";
+				var responseLevel = "";
+				if(data == "30110") {
+					responseLevel = "success";
+					responseText = "Scenario " + name + " updated in your account.";
+				} else {
+					responseLevel = "danger";
+					responseText = "There was an error updating the scenario in your account. (" + data + ")";
+				}
+
+				$("#alert-container").html("<div class=\"alert alert-" + responseLevel + " alert-dismissible fade show\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label\"Close\"><i class=\"fa fa-times\"></i></button>" + responseText + "</div>");
+				
+				$("#save-modal").modal("hide");
+			}
+		});
 	});
 }
 

@@ -6,6 +6,8 @@
 	
 	createLog("info", $HTTP_OK, $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
 	
+	$scenarioName = "";
+	
 	if(isset($_GET["scenario"])) {
 		if(!isLoggedIn()) {
 			createLog("warning", "-", "cas", "-", "Guest attempted to load scenario while not logged in", "-");
@@ -24,6 +26,11 @@
 			header("Location: /cas?s=$scenario");
 			closeLogs();
 		}
+
+		$scenarioName = getScenarioName($_GET["scenario"]);
+		if(is_int($scenario)) {
+			$scenarioName = "";
+		}
 	}
 ?>
 <!DOCTYPE html>
@@ -33,6 +40,14 @@
 			require("../req/head/head.php");
 			require("../req/head/cas-head.php");
 		?>
+
+		<script>
+			<?php if(isset($_GET["scenario"])) { ?>			
+				var update = true;
+			<?php } else { ?>
+				var update = false;
+			<?php } ?>
+		</script>
 	</head>
 	<body>
 		<?php require("../req/structure/navbar.php"); ?>

@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.33.0
+* Added ```updateScenario``` function within the ```API``` and ```cas-leaflet.js```
+* Updated ```save-modal``` to add a new button if viewing a scenario to either overwrite or save a new version of the scenario
+* Created ```updated-scenario-do``` to handle functionality of updating the scenario
+* Fixed bug in ```cas-leaflet.js``` for deleting chits with the new unique layer structure (It just brute forces all the layers by removing the chit from all the layers, regardless of its type)
+
 ## 1.32.1
 * Changed ```phpMyAdmin``` configuration to explicitly deny all clients except ```localhost```
 * Bitnami stated that this was the configuration when installing the AWS LAMP stack, however I found this to be ```false```
