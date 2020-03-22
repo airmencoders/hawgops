@@ -6,6 +6,11 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.32.1
+* Changed ```phpMyAdmin``` configuration to explicitly deny all clients except ```localhost```
+* Bitnami stated that this was the configuration when installing the AWS LAMP stack, however I found this to be ```false```
+* Changing both version to ```Deny from all``` and adding ```Allow from 127.0.0.1``` to ```<IfVersion >= 2.3>``` allowed this to work as intended
+
 ## 1.32.0
 * Created ```contact-template.php``` for contact email formatting
 * Modified ```contact-do.php``` to use the new template
