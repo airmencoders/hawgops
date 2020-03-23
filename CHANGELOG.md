@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.34.1
+* Added a jumbotron to ```index``` so that the landing page is no longer just blank
+
 ## 1.34.0
 * Added the ability to combine scenarios into one map
 * Updated links to now use ```scenario[]``` instead of ```scenario``` in ```my-scenarios```, ```admin-scenarios```, and the ```share scenario``` function
