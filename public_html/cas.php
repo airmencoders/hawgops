@@ -21,16 +21,40 @@
 			}
 		}
 				
-		$scenario = getScenario($_GET["scenario"]);
-		if(is_int($scenario)) {
-			header("Location: /cas?s=$scenario");
-			closeLogs();
+		// Loop through the scenarios, get the JSON text, and add to an array.
+		$scenarioArray = array();
+		$error = 0;
+		$numInvalidScenarios=0;
+		foreach($_GET["scenario"] as $key => $value) {
+			$tempScenario = getScenario($value);
+			if(!is_int($tempScenario)) {
+				array_push($scenarioArray, $tempScenario);
+			} else {
+				$numInvalidScenarios++;
+				$error = $tempScenario;
+			}
 		}
 
-		$scenarioName = getScenarioName($_GET["scenario"]);
-		if(is_int($scenario)) {
-			$scenarioName = "";
+		// There were no valid scenarios
+		if(count($scenarioArray) == 0) {
+			header("Location: /cas?s=$error");
 		}
+
+		/*$primaryScenario = getScenario($_GET["scenario"][0]);
+		if(is_int($primaryScenario)) {
+			header("Location: /cas?s=$primaryScenario");
+			closeLogs();
+		}*/
+
+		if(count($_GET["scenario"]) > 1) {
+			$scenarioName = "Combined Scenario";
+		} else {
+			$scenarioName = getScenarioName($_GET["scenario"][0]);
+			if(is_int($scenarioName)) {
+				$scenarioName = "";
+			}
+		}
+		
 	}
 ?>
 <!DOCTYPE html>
@@ -48,6 +72,20 @@
 				var update = false;
 			<?php } ?>
 		</script>
+
+		<?php 
+			if($numInvalidScenarios > 0) { 
+				if($numInvalidScenarios == 1) {
+					$invalidScenarioText = "There was 1 invalid scenario that could not be loaded.";
+				} else {
+					$invalidScenarioText = "There were $numInvalidScenarios invalid scenarios that could not be loaded.";
+				}
+		?>
+		<script>
+			alert("<?php echo $invalidScenarioText; ?>");
+		</script>
+		<?php } ?>
+
 	</head>
 	<body>
 		<?php require("../req/structure/navbar.php"); ?>
@@ -82,7 +120,9 @@
 					<?php if(isset($_GET["scenario"])) { ?>
 					<script type="module">
 						import {loadScenario} from "./js/cas-leaflet.js";
+						<?php foreach($scenarioArray as $scenario) { ?>
 						loadScenario(JSON.stringify(<?php echo $scenario; ?>));
+						<?php } ?>
 					</script>
 					<?php } ?>
 				</div>

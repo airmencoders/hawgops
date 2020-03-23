@@ -24,8 +24,8 @@
 			</div>
 			<div id="save-scenario-footer" class="modal-footer d-block">
 				<?php if(isLoggedIn()) { ?>
-				<button id="btn-save-to-account" class="btn btn-block btn-success"><?php echo(isset($_GET["scenario"])) ? "Save new version to Account" : "Save to Account"; ?></button>
-				<?php if(isset($_GET["scenario"])) { ?>
+				<button id="btn-save-to-account" class="btn btn-block btn-success"><?php echo(isset($_GET["scenario"]) && count($_GET["scenario"]) == 1) ? "Save new version to Account" : "Save to Account"; ?></button>
+				<?php if(isset($_GET["scenario"]) && count($_GET["scenario"]) == 1) { ?>
 				<button id="btn-update-scenario" class="btn btn-block btn-warning">Overwrite and Update Scenario</button>
 				<?php } ?>
 				<?php } ?>

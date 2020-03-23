@@ -777,7 +777,7 @@
 																									<tbody>
 																										<tr>
 																											<td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-radius: 4px; margin: 0;" align="center" bgcolor="#007bff">
-																												<a href="https://hawg-ops.com/cas?scenario=__SCENARIOID__&share=1" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4px; line-height: 20px; display: inline-block; font-weight: normal; white-space: nowrap; background-color: #007bff; color: #ffffff; padding: 8px 12px; border: 1px solid #007bff;">View Scenario</a>
+																												<a href="https://hawg-ops.com/cas?scenario[]=__SCENARIOID__&share=1" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4px; line-height: 20px; display: inline-block; font-weight: normal; white-space: nowrap; background-color: #007bff; color: #ffffff; padding: 8px 12px; border: 1px solid #007bff;">View Scenario</a>
 																											</td>
 																										</tr>
 																									</tbody>
@@ -801,7 +801,7 @@
 																									</table>
 																								</div>
 																								<small>If you are having trouble trouble clicking the button, copy and paste the following URL into your web browser.</small>
-																								<a href="https://hawg-ops.com/cas?scenario=__SCENARIOID__&share=1"><small>https://hawg-ops.com/cas?scenario=__SCENARIOID__&share=1</small></a>
+																								<a href="https://hawg-ops.com/cas?scenario[]=__SCENARIOID__&share=1"><small>https://hawg-ops.com/cas?scenario[]=__SCENARIOID__&share=1</small></a>
 																								<table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 																									<tbody>
 																										<tr>

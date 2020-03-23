@@ -6,6 +6,11 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.34.0
+* Added the ability to combine scenarios into one map
+* Updated links to now use ```scenario[]``` instead of ```scenario``` in ```my-scenarios```, ```admin-scenarios```, and the ```share scenario``` function
+* Requested by CLEAVER
+
 ## 1.33.1
 * Renamed ```VERSION.md``` (this file) to ```CHANGELOG.md```
 * Created ```VERSION.md``` file

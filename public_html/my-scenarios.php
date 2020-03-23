@@ -59,13 +59,11 @@
 					<h4>You don't have any saved scenarios.</h4>
 					<?php } else { ?>
 					<ul class="list-group">
-						<?php
-							foreach($scenarioArray as $scenario) {
-						?>
+						<?php foreach($scenarioArray as $scenario) { ?>
 						<li class="list-group-item d-flex flex-wrap justify-content-between">
 							<?php echo $scenario["name"]." (Created On ".date("d M, Y", strtotime($scenario["date"]))." at ".date("H:i", strtotime($scenario["date"]))." Z)"; ?> 
 							<div id="buttons">
-								<a class="btn btn-success" href="/cas?scenario=<?php echo $scenario["id"];?>" role="button">Load</a>
+								<a class="btn btn-success" href="/cas?scenario[]=<?php echo $scenario["id"];?>" role="button">Load</a>
 								<button type="button" class="btn btn-primary btn-share-scenario" data-name="<?php echo $scenario["name"]; ?>" data-id="<?php echo $scenario["id"]; ?>" data-toggle="modal" data-target="#share-scenario-modal">Share</button>
 								<button type="button" class="btn btn-danger btn-del" data-name="<?php echo $scenario["name"]; ?>" data-id="<?php echo $scenario["id"]; ?>" data-toggle="modal" data-target="#del-scenario-modal">Delete</button>
 							</div>
@@ -75,6 +73,28 @@
 					<?php } ?>
 				</div>
 			</div>
+			<?php if(count($scenarioArray) > 0) { ?>
+			<form method="GET" action="/cas">
+				<div class="card my-5">
+					<h3 class="card-header">Load Combined Scenario</h3>
+					<div class="card-body">
+						<ul class="list-group">
+							<?php foreach($scenarioArray as $scenario) { ?>
+								<li class="list-group-item d-flex">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="<?php echo $scenario["id"]; ?>" name="scenario[]" value="<?php echo $scenario["id"]; ?>">
+										<label class="custom-control-label" for="<?php echo $scenario["id"]; ?>"><?php echo $scenario["name"]." (Created On ".date("d M, Y", strtotime($scenario["date"]))." at ".date("H:i", strtotime($scenario["date"]))." Z)"; ?></label>
+									</div>
+								</li>
+							<?php } ?>
+						</ul>
+					</div>
+					<div class="card-footer">
+						<button type="submit" class="btn btn-block btn-primary">Load Combined Scenario</button>
+					</div>
+				</div>
+			</form>
+			<?php } ?>
 		</div>
     </body>
 </html>
