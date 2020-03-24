@@ -91,7 +91,18 @@
   </tbody>
 </table>
 
-<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">Changes to your account details were recently made. No action is required if you made this change.</p>
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">We noticed you haven't used your Hawg Ops account __USEREMAIL__ in over a year. Since it has been 14 months since your last activity, your account has been disabled.</p>
+        <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="48" style="border-spacing: 0px; border-collapse: collapse; line-height: 48px; font-size: 48px; width: 100%; height: 48px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left"><strong>Would you like to keep your account?</strong></p>
         <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tbody>
     <tr>
@@ -102,7 +113,82 @@
   </tbody>
 </table>
 
-<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">However, If you did not initiate this request, please contact us immediately by replying to this email.</p>
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">If so, use the link below with __USEREMAIL__ within the next month in order to recover your account.</p>
+        <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="48" style="border-spacing: 0px; border-collapse: collapse; line-height: 48px; font-size: 48px; width: 100%; height: 48px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="btn btn-primary  mx-auto" align="center" border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: separate !important; border-radius: 4px; margin: 0 auto;">
+  <tbody>
+    <tr>
+      <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-radius: 4px; margin: 0;" align="center" bgcolor="#007bff">
+        <a href="https://hawg-ops.com/recover-account" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4px; line-height: 20px; display: inline-block; font-weight: normal; white-space: nowrap; background-color: #007bff; color: #ffffff; padding: 8px 12px; border: 1px solid #007bff;">Recover Account</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+        <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="48" style="border-spacing: 0px; border-collapse: collapse; line-height: 48px; font-size: 48px; width: 100%; height: 48px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left"><strong>No longer want your account?</strong></p>
+        <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="8" style="border-spacing: 0px; border-collapse: collapse; line-height: 8px; font-size: 8px; width: 100%; height: 8px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">No worries, we'll automatically delete your account 1 month from now.</p>
+        <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="48" style="border-spacing: 0px; border-collapse: collapse; line-height: 48px; font-size: 48px; width: 100%; height: 48px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left"><strong>What will happen to my scenarios?</strong></p>
+        <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="8" style="border-spacing: 0px; border-collapse: collapse; line-height: 8px; font-size: 8px; width: 100%; height: 8px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">You can go into your account at any time to save your scenarios individually, then delete your account. Otherwise, before we delete your account, we will save and send you the scenario information to do with as you wish.</p>
+        <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="8" style="border-spacing: 0px; border-collapse: collapse; line-height: 8px; font-size: 8px; width: 100%; height: 8px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">If you have any questions, or need help with your account, feel free to contact Porkins at <a href="mailto:hawg.ops@gmail.com">hawg.ops@gmail.com</a>.</p>
         <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tbody>
     <tr>

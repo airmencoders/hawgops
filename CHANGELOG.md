@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.34.2
+* Added more email templates
+* Worked on CRON job for inactive users (>12 months is a warning, >14 months disables account, >15 months deletes account) *Inactive for now*
+* Fixed email HTML tag filtering
+
+
 ## 1.34.1
 * Added a jumbotron to ```index``` so that the landing page is no longer just blank
 

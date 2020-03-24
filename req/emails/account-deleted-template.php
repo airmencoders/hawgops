@@ -91,7 +91,18 @@
   </tbody>
 </table>
 
-<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">Changes to your account details were recently made. No action is required if you made this change.</p>
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">It's been a long time since we've seen you, and we hate to see you go. But since your account has been inactive for over 15 months, it has been deleted.</p>
+        <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="48" style="border-spacing: 0px; border-collapse: collapse; line-height: 48px; font-size: 48px; width: 100%; height: 48px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left"><strong>Want to keep using Hawg Ops?</strong></p>
         <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tbody>
     <tr>
@@ -102,7 +113,61 @@
   </tbody>
 </table>
 
-<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">However, If you did not initiate this request, please contact us immediately by replying to this email.</p>
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">No worries, you're always welcome back. You don't need an account to use the CAS planner - to save scenarios, you'll just have to copy/paste the data to a file on your computer.</p>
+        <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="48" style="border-spacing: 0px; border-collapse: collapse; line-height: 48px; font-size: 48px; width: 100%; height: 48px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left"><strong>Where are my scenarios?</strong></p>
+        <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="8" style="border-spacing: 0px; border-collapse: collapse; line-height: 8px; font-size: 8px; width: 100%; height: 8px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">Below is your scenario information, if you have any that were saved to your account.</p>
+        <div class="hr " style="width: 100%; margin: 20px 0; border: 0;">
+  <table border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse; width: 100%;">
+    <tbody>
+      <tr>
+        <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 1px; border-top-color: #dddddd; border-top-style: solid; height: 1px; width: 100%; margin: 0;" align="left"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+        __SCENARIODATA__
+        <div class="hr " style="width: 100%; margin: 20px 0; border: 0;">
+  <table border="0" cellpadding="0" cellspacing="0" style="font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse; width: 100%;">
+    <tbody>
+      <tr>
+        <td style="border-spacing: 0px; border-collapse: collapse; line-height: 24px; font-size: 16px; border-top-width: 1px; border-top-color: #dddddd; border-top-style: solid; height: 1px; width: 100%; margin: 0;" align="left"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+        <table class="s-2 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <tbody>
+    <tr>
+      <td height="8" style="border-spacing: 0px; border-collapse: collapse; line-height: 8px; font-size: 8px; width: 100%; height: 8px; margin: 0;" align="left">
+         
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">If you have any questions, or need help with your account, feel free to contact Porkins at <a href="mailto:hawg.ops@gmail.com">hawg.ops@gmail.com</a>.</p>
         <table class="s-5 w-100" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tbody>
     <tr>

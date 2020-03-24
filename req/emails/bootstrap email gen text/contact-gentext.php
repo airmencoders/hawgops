@@ -15,7 +15,7 @@
         <p>__TEXT__</p>
       </div>
   </div>
-  <div class="card mt-2">
+  <div class="card mt-2 mb-3">
     <div class="card-body">
       <a class="float-left"href="https://hawg-ops.com">Hawg Ops</a>
       <p class="float-right text-muted">Airmen Coders</p>
