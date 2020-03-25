@@ -6,11 +6,24 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.35.0
+### NOT YET IMPLEMENTED
+* Began work on Version 2 of API. Fixes include simplification and consolidation of functions.
+* Began work on Version 2 of codes. Fixes include simplification and sconsolidation of functions.
+* Further Feature list:
+1. Change database IDs (User, Scenario, Token) from a hashed string to UUID v4
+2. Maintenance Mode
+* TODO:
+1. Finish Functions
+2. Back up database
+3. Test functions
+4. Implement version 2
+5. Assess functionality / fix bugs
+
 ## 1.34.2
 * Added more email templates
 * Worked on CRON job for inactive users (>12 months is a warning, >14 months disables account, >15 months deletes account) *Inactive for now*
 * Fixed email HTML tag filtering
-
 
 ## 1.34.1
 * Added a jumbotron to ```index``` so that the landing page is no longer just blank
