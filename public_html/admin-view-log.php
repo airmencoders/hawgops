@@ -41,16 +41,13 @@
 		<noscript><?php require("../req/structure/js-alert.php"); ?></noscript>
 		
 		<div id="body-container" class="container-fluid">
-			<div id="alert-container"><?php require("../req/structure/alert-container.php"); ?></div>
-			
-			<table class="table table-bordered my-5">
+			<div id="alert-container"><?php require("../req/structure/alert-container.php"); ?></div>		
+			<table class="table table-bordered table-responsive my-5">
 				<thead>
 					<tr class="table-light">
-						<th scope="col">Date/Time</th>
-						<th scope="col">User</th>
-						<th scope="col">IP</th>
-						<th scope="col">Caller</th>
-						<th scope="col">Function</th>					
+						<th scope="col" style="min-width: 7rem;">Date/Time</th>
+						<th scope="col">User [IP]</th>
+						<th scope="col">Caller</th>					
 						<th scope="col">Code</th>
 						<th scope="col">Activity</th>
 						<th scope="col">Details</th>
@@ -62,14 +59,22 @@
 				<tbody>
 					<?php 
 						foreach($logs as $log) { 
+							$dtg = str_replace(" ", "<br/>", $log["datetime"]);
 					?>
 					
 					<tr class="table-<?php echo $log["level"]; ?>">
-						<td><?php echo $log["datetime"]; ?></td>
-						<td><?php echo $log["user"]; ?></td>
-						<td><a href="https://whatismyipaddress.com/ip/<?php echo $log["ip"]; ?>" target="_blank"><?php echo $log["ip"]; ?></td>
-						<td><?php echo $log["caller"]; ?></td>
-						<td><?php echo $log["function"]; ?></td>
+						<td><?php echo $dtg; ?></td>
+						<td>
+							<?php echo ($log["user"] == "-") ? "Guest": $log["user"]; ?><br/>[<a href="https://whatismyipaddress.com/ip/<?php echo $log["ip"]; ?>" target="_blank"><?php echo $log["ip"]; ?></a>]
+						</td>
+						<td>
+							<?php 
+								echo $log["caller"];
+								if($log["function"] != "-") {
+									echo " :: ".$log["function"];
+								}
+							?>							
+						</td>
 						<td><?php echo $log["code"]; ?></td>
 						<td><?php echo $log["activity"]; ?></td>
 						<td><?php echo $log["details"]; ?></td>

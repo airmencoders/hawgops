@@ -102,7 +102,7 @@ function changePassword($id, $password, $recovery = false, $email = null, $token
 	global $E_UNAUTHORIZED;
 	global $E_USER_ID_NOT_RCVD;
 	global $S_ACNT_ENABLED;
-	global $S_PASSWORD_CHANGED;
+	global $S_PSWD_CHANGED;
 
 	// Ensure that variables were set
 	if(!isset($id) || $id == "") {
@@ -150,9 +150,9 @@ function changePassword($id, $password, $recovery = false, $email = null, $token
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("ss", $password, $id);
 		if($statement->execute()) {
-			createLog("success", $S_PASSWORD_CHANGED, basename(__FILE__), __FUNCTION__, "Password changed", "Email: [$email]");
+			createLog("success", $S_PSWD_CHANGED, basename(__FILE__), __FUNCTION__, "Password changed", "Email: [$email]");
 			$statement->close();
-			return $S_PASSWORD_CHANGED;
+			return $S_PSWD_CHANGED;
 		} else {
 			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to change password for email [".getUserEmail("id", $id)."]", $statement->error." (".$statement->errno.")");
 			$statement->close();
@@ -705,6 +705,15 @@ function getAllUsers() {
 		return $E_UNAUTHORIZED;
 	}
 
+	$dbId = null;
+	$dbEmail = null;
+	$dbFname = null;
+	$dbLname = null;
+	$dbDisabled = null;
+	$dbAdmin = null;
+	$dbJoined = null;
+	$dbLastLogin = null;
+
 	$query = "SELECT $colUserId, $colUserEmail, $colUserFname, $colUserLname, $colUserDisabled, $colUserAdmin, $colUserJoined, $colUserLastLogin FROM $tblUsers";
 	if($statement = $db->prepare($query)) {
 		if($statement->execute()) {
@@ -780,6 +789,8 @@ function getIPLog($id) {
 		return $E_USER_ID_NOT_RCVD;
 	}
 
+	$dbIp = null;
+	$dbDate = null;
 	$query = "SELECT $colIplogIp, $colIplogDate FROM $tblIplog WHERE $colIplogUser = ? ORDER BY $colIplogDate";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
@@ -820,7 +831,40 @@ function getIPLog($id) {
  * @since 			2.0.0 	Renamed to getScenarioCount
  */
 function getScenarioCount($id) {
+	// Database variables
+	global $db;
+	global $tblScenarios;
+	global $colScenarioId;
+	global $colScenarioUser;
 
+	// Status codes
+	global $E_MYSQL;
+	global $E_UNAUTHORIZED;
+
+	if(!isAdmin()) {
+		createLog("warning", $E_UNAUTHORIZED, basename(__FILE__), __FUNCTION__, "User not authorized to view scenario count", getUserEmail("id", $_SESSION["id"]));
+		return $E_UNAUTHORIZED;
+	}
+
+	$dbCount = null;
+	$query = "SELECT COUNT($colScenarioId) AS NUM FROM $tblScenarios WHERE $colScenarioUser = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $id);
+		if($statement->execute()) {
+			$statement->bind_result($dbCount);
+			$statement->fetch();
+			$statement->close();
+			return $dbCount;
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve scenario count for Email [".getUserEmail("id", $id)."]", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+		
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /**
@@ -835,7 +879,44 @@ function getScenarioCount($id) {
  * @since 				2.0.0 	Renamed to getScenarioData
  */
 function getScenarioData($id) {
+	// Database variables
+	global $db;
+	global $tblScenarios;
+	global $colScenarioData;
+	global $colScenarioId;
 
+	// Status codes
+	global $E_MYSQL;
+	global $E_SCEN_DOESNT_EXIST;
+	global $E_SCEN_ID_NOT_RCVD;
+
+	if(!isset($id) || $id == "") {
+		createLog("warning", $E_SCEN_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Scenario ID");
+		return $E_SCEN_ID_NOT_RCVD;
+	}
+
+	$dbData = null;
+	$query = "SELECT $colScenarioData FROM $tblScenarios WHERE $colScenarioId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $id);
+		if($statement->execute()) {
+			$statement->bind_result($dbData);
+			if($statement->fetch()) {
+				return $dbData;
+			} else {
+				createLog("warning", $E_SCEN_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Scenario does not exist", "ID: [$id]");
+				$statement->close();
+				return $E_SCEN_DOESNT_EXIST;
+			}			
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve Scenario [$id]", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /**
@@ -849,7 +930,7 @@ function getScenarioData($id) {
  * @deprecated 			2.0.0
  */
 function getScenarioName($id) {
-	return "Deprecated Function";
+	return "";
 }
 
 /**
@@ -865,6 +946,15 @@ function getScenarioName($id) {
  * @since 				2.0.0 	Renamed to getUserEmail. Added mode functionality.
  */
 function getUserEmail($mode, $data) {
+
+}
+
+/**
+ * getUserName
+ * 
+ * Gets the user's name from the database according to what mode is passed
+ */
+function getUserName($mode, $data) {
 
 }
 

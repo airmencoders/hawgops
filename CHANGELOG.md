@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.36.0
+* Edited ```admin-view-logs``` to have a more asthetic table layout
+
 ## 1.35.0
 ### NOT YET IMPLEMENTED
 * Began work on Version 2 of API. Fixes include simplification and consolidation of functions.
