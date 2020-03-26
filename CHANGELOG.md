@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.37.0
+* created ```/maintenance``` landing page and ```site-settings``` admin page
+* TODO: Handle site settings saving
 ## 1.36.0
 * Edited ```admin-view-logs``` to have a more asthetic table layout
 
