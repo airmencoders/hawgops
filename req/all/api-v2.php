@@ -939,14 +939,62 @@ function getScenarioName($id) {
  * Gets the user's email address according to what mode is passed.
  * Replaces getUserEmailByID in API v1
  * 
- * @param 	string 		$mode 	Desired lookup value to get the email address.
- * @param 	string 		$data 	Value to use as lookup value
- * @return 	string|int 			User's email address or error code
+ * @param 	string 		$criteria 	Criteria to use as lookup value
+ * @param 	string 		$mode 		Desired lookup value to get the email address.
+ * @return 	string|int 				User's email address or error code
  * @since 				1.0.0
- * @since 				2.0.0 	Renamed to getUserEmail. Added mode functionality.
+ * @since 				2.0.0 		Renamed to getUserEmail. Added mode functionality.
  */
-function getUserEmail($mode, $data) {
+function getUserEmail($criteria, $mode = "id") {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserEmail;
+	global $colUserId;
 
+	// Status codes
+	global $E_ACNT_DOESNT_EXIST;
+	global $E_CRITERIA_NOT_RCVD;
+	global $E_MODE_INVALID;
+	global $E_MYSQL;
+
+	if(!isset($criteria) || $criteria == "") {
+		createLog("warning", $E_CRITERIA_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Criteria");
+		return $E_CRITERIA_NOT_RCVD;
+	}
+
+	// Determine the mode and generate the query
+	$query = "";
+	if($mode == "id") {
+		$query = "SELECT $colUserEmail FROM $tblUsers WHERE $colUserId = ?"; 
+	} else {
+		createLog("warning", $E_MODE_INVALID, basename(__FILE__), __FUNCTION__, "Invalid mode received", "Mode: [$mode]");
+		return $E_MODE_INVALID;
+	}
+
+	// Run the query
+	$dbEmail = null;
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $criteria);
+		if($statement->execute()) {
+			$statement->bind_result($dbEmail);
+			if($statement->fetch() == null) {
+				createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "$mode: [$criteria]");
+				$statement->close();
+				return $E_ACNT_DOESNT_EXIST;
+			} else {
+				$statement->close();
+				return $dbEmail;
+			}
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve User's Email. $mode: [$criteria]", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /**
@@ -954,8 +1002,60 @@ function getUserEmail($mode, $data) {
  * 
  * Gets the user's name from the database according to what mode is passed
  */
-function getUserName($mode, $data) {
+function getUserName($criteria, $mode = "id") {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserEmail;
+	global $colUserFname;
+	global $colUserId;
+	global $colUserLname;
 
+	// Status Codes
+	global $E_ACNT_DOESNT_EXIST;
+	global $E_CRITERIA_NOT_RCVD;
+	global $E_MODE_INVALID;
+	global $E_MYSQL;
+
+	if(!isset($criteria) || $criteria == "") {
+		createLog("warning", $E_CRITERIA_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Criteria");
+	}
+
+	// Determine mode and generate query
+	$query = "";
+	if($mode == "id") {
+		$query = "SELECT $colUserFname, $colUserLname FROM $tblUsers WHERE $colUserId = ?";
+	} else if($mode == "email") {
+		$query = "SELECT $colUserFname, $colUserLname FROM $tblUsers WHERE $colUserEmail = ?";
+	} else {
+		createLog("warning", $E_MODE_INVALID, basename(__FILE__), __FUNCTION__, "Invalid mode received", "Mode: [$mode]");
+		return $E_MODE_INVALID;
+	}
+
+	// Run the query
+	$dbFname = null;
+	$dbLname = null;
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $criteria);
+		if($statement->execute()) {
+			$statement->bind_result($dbFname, $dbLname);
+			if($statement->fetch() == null) {
+				createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "$mode: [$criteria]");
+				$statement->close();
+				return $E_ACNT_DOESNT_EXIST;
+			} else {
+				$statement->close();
+				return array("fname" => $dbFname, "lname" => $dbLname);
+			}
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve User's name. [$mode]: $criteria", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /**
