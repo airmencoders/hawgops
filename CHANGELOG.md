@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.37.2
+* Continued work on API v2
+
 ## 1.37.1
 * Continued work on API v2
 

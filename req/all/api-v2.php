@@ -415,41 +415,51 @@ function deleteAccount($id, $security = false) {
  * 
  * Deletes a user's recovery token from the database
  * 
- * @param	string	$email	User Account Email Address
- * @return	int				Status code
+ * @param	string	$criteria	Criteria for database query
+ * @return	int					Status code
  * @since			2.0.0
  */
-function deleteRecoveryToken($email) {
+function deleteRecoveryToken($criteria, $mode = "email") {
 	// Database variables
 	global $db;
 	global $tblRecovery;
 	global $colRecoveryEmail;
+	global $colRecoveryId;
 
 	// Status Codes
-	global $E_EMAIL_NOT_RCVD;
+	global $E_CRITERIA_NOT_RCVD;
+	global $E_MODE_INVALID;
 	global $E_MYSQL;
 	global $S_TOKEN_DELETED;
 
-	if(!isset($email) || $email == "") {
-		createLog("warning", $E_EMAIL_NOT_RCVD, "API", "deleteRecoveryToken", "Data not received", "Email Address");
-		return $E_EMAIL_NOT_RCVD;
+	if(!isset($criteria) || $criteria == "") {
+		createLog("warning", $E_CRITERIA_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Database Criteria");
+		return $E_CRITERIA_NOT_RCVD;
+	}
+
+	if($mode == "email") {
+		$query = "DELETE FROM $tblRecovery WHERE $colRecoveryEmail = ?";
+	} else if($mode == "id") {
+		$query = "DELETE FROM $tblRecovery WHERE $colRecoveryId = ?";
+	} else {
+		createLog("warning", $E_MODE_INVALID, basename(__FILE__), __FUNCTION__, "Invalid mode received", "Mode: [$mode]");
+		return $E_MODE_INVALID;
 	}
 
 	// Delete the recovery token
-	$query = "DELETE FROM $tblRecovery WHERE $colRecoveryEmail = ?";
 	if($statement = $db->prepare($query)) {
-		$statement->bind_param("s", $email);
+		$statement->bind_param("s", $criteria);
 		if($statement->execute()) {
-			createLog("success", $S_TOKEN_DELETED, "API", "deleteRecoveryToken", "Token Deleted", "Email: [$email]");
+			createLog("success", $S_TOKEN_DELETED, basename(__FILE__), __FUNCTION__, "Token Deleted", "$mode: [$criteria]");
 			$statement->close();
 			return $S_TOKEN_DELETED;
 		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to Delete Recovery Token. Email: [$email]", $statement->error." (".$statement->errno.")");
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to Delete Recovery Token. $mode: [$criteria]", $statement->error." (".$statement->errno.")");
 			$statement->close();
 			return $E_MYSQL;
 		}
 	} else {
-		createLog("warning", $E_MYSQL, "API", "deleteRecoveryToken", "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		createLog("warning", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
 	}
 }
@@ -1061,14 +1071,44 @@ function getUserName($criteria, $mode = "id") {
 /**
  * isAdmin
  * 
- * Returns whether the user is an administrator
+ * Returns whether the user is an administrator. Uses their ID based on $_SESSION
  * 
  * @param 	void
  * @param	boolean				Returns whether or not a user is an administrator
  * @since				1.0.0
  */
 function isAdmin() {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserAdmin;
+	global $colUserId;
 
+	// Status codes
+	global $E_MYSQL;
+
+	if(!isLoggedIn()) {
+		return false;
+	}
+
+	$dbAdmin = null;
+	$query = "SELECT $colUserAdmin FROM $tblUsers WHERE $colUserId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $_SESSION["id"]);
+		if($statement->execute()) {
+			$statement->bind_result($dbAdmin);
+			$statement->fetch();
+			$statement->close();
+			return ($dbAdmin == "1");
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to determine user's Admin status. ID: [".$_SESSION["id"]."]", $statement->error."(".$statement->errno.")");
+			$statement->close();
+			return false;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return false;
+	}
 }
 
 /**
@@ -1078,11 +1118,37 @@ function isAdmin() {
  * Only an administrator can access the website while in maintenance mode.
  * 
  * @param 	void
- * @return 	boolean
+ * @return 	bool
  * @since 				2.0.0
  */
 function isInMXMode() {
+	// Database variables
+	global $db;
+	global $tblSettings;
+	global $colSettingsBoolValue;
+	global $colSettingsName;
 
+	// Status codes
+	global $E_MYSQL;
+
+	$dbMx = null;
+	$query = "SELECT $colSettingsBoolValue FROM $tblSettings WHERE $colSettingsName = mx";
+	if($statement = $db->prepare($query)) {
+		if($statement->execute()) {
+			$statement->bind_result($dbMx);
+			$statement->fetch();
+			$statement->close();
+
+			return ($dbMx == "1");
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to determine Maintenance Mode status", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return false;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return false;
+	}
 }
 
 /**
@@ -1095,7 +1161,43 @@ function isInMXMode() {
  * @since 				1.0.0
  */
 function isLoggedIn() {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserId;
 
+	// Status codes
+	global $E_MYSQL;
+	global $E_SESS_INVALID;
+
+	if(!isset($_SESSION["id"]) || $_SESSION["id"] == "") {
+		return false;
+	}
+
+	$dbId = null;
+	$query = "SELECT $colUserId FROM $tblUsers WHERE $colUserId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $_SESSION["id"]);
+		if($statement->execute()) {
+			$statement->bind_result($dbId);
+			if($statement->fetch() == null) {
+				createLog("danger", $E_SESS_INVALID, basename(__FILE__), __FUNCTION__, "Session ID is invalid", "ID: [".$_SESSION."]");
+				$statement->close();
+				logout();
+				return false;
+			} else {
+				$statement->close();
+				return true;
+			}
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to determine if user is logged in", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return false;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return false;
+	}
 }
 
 /**
@@ -1111,7 +1213,178 @@ function isLoggedIn() {
  * @since 			1.0.0
  */
 function login($email, $password) {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserDisabled;
+	global $colUserEmail;
+	global $colUserId;
+	global $colUserLoginAttempts;
+	global $colUserPassword;
 
+	// Status codes
+	global $E_ACNT_DISABLED;
+	global $E_ACNT_DOESNT_EXIST;
+	global $E_EMAIL_NOT_RCVD;
+	global $E_PSWD_INVALID;
+	global $E_MYSQL;
+	global $E_PSWD_NOT_RCVD;
+	global $S_USER_AUTHENTICATED;
+
+	if(!isset($email) || $email == "") {
+		createLog("warning", $E_EMAIL_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Email Address");
+		return $E_EMAIL_NOT_RCVD;
+	}
+
+	if(!isset($password) || $password == "") {
+		createLog("warning", $E_PSWD_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Password");
+		return $E_PSWD_NOT_RCVD;
+	}
+
+	//-----------------------------
+	// Get user information
+	//-----------------------------
+	$dbId = null;
+	$dbPassword = null;
+	$dbLoginAttempts = null;
+	$dbDisabled = null;
+	$query = "SELECT $colUserId, $colUserPassword, $colUserLoginAttempts, $colUserDisabled FROM $tblUsers WHERE $colUserEmail = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $email);
+		if($statement->execute()) {
+			$statement->bind_result($dbId, $dbPassword, $dbLoginAttempts, $dbDisabled);
+			//-----------------------------
+			// Account does not exist
+			//-----------------------------
+			if($statement->fetch() == null) {
+				createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "Email: [$email]");
+				$statement->close();
+				return $E_ACNT_DOESNT_EXIST;
+			} else {
+				$statement->close();
+			}
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to get user information", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+
+	//-----------------------------
+	// Verify the password
+	//-----------------------------
+	if(password_verify($password, $dbPassword)) {
+		// Set SESSION
+		$_SESSION["id"] = $dbId;
+
+		// Reset Login Attempts
+		updateLoginAttempts($dbId, 0);
+
+		// Log user's IP in database
+		logIpAddress($dbId, $_SERVER["REMOTE_ADDR"]);
+
+		// Update Last Login Time
+		updateLoginTime($dbId);
+
+		createLog("success", $S_USER_AUTHENTICATED, basename(__FILE__), __FUNCTION__, "User Logged into the system", "Email: [$email]");
+		return $S_USER_AUTHENTICATED;
+	} 
+	//-----------------------------
+	// Invalid login
+	//-----------------------------
+	else {
+		createLog("warning", $E_PSWD_INVALID, basename(__FILE__), __FUNCTION__, "Invalid password", "Email: [$email]");
+
+		// Increment the number of login attempts
+		$dbLoginAttempts++;
+		$loginAttemptStatus = updateLoginAttempts($dbId, $dbLoginAttempts);
+
+		if($dbLoginAttempts > 5) {
+			createLog("danger", $E_ACNT_DISABLED, basename(__FILE__), __FUNCTION__, "More than 5 invalid login attempts. Disabling account.", "Email: [$email]");
+
+			disableAccount($dbId, true);
+
+			return $E_ACNT_DISABLED;
+		}
+
+		return $E_PSWD_INVALID;
+	}
+}
+
+/**
+ * logIpAddress
+ * 
+ * @param	string	$id		User Identifier
+ * @param	string	$ip		IP Address
+ * @return	int				Status code
+ * @since			2.0.0	
+ */
+function logIpAddress($id, $ip) {
+	// Database variables
+	global $db;
+	global $tblIplog;
+	global $colIplogIp;
+	global $colIplogUser;
+
+	// Status codes
+	global $E_IP_NOT_RCVD;
+	global $E_MYSQL;
+	global $E_USER_ID_NOT_RCVD;
+	global $S_IP_LOGGED;
+
+	if(!isset($id) || $id == "") {
+		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "User ID");
+		return $E_USER_ID_NOT_RCVD;
+	}
+
+	if(!isset($ip) || $ip == "") {
+		createLog("warning", $E_IP_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "IP Address");
+		return $E_IP_NOT_RCVD;
+	}
+
+	// Get current IP addresses for user
+	$dbIP = null;
+	$newIP = true;
+	$query = "SELECT $colIplogIp FROM $tblIplog WHERE $colIplogUser = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $id);
+		if($statement->execute()) {
+			$statement->bind_result($dbIP);
+			while($row = $statement->fetch()) {
+				if($dbIP == $ip) {
+					$newIP = false;
+					break;
+				}
+			}
+			$statement->close();
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve User's IP Log. Email: [".getUserEmail($id)."]", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+
+	// Add the IP address only if it is a new one
+	if($newIP) {
+		$query = "INSERT INTO $tblIplog ($colIplogIp, $colIplogUser) VALUES (?, ?)";
+		if($statement = $db->prepare($query)) {
+			$statement->bind_param("ss", $ip, $id);
+			$statement->execute();
+			$statement->close();
+			return $S_IP_LOGGED;
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+			return $E_MYSQL;
+		}
+	}
+
+	return $S_IP_LOGGED;
 }
 
 /** logout
@@ -1123,7 +1396,15 @@ function login($email, $password) {
  * @since 			1.0.0
  */
 function logout() {
+	global $S_USER_LOGOUT;
 
+	createLog("success", $S_USER_LOGOUT, basename(__FILE__), __FUNCTION__, "User Logged out", "Email: [".getUserEmail($_SESSION["id"])."]");
+
+	foreach($_SESSION as $key => $data) {
+		unset($_SESSION[$key]);
+	}
+
+	session_destroy();
 }
 
 /**
@@ -1167,6 +1448,96 @@ function saveScenario($id, $name, $data) {
 
 }
 
+/** 
+ * updateLoginAttempts
+ * 
+ * @param	string	$id			User Identifier
+ * @param	int		$attempts	Number of Login Attempts
+ * @return	int					Status code
+ * @since			2.0.0
+ */
+function updateLoginAttempts($id, $attempts) {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserId;
+	global $colUserLoginAttempts;
+
+	// Status codes
+	global $E_ATTEMPTS_NOT_RCVD;
+	global $E_MYSQL;
+	global $E_USER_ID_NOT_RCVD;
+	global $S_ATTEMPTS_UPDATED;
+
+	if(!isset($id) || $id == "") {
+		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "User ID");
+		return $E_USER_ID_NOT_RCVD;
+	}
+
+	if(!isset($attempts) || $attempts == "") {
+		createLog("warning", $E_ATTEMPTS_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Login Attempts");
+		return $E_ATTEMPTS_NOT_RCVD;
+	}
+
+	$query = "UPDATE $tblUsers SET $colUserLoginAttempts = ? WHERE $colUserId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("is", $attempts, $id);
+		if($statement->execute()) {
+			$statement->close();
+			return $S_ATTEMPTS_UPDATED;
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to update login attempts. Email: [".getUserEmail($id)."]", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+}
+
+/**
+ * updateLoginTime
+ * 
+ * @param	string	$id		User Identifier
+ * @param	string	$date	Date of Login
+ * @return	int				Status code
+ * @since			2.0.0
+ */
+function updateLoginTime($id, $date = date("Y-m-d H:i:s")) {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserId;
+	global $colUserLastLogin;
+
+	// Status codes
+	global $E_MYSQL;
+	global $E_USER_ID_NOT_RCVD;
+	global $S_LOGIN_DTG_UPDATED;
+
+	if(!isset($id) || $id == "") {
+		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "User ID");
+		return $E_USER_ID_NOT_RCVD;
+	}
+
+	$query = "UPDATE $tblUsers SET $colUserLastLogin = ? WHERE $colUserId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("ss", $date, $id);
+		if($statement->execute()) {
+			$statement->close();
+			return $S_LOGIN_DTG_UPDATED;
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to update login time. Email: [".getUserEmail($id)."]", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+}
+
 /**
  * updateScenario
  * 
@@ -1194,7 +1565,64 @@ function updateScenario($user, $id, $name, $data) {
  * @since 			1.0.0
  */
 function validateRecoveryToken($email, $token) {
+	// Database variables
+	global $db;
+	global $tblRecovery;
+	global $colRecoveryEmail;
+	global $colRecoveryCreated;
+	global $colRecoveryToken;
+
+	// Status codes
+	global $E_MYSQL;
+	global $E_EMAIL_NOT_RCVD;
+	global $E_TOKEN_EXPIRED;
+	global $E_TOKEN_INVALID;
+	global $E_TOKEN_NOT_RCVD;
 	global $S_TOKEN_VALID;
-	return $S_TOKEN_VALID;
+
+	if(!isset($email) || $email == "") {
+		createLog("warning", $E_EMAIL_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Email Address");
+	}
+
+	if(!isset($token) || $token == "") {
+		createLog("warning", $E_TOKEN_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Account Recovery Token");
+	}
+
+	// Confirm that the token is valid
+	$dbCreated = null;
+	$query = "SELECT $colRecoveryCreated FROM $tblRecovery WHERE $colRecoveryEmail = ? AND $colRecoveryToken = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("ss", $email, $token);
+		if($statement->execute()) {
+			$statement->bind_result($dbCreated);
+			if($statement->fetch() == null) {
+				createLog("warning", $E_TOKEN_INVALID, basename(__FILE__), __FUNCTION__, "Invalid Email / Token pairing", "Email: [$email]. Token: [$token]");
+				$statement->close();
+				return $E_TOKEN_INVALID;
+			} else {
+				$statement->close();
+			}
+		} else {
+			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to validate recovery token", $statement->error." (".$statement->errno.")");
+			$statement->close();
+			return $E_MYSQL;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+
+	// Confirm that the token is not expired
+	$currentTime = time();
+	$checkTime = strtotime("+30 minutes", strtotime($dbCreated));
+
+	if($currentTime > $checkTime) {
+		createLog("warning", $E_TOKEN_EXPIRED, basename(__FILE__), __FUNCTION__, "Token Expired", "Email: [$email]. Token: [$token]");
+		deleteRecoveryToken($email);
+		return $E_TOKEN_EXPIRED;
+	} else {
+		return $S_TOKEN_VALID;
+	}
+
 }
 ?>
