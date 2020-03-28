@@ -149,15 +149,10 @@ function changePassword($id, $password, $recovery = false, $email = null, $token
 	$query = "UPDATE $tblUsers SET $colUserPassword = ? WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("ss", $password, $id);
-		if($statement->execute()) {
-			createLog("success", $S_PSWD_CHANGED, basename(__FILE__), __FUNCTION__, "Password changed", "Email: [$email]");
-			$statement->close();
-			return $S_PSWD_CHANGED;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to change password for email [".getUserEmail("id", $id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
+		$statement->close();
+		createLog("success", $S_PSWD_CHANGED, basename(__FILE__), __FUNCTION__, "Password changed", "Email: [$email]");
+		return $S_PSWD_CHANGED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -174,6 +169,7 @@ function changePassword($id, $password, $recovery = false, $email = null, $token
  * @since 			1.0.0
  */
 function closeLogs() {
+	// Variables
 	global $logFile;
 
 	fclose($logFile);
@@ -245,13 +241,7 @@ function createAccount($fname, $lname, $email, $password) {
 	$query = "SELECT $colUserId FROM $tblUsers WHERE $colUserEmail = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $email);
-		if($statement->execute()) {
-			// Do Nothing
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to confirm if account already exists [$email]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
 		$statement->bind_result($dbUserId);
 		
 		if($statement->fetch() != null) {
@@ -276,15 +266,10 @@ function createAccount($fname, $lname, $email, $password) {
 	$query = "INSERT INTO $tblUsers ($colUserId, $colUserFname, $colUserLname, $colUserEmail, $colUserPassword, $colUserJoined) VALUES (?, ?, ?, ?, ?, ?)";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("ssssss", $id, $fname, $lname, $email, $password, $joined);
-		if($statement->execute()) {
-			createLog("success", $S_ACNT_CREATED, basename(__FILE__), __FUNCTION__, "Account Created", "Email: [$email]");
-			$statement->close();
-			return $S_ACNT_CREATED;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to create account [$email]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
+		$statement->close();
+		createLog("success", $S_ACNT_CREATED, basename(__FILE__), __FUNCTION__, "Account Created", "Email: [$email]");
+		return $S_ACNT_CREATED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -449,15 +434,10 @@ function deleteRecoveryToken($criteria, $mode = "email") {
 	// Delete the recovery token
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $criteria);
-		if($statement->execute()) {
-			createLog("success", $S_TOKEN_DELETED, basename(__FILE__), __FUNCTION__, "Token Deleted", "$mode: [$criteria]");
-			$statement->close();
-			return $S_TOKEN_DELETED;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to Delete Recovery Token. $mode: [$criteria]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->exceute();
+		$statement->close();
+		createLog("success", $S_TOKEN_DELETED, basename(__FILE__), __FUNCTION__, "Token Deleted", "$mode: [$criteria]");
+		return $S_TOKEN_DELETED;
 	} else {
 		createLog("warning", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -497,13 +477,7 @@ function deleteScenario($id) {
 	$query = "SELECT $colScenarioUser FROM $tblScenarios WHERE $colScenarioId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			// Do nothing
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve Scenario Owner", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
 		$statement->bind_result($dbScenarioUser);
 		if($statement->fetch() == null) {
 			createLog("warning", $E_SCEN_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Scenario does not exist", "ID: [$id]");
@@ -526,15 +500,10 @@ function deleteScenario($id) {
 	$query = "DELETE FROM $tblScenarios WHERE $colScenarioId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			createLog("success", $S_SCEN_DELETED, basename(__FILE__), __FUNCTION__, "Scenario Deleted", "ID: [$id]");
-			$statement->close();
-			return $S_SCEN_DELETED;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to delete scenario [$id]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
+		$statement->close();
+		createLog("success", $S_SCEN_DELETED, basename(__FILE__), __FUNCTION__, "Scenario Deleted", "ID: [$id]");
+		return $S_SCEN_DELETED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -582,15 +551,10 @@ function disableAccount($id, $security = false) {
 	$query = "UPDATE $tblUsers SET $colUserDisabled = 1 WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			createLog("success", $S_ACNT_DISABLED, basename(__FILE__), __FUNCTION__, "Account Disabled", "Email: [".getUserEmail("id", $id)."]");
-			$statement->close();
-			return $S_ACNT_DISABLED;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to disable account [".getUserEmail("id", $id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
+		$statement->close();
+		createLog("success", $S_ACNT_DISABLED, basename(__FILE__), __FUNCTION__, "Account Disabled", "Email: [".getUserEmail("id", $id)."]");
+		return $S_ACNT_DISABLED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -660,24 +624,12 @@ function enableAccount($id, $recovery = false, $email = null, $token = null) {
 	$query = "UPDATE $tblUsers SET $colUserDisabled = 0 WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			createLog("success", $S_ACNT_ENABLED, basename(__FILE__), __FUNCTION__, "Account Enabled", "Email: [".getUserEmail("id", $id)."]");
-
-			// Delete the token from the database
-			$deleteStatus = deleteRecoveryToken($email);
-			if($deleteStatus != $S_TOKEN_DELETED) {
-				createLog("warning", $deleteStatus, basename(__FILE__), __FUNCTION__, "Failed to delete token from database");
-				$statement->close();
-				return $deleteStatus;
-			} else {
-				$statement->close();
-				return $S_ACNT_ENABLED;
-			}
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to Enable account [".getUserEmail("id", $id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
+		$statement->close();
+		createLog("success", $S_ACNT_ENABLED, basename(__FILE__), __FUNCTION__, "Account Enabled", "Email: [".getUserEmail("id", $id)."]");
+		// Delete the token from the database
+		deleteRecoveryToken($email);
+		return $S_ACNT_ENABLED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -726,42 +678,30 @@ function getAllUsers() {
 
 	$query = "SELECT $colUserId, $colUserEmail, $colUserFname, $colUserLname, $colUserDisabled, $colUserAdmin, $colUserJoined, $colUserLastLogin FROM $tblUsers";
 	if($statement = $db->prepare($query)) {
-		if($statement->execute()) {
-			$statement->bind_result($dbId,
-									$dbEmail,
-									$dbFname,
-									$dbLname,
-									$dbDisabled,
-									$dbAdmin,
-									$dbJoined,
-									$dbLastLogin);
-			$responseArray = array();
-			while($statement->fetch()) {
-				$tempArray = array(
-								"id" 		=> $dbId,
-								"email"		=> $dbEmail,
-								"fname"		=> $dbFname,
-								"lname"		=> $dbLname,
-								"disabled"	=> $dbDisabled,
-								"admin"		=> $dbAdmin,
-								"joined"	=> $dbJoined,
-								"lastLogin"	=> $dbLastLogin
-				);
-				array_push($responseArray, $tempArray);
-			}
+		$statement->execute();
+		$statement->bind_result($dbId, $dbEmail, $dbFname, $dbLname, $dbDisabled, $dbAdmin, $dbJoined, $dbLastLogin);
 
-			$statement->close();
-			return $responseArray;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve user information", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
+		$responseArray = array();
+		while($statement->fetch()) {
+			$tempArray = array(
+							"id" 		=> $dbId,
+							"email"		=> $dbEmail,
+							"fname"		=> $dbFname,
+							"lname"		=> $dbLname,
+							"disabled"	=> $dbDisabled,
+							"admin"		=> $dbAdmin,
+							"joined"	=> $dbJoined,
+							"lastLogin"	=> $dbLastLogin
+			);
+			array_push($responseArray, $tempArray);
 		}
+
+		$statement->close();
+		return $responseArray;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
 	}
-
 }
 
 /**
@@ -804,25 +744,20 @@ function getIPLog($id) {
 	$query = "SELECT $colIplogIp, $colIplogDate FROM $tblIplog WHERE $colIplogUser = ? ORDER BY $colIplogDate";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			$statement->bind_result($dbIp, $dbDate);
+		$statement->execute();
+		$statement->bind_result($dbIp, $dbDate);
 
-			$ipArray = array();
-			while($statement->fetch()) {
-				$tempArray = array(
-								"ip"	=> $dbIp,
-								"date"	=> $dbDate
-				);
-				array_push($ipArray, $tempArray);
-			}
-
-			$statement->close();
-			return $ipArray;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve IP Log. Email: [".getUserEmail("id", $id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
+		$ipArray = array();
+		while($statement->fetch()) {
+			$tempArray = array(
+							"ip"	=> $dbIp,
+							"date"	=> $dbDate
+			);
+			array_push($ipArray, $tempArray);
 		}
+
+		$statement->close();
+		return $ipArray;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -860,17 +795,11 @@ function getScenarioCount($id) {
 	$query = "SELECT COUNT($colScenarioId) AS NUM FROM $tblScenarios WHERE $colScenarioUser = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			$statement->bind_result($dbCount);
-			$statement->fetch();
-			$statement->close();
-			return $dbCount;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve scenario count for Email [".getUserEmail("id", $id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
-		
+		$statement->execute();
+		$statement->bind_result($dbCount);
+		$statement->fetch();
+		$statement->close();
+		return $dbCount;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -909,20 +838,16 @@ function getScenarioData($id) {
 	$query = "SELECT $colScenarioData FROM $tblScenarios WHERE $colScenarioId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			$statement->bind_result($dbData);
-			if($statement->fetch()) {
-				return $dbData;
-			} else {
-				createLog("warning", $E_SCEN_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Scenario does not exist", "ID: [$id]");
-				$statement->close();
-				return $E_SCEN_DOESNT_EXIST;
-			}			
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve Scenario [$id]", $statement->error." (".$statement->errno.")");
+		$statement->execute();
+		$statement->bind_result($dbData);
+		if($statement->fetch() == null) {
+			createLog("warning", $E_SCEN_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Scenario does not exist", "ID: [$id]");
 			$statement->close();
-			return $E_MYSQL;
-		}
+			return $E_SCEN_DOESNT_EXIST;
+		} else {
+			$statement->close();
+			return $dbData;
+		}			
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -986,20 +911,15 @@ function getUserEmail($criteria, $mode = "id") {
 	$dbEmail = null;
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $criteria);
-		if($statement->execute()) {
-			$statement->bind_result($dbEmail);
-			if($statement->fetch() == null) {
-				createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "$mode: [$criteria]");
-				$statement->close();
-				return $E_ACNT_DOESNT_EXIST;
-			} else {
-				$statement->close();
-				return $dbEmail;
-			}
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve User's Email. $mode: [$criteria]", $statement->error." (".$statement->errno.")");
+		$statement->execute();
+		$statement->bind_result($dbEmail);
+		if($statement->fetch() == null) {
+			createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "$mode: [$criteria]");
 			$statement->close();
-			return $E_MYSQL;
+			return $E_ACNT_DOESNT_EXIST;
+		} else {
+			$statement->close();
+			return $dbEmail;
 		}
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
@@ -1047,21 +967,58 @@ function getUserName($criteria, $mode = "id") {
 	$dbLname = null;
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $criteria);
-		if($statement->execute()) {
-			$statement->bind_result($dbFname, $dbLname);
-			if($statement->fetch() == null) {
-				createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "$mode: [$criteria]");
-				$statement->close();
-				return $E_ACNT_DOESNT_EXIST;
-			} else {
-				$statement->close();
-				return array("fname" => $dbFname, "lname" => $dbLname);
-			}
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve User's name. [$mode]: $criteria", $statement->error." (".$statement->errno.")");
+		$statement->execute();
+		$statement->bind_result($dbFname, $dbLname);
+		if($statement->fetch() == null) {
+			createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "$mode: [$criteria]");
 			$statement->close();
-			return $E_MYSQL;
+			return $E_ACNT_DOESNT_EXIST;
+		} else {
+			$statement->close();
+			return array("fname" => $dbFname, "lname" => $dbLname);
 		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+}
+
+/**
+ * grantAdmin
+ * 
+ * @param	string	$id		User Identifier
+ * @return	int				Status code
+ * @since 1.0.0
+ */
+function grantAdmin($id) {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserAdmin;
+	global $colUserId;
+
+	// Status codes
+	global $E_MYSQL;
+	global $E_UNAUTHORIZED;
+	global $E_USER_ID_NOT_RCVD;
+	global $S_ADMIN_GRANTED;
+
+	if(!isAdmin()) {
+		createLog("warning", $E_UNAUTHORIZED, basename(__FILE__), __FUNCTION__, "User not authorized to grant admin privileges", "Email: [".getUserEmail($_SESSION["id"])."]");
+		return $E_UNAUTHORIZED;
+	}
+
+	if(!isset($id) || $id == "") {
+		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "User ID");
+		return $E_USER_ID_NOT_RCVD;
+	}
+
+	$query = "UPDATE $tblUsers SET $colUserAdmin = 1 WHERE $colUserId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $id);
+		$statement->execute();
+		$statement->close();
+		return $S_ADMIN_GRANTED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -1095,16 +1052,11 @@ function isAdmin() {
 	$query = "SELECT $colUserAdmin FROM $tblUsers WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $_SESSION["id"]);
-		if($statement->execute()) {
-			$statement->bind_result($dbAdmin);
-			$statement->fetch();
-			$statement->close();
-			return ($dbAdmin == "1");
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to determine user's Admin status. ID: [".$_SESSION["id"]."]", $statement->error."(".$statement->errno.")");
-			$statement->close();
-			return false;
-		}
+		$statement->execute();
+		$statement->bind_result($dbAdmin);
+		$statement->fetch();
+		$statement->close();
+		return ($dbAdmin == "1");
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return false;
@@ -1134,17 +1086,11 @@ function isInMXMode() {
 	$dbMx = null;
 	$query = "SELECT $colSettingsBoolValue FROM $tblSettings WHERE $colSettingsName = mx";
 	if($statement = $db->prepare($query)) {
-		if($statement->execute()) {
-			$statement->bind_result($dbMx);
-			$statement->fetch();
-			$statement->close();
-
-			return ($dbMx == "1");
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to determine Maintenance Mode status", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return false;
-		}
+		$statement->execute();
+		$statement->bind_result($dbMx);
+		$statement->fetch();
+		$statement->close();
+		return ($dbMx == "1");
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return false;
@@ -1178,21 +1124,16 @@ function isLoggedIn() {
 	$query = "SELECT $colUserId FROM $tblUsers WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $_SESSION["id"]);
-		if($statement->execute()) {
-			$statement->bind_result($dbId);
-			if($statement->fetch() == null) {
-				createLog("danger", $E_SESS_INVALID, basename(__FILE__), __FUNCTION__, "Session ID is invalid", "ID: [".$_SESSION."]");
-				$statement->close();
-				logout();
-				return false;
-			} else {
-				$statement->close();
-				return true;
-			}
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to determine if user is logged in", $statement->error." (".$statement->errno.")");
+		$statement->execute();
+		$statement->bind_result($dbId);
+		if($statement->fetch() == null) {
+			createLog("danger", $E_SESS_INVALID, basename(__FILE__), __FUNCTION__, "Session ID is invalid", "ID: [".$_SESSION."]");
 			$statement->close();
+			logout();
 			return false;
+		} else {
+			$statement->close();
+			return true;
 		}
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
@@ -1251,22 +1192,14 @@ function login($email, $password) {
 	$query = "SELECT $colUserId, $colUserPassword, $colUserLoginAttempts, $colUserDisabled FROM $tblUsers WHERE $colUserEmail = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $email);
-		if($statement->execute()) {
-			$statement->bind_result($dbId, $dbPassword, $dbLoginAttempts, $dbDisabled);
-			//-----------------------------
-			// Account does not exist
-			//-----------------------------
-			if($statement->fetch() == null) {
-				createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "Email: [$email]");
-				$statement->close();
-				return $E_ACNT_DOESNT_EXIST;
-			} else {
-				$statement->close();
-			}
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to get user information", $statement->error." (".$statement->errno.")");
+		$statement->execute();
+		$statement->bind_result($dbId, $dbPassword, $dbLoginAttempts, $dbDisabled);
+		if($statement->fetch() == null) {
+			createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "Email: [$email]");
 			$statement->close();
-			return $E_MYSQL;
+			return $E_ACNT_DOESNT_EXIST;
+		} else {
+			$statement->close();
 		}
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
@@ -1300,16 +1233,13 @@ function login($email, $password) {
 
 		// Increment the number of login attempts
 		$dbLoginAttempts++;
-		$loginAttemptStatus = updateLoginAttempts($dbId, $dbLoginAttempts);
+		updateLoginAttempts($dbId, $dbLoginAttempts);
 
 		if($dbLoginAttempts > 5) {
 			createLog("danger", $E_ACNT_DISABLED, basename(__FILE__), __FUNCTION__, "More than 5 invalid login attempts. Disabling account.", "Email: [$email]");
-
 			disableAccount($dbId, true);
-
 			return $E_ACNT_DISABLED;
 		}
-
 		return $E_PSWD_INVALID;
 	}
 }
@@ -1351,20 +1281,15 @@ function logIpAddress($id, $ip) {
 	$query = "SELECT $colIplogIp FROM $tblIplog WHERE $colIplogUser = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $id);
-		if($statement->execute()) {
-			$statement->bind_result($dbIP);
-			while($row = $statement->fetch()) {
-				if($dbIP == $ip) {
-					$newIP = false;
-					break;
-				}
+		$statement->execute();
+		$statement->bind_result($dbIP);
+		while($row = $statement->fetch()) {
+			if($dbIP == $ip) {
+				$newIP = false;
+				break;
 			}
-			$statement->close();
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to retrieve User's IP Log. Email: [".getUserEmail($id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
 		}
+		$statement->close();
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -1377,13 +1302,11 @@ function logIpAddress($id, $ip) {
 			$statement->bind_param("ss", $ip, $id);
 			$statement->execute();
 			$statement->close();
-			return $S_IP_LOGGED;
 		} else {
 			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 			return $E_MYSQL;
 		}
 	}
-
 	return $S_IP_LOGGED;
 }
 
@@ -1417,7 +1340,81 @@ function logout() {
  * @since 				1.0.0
  */
 function recoverAccount($email) {
+	// Database variables
+	global $db;
+	global $tblRecovery;
+	global $tblUsers;
+	global $colRecoveryEmail;
+	global $colRecoveryId;
+	global $colRecoveryToken;
+	global $colUserEmail;
+	
+	// Status codes
+	global $E_ACNT_DOESNT_EXIST;
+	global $E_EMAIL_NOT_RCVD;
+	global $E_MYSQL;
 
+	if(!isset($email) || $email == "") {
+		createLog("warning", $E_EMAIL_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Email address");
+		return $E_EMAIL_NOT_RCVD;
+	}
+
+	// Check that the email is in the system
+	$dbEmail = null;
+	$query = "SELECT $colUserEmail FROM $tblUsers WHERE $colUserEmail =?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $email);
+		$statement->execute();
+		$statement->bind_result($dbEmail);
+		if($statement->fetch() == null) {
+			createLog("warning", $E_ACNT_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Account does not exist", "Email: [$email]");
+			$statement->close();
+			return $E_ACNT_DOESNT_EXIST;
+		}
+		$statement->close();
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+
+	// Check if there is already a token in the system
+	$dbRecoveryId = null;
+	$tokenExists = true;
+	$query = "SELECT $colRecoveryId FROM $tblRecovery WHERE $colRecoveryEmail = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $email);
+		$statement->execute();
+		$statement->bind_result($dbRecoveryId);
+		if($statement->fetch() == null) {
+			$tokenExists = false;
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+
+	$id = createUUID();
+	$token = createKey();
+
+	if($tokenExists) {
+		$query = "UPDATE $tblRecovery SET $colRecoveryToken = ? WHERE $colRecoveryEmail = ?";
+	} else {
+		$query = "INSERT INTO $tblRecovery ($colRecoveryId, $colRecoveryEmail, $colRecoveryToken) VALUES (?, ?, ?)";
+	}
+
+	if($statement = $db->prepare($query)) {
+		if($tokenExists) {
+			$statement->bind_param("ss", $token, $email);
+		} else {
+			$statement->bind_param("sss", $id, $email, $token);
+		}
+		$statement->execute();
+		$statement->close();
+		return $token;
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /**
@@ -1430,7 +1427,38 @@ function recoverAccount($email) {
  * @since 			1.0.0
  */
 function revokeAdmin($id) {
+	// Database variables
+	global $db;
+	global $tblUsers;
+	global $colUserAdmin;
+	global $colUserId;
 
+	// Status codes
+	global $E_MYSQL;
+	global $E_USER_ID_NOT_RCVD;
+	global $E_UNAUTHORIZED;
+	global $S_ADMIN_REVOKED;
+
+	if(!isAdmin()) {
+		createLog("warning", $E_UNAUTHORIZED, basename(__FILE__), __FUNCTION__, "User not authorized to revoke admin privileges", "Email: [".getUserEmail($_SESSION["id"])."]");
+		return $E_UNAUTHORIZED;
+	}
+
+	if(!isset($id) || $id == "") {
+		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "User ID");
+		return $E_USER_ID_NOT_RCVD;
+	}
+
+	$query = "UPDATE $tblUsers SET $colUserAdmin = 0 WHERE $colUserId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $id);
+		$statement->execute();
+		$statement->close();
+		return $S_ADMIN_REVOKED;
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /**
@@ -1438,14 +1466,52 @@ function revokeAdmin($id) {
  * 
  * Receives information about a scenario and saves it to the database
  * 
- * @param 	string 	$id 	User Identifier
+ * @param 	string 	$user 	User Identifier
  * @param 	string 	$name 	Scenario Name
  * @param 	string 	$data 	JSON Encoded Scenario Data
  * @return 	int 			Status code
  * @since 			1.0.0
  */
-function saveScenario($id, $name, $data) {
+function saveScenario($user, $name = "Scenario ".date("Y-m-d H:i:s"), $data) {
+	// Database variables
+	global $db;
+	global $tblScenarios;
+	global $colScenarioCreated;
+	global $colScenarioData;
+	global $colScenarioId;
+	global $colScenarioName;
+	global $colScenarioUser;
 
+	// Status codes
+	global $E_MYSQL;
+	global $E_SCEN_DATA_NOT_RCVD;
+	global $E_USER_ID_NOT_RCVD;
+	global $S_SCEN_SAVED;
+
+	if(!isset($user) || $user == "") {
+		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Scenario ID");
+		return $E_USER_ID_NOT_RCVD;
+	}
+
+	if(!isset($data) || $data == "") {
+		createLog("warning", $E_SCEN_DATA_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Scenario Data");
+		return $E_SCEN_DATA_NOT_RCVD;
+	}
+
+	$id = createUUID();
+	$date = date("Y-m-d H:i:s");
+
+	$query = "INSERT INTO $tblScenarios ($colScenarioId, $colScenarioName, $colScenarioUser, $colScenarioCreated, $colScenarioData) VALUES (?, ?, ?, ?, ?)";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("sssss", $id, $name, $user, $date, $data);
+		$statement->execute();
+		$statement->close();
+		createLog("success", $S_SCEN_SAVED, basename(__FILE__), __FUNCTION__, "Scenario Saved", "ID: [$id]");
+		return $S_SCEN_SAVED;
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /** 
@@ -1482,14 +1548,9 @@ function updateLoginAttempts($id, $attempts) {
 	$query = "UPDATE $tblUsers SET $colUserLoginAttempts = ? WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("is", $attempts, $id);
-		if($statement->execute()) {
-			$statement->close();
-			return $S_ATTEMPTS_UPDATED;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to update login attempts. Email: [".getUserEmail($id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
+		$statement->close();
+		return $S_ATTEMPTS_UPDATED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -1524,14 +1585,9 @@ function updateLoginTime($id, $date = date("Y-m-d H:i:s")) {
 	$query = "UPDATE $tblUsers SET $colUserLastLogin = ? WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("ss", $date, $id);
-		if($statement->execute()) {
-			$statement->close();
-			return $S_LOGIN_DTG_UPDATED;
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to update login time. Email: [".getUserEmail($id)."]", $statement->error." (".$statement->errno.")");
-			$statement->close();
-			return $E_MYSQL;
-		}
+		$statement->execute();
+		$statement->close();
+		return $S_LOGIN_DTG_UPDATED;
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return $E_MYSQL;
@@ -1543,15 +1599,77 @@ function updateLoginTime($id, $date = date("Y-m-d H:i:s")) {
  * 
  * Overwrites a saved scenario with an updated version from a User
  * 
- * @param 	string 	$user 	User Identifier
  * @param 	string 	$id 	Scenario Identifier
  * @param 	string 	$name 	New Scenario Name
  * @param 	string 	$data 	New Scenario Data
  * @return 	int 			Status code
  * @since 			1.0.0
  */
-function updateScenario($user, $id, $name, $data) {
+function updateScenario($id, $name = "Scenario ".date("Y-m-d H:i:s"), $data) {
+	// Database variables
+	global $db;
+	global $tblScenarios;
+	global $colScenarioCreated;
+	global $colScenarioData;
+	global $colScenarioId;
+	global $colScenarioName;
+	global $colScenarioUser;
 
+	// Status codes
+	global $E_MYSQL;
+	global $E_SCEN_DATA_NOT_RCVD;
+	global $E_SCEN_DOESNT_EXIST;
+	global $E_SCEN_ID_NOT_RCVD;
+	global $E_UNAUTHORIZED;
+	global $S_SCEN_UPDATED;
+
+	if(!isset($id) || $id == "") {
+		createLog("warning", $E_SCEN_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Scenario ID");
+		return $E_SCEN_ID_NOT_RCVD;
+	}
+
+	if(!isset($data) || $data == "") {
+		createLog("warning", $E_SCEN_DATA_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Scenario Data");
+		return $E_SCEN_DATA_NOT_RCVD;
+	}
+
+	// Get the owner of the scenario
+	$dbUser = null;
+	$query = "SELECT $colScenarioUser FROM $tblScenarios WHERE $colScenarioId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $id);
+		$statement->execute();
+		$statement->bind_result($dbUser);
+		if($statement->fetch() == null) {
+			createLog("warning", $E_SCEN_DOESNT_EXIST, basename(__FILE__), __FUNCTION__, "Scenario does not exist", "ID: [$id]");
+			$statement->close();
+			return $E_SCEN_DOESNT_EXIST;
+		} else {
+			$statement->close();
+		}
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
+
+	if($dbUser != $_SESSION["id"]) {
+		createLog("warning", $E_UNAUTHORIZED, basename(__FILE__), __FUNCTION__, "User not authorized to overwrite scenario. ID: [$id]", "Email: [".getUserEmail($dbUser)."]");
+		return $E_UNAUTHORIZED;
+	}
+
+	$date = date("Y-m-d H:i:s");
+
+	$query = "UPDATE $tblScenarios SET $colScenarioName = ?, $colScenarioCreated = ?, $colScenarioData = ? WHERE $colScenarioId = ?";
+	if($statement = $db->prepare($query)) {
+		$statement->bind_param("ssss", $name, $date, $data, $id);
+		$statement->execute();
+		$statement->close();
+		createLog("success", $S_SCEN_UPDATED, basename(__FILE__), __FUNCTION__, "Updated Scenario", "ID: [$id]");
+		return $S_SCEN_UPDATED;
+	} else {
+		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
+		return $E_MYSQL;
+	}
 }
 
 /**
@@ -1593,19 +1711,14 @@ function validateRecoveryToken($email, $token) {
 	$query = "SELECT $colRecoveryCreated FROM $tblRecovery WHERE $colRecoveryEmail = ? AND $colRecoveryToken = ?";
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("ss", $email, $token);
-		if($statement->execute()) {
-			$statement->bind_result($dbCreated);
-			if($statement->fetch() == null) {
-				createLog("warning", $E_TOKEN_INVALID, basename(__FILE__), __FUNCTION__, "Invalid Email / Token pairing", "Email: [$email]. Token: [$token]");
-				$statement->close();
-				return $E_TOKEN_INVALID;
-			} else {
-				$statement->close();
-			}
-		} else {
-			createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to validate recovery token", $statement->error." (".$statement->errno.")");
+		$statement->execute();
+		$statement->bind_result($dbCreated);
+		if($statement->fetch() == null) {
+			createLog("warning", $E_TOKEN_INVALID, basename(__FILE__), __FUNCTION__, "Invalid Email / Token pairing", "Email: [$email]. Token: [$token]");
 			$statement->close();
-			return $E_MYSQL;
+			return $E_TOKEN_INVALID;
+		} else {
+			$statement->close();
 		}
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
@@ -1623,6 +1736,5 @@ function validateRecoveryToken($email, $token) {
 	} else {
 		return $S_TOKEN_VALID;
 	}
-
 }
 ?>
