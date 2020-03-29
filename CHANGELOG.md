@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.38.0
+* Removed window size from CAS Instructions since chit tables were moved to a separate modal.
+
 ## 1.37.3
 * API v2 Completed. 
 * **TODO:** Update Codes / alert-container and testing

@@ -434,7 +434,7 @@ function deleteRecoveryToken($criteria, $mode = "email") {
 	// Delete the recovery token
 	if($statement = $db->prepare($query)) {
 		$statement->bind_param("s", $criteria);
-		$statement->exceute();
+		$statement->execute();
 		$statement->close();
 		createLog("success", $S_TOKEN_DELETED, basename(__FILE__), __FUNCTION__, "Token Deleted", "$mode: [$criteria]");
 		return $S_TOKEN_DELETED;
@@ -1084,13 +1084,15 @@ function isInMXMode() {
 	global $E_MYSQL;
 
 	$dbMx = null;
-	$query = "SELECT $colSettingsBoolValue FROM $tblSettings WHERE $colSettingsName = mx";
+	$settingName = "mx";
+	$query = "SELECT $colSettingsBoolValue FROM $tblSettings WHERE $colSettingsName = ?";
 	if($statement = $db->prepare($query)) {
+		$statement->bind_param("s", $settingName);
 		$statement->execute();
 		$statement->bind_result($dbMx);
 		$statement->fetch();
 		$statement->close();
-		return ($dbMx == "1");
+		return ($dbMx == 1);
 	} else {
 		createLog("danger", $E_MYSQL, basename(__FILE__), __FUNCTION__, "Failed to prepare query [$query]", $db->error." (".$db->errno.")");
 		return false;
@@ -1472,7 +1474,7 @@ function revokeAdmin($id) {
  * @return 	int 			Status code
  * @since 			1.0.0
  */
-function saveScenario($user, $name = "Scenario ".date("Y-m-d H:i:s"), $data) {
+function saveScenario($user, $name, $data) {
 	// Database variables
 	global $db;
 	global $tblScenarios;
@@ -1491,6 +1493,10 @@ function saveScenario($user, $name = "Scenario ".date("Y-m-d H:i:s"), $data) {
 	if(!isset($user) || $user == "") {
 		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Scenario ID");
 		return $E_USER_ID_NOT_RCVD;
+	}
+
+	if(!isset($name) || $name == "") {
+		$name = "Scenario ".date("Y-m-d H:i:s");
 	}
 
 	if(!isset($data) || $data == "") {
@@ -1565,7 +1571,7 @@ function updateLoginAttempts($id, $attempts) {
  * @return	int				Status code
  * @since			2.0.0
  */
-function updateLoginTime($id, $date = date("Y-m-d H:i:s")) {
+function updateLoginTime($id) {
 	// Database variables
 	global $db;
 	global $tblUsers;
@@ -1581,6 +1587,8 @@ function updateLoginTime($id, $date = date("Y-m-d H:i:s")) {
 		createLog("warning", $E_USER_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "User ID");
 		return $E_USER_ID_NOT_RCVD;
 	}
+
+	$date = date("Y-m-d H:i:s");
 
 	$query = "UPDATE $tblUsers SET $colUserLastLogin = ? WHERE $colUserId = ?";
 	if($statement = $db->prepare($query)) {
@@ -1605,7 +1613,7 @@ function updateLoginTime($id, $date = date("Y-m-d H:i:s")) {
  * @return 	int 			Status code
  * @since 			1.0.0
  */
-function updateScenario($id, $name = "Scenario ".date("Y-m-d H:i:s"), $data) {
+function updateScenario($id, $name, $data) {
 	// Database variables
 	global $db;
 	global $tblScenarios;
@@ -1626,6 +1634,10 @@ function updateScenario($id, $name = "Scenario ".date("Y-m-d H:i:s"), $data) {
 	if(!isset($id) || $id == "") {
 		createLog("warning", $E_SCEN_ID_NOT_RCVD, basename(__FILE__), __FUNCTION__, "Data not received", "Scenario ID");
 		return $E_SCEN_ID_NOT_RCVD;
+	}
+
+	if(!isset($name) || $name == "") {
+		$name = "Scenario ".date("Y-m-d H:i:s");
 	}
 
 	if(!isset($data) || $data == "") {
