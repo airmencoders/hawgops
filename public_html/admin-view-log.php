@@ -45,7 +45,7 @@
 			<table class="table table-bordered table-responsive my-5">
 				<thead>
 					<tr class="table-light">
-						<th scope="col" style="min-width: 7rem;">Date/Time</th>
+						<th scope="col">Date/Time</th>
 						<th scope="col">User [IP]</th>
 						<th scope="col">Caller</th>					
 						<th scope="col">Code</th>

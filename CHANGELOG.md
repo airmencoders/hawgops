@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.39.0
+* Created AAR Tracks Layer Group
+* Added AAR Tracks Layer Group to Layer Menu (Allows the disabling of AAR tracks from the map separate from airspace)
+* Added R-4006 AAR Tracks
+* Requested by ROAD
+
 ## 1.38.0
 * Removed window size from CAS Instructions since chit tables were moved to a separate modal.
 

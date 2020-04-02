@@ -87,7 +87,15 @@ var warning_options = {
 	color: "#ff9000",
 	weight: 2,
 	fill: false,
-	clickable:false
+	clickable: false
+};
+
+var aar_options = {
+	stroke: true,
+	color: "#070080",
+	weight: 2,
+	fill: false,
+	clickable: false
 };
 
 // Low Level Zones (Purple)
@@ -164,6 +172,7 @@ var basemap_firefly = L.esri.basemapLayer("ImageryFirefly");
 var labels_imagery = L.esri.basemapLayer("ImageryLabels");
 var labels_roads = L.esri.basemapLayer("ImageryTransportation");
 var labels_airspace = L.layerGroup();
+var labels_aars = L.layerGroup();
 var labels_kml = L.layerGroup();
 var mgrs_grids = L.grids.mgrs();
 
@@ -178,6 +187,7 @@ L.polygon(restricted_areas, range_options).addTo(labels_airspace);
 L.polyline(p518_border, p518_options).addTo(labels_airspace);
 L.polyline(korea_nfl_buffer, nfl_buffer_options).addTo(labels_airspace);
 L.polyline(korea_nfl, nfl_options).addTo(labels_airspace);
+L.polyline(aars, aar_options).addTo(labels_aars);
 
 
 /**
@@ -192,6 +202,7 @@ var label_layers = {
 	"Map Labels": labels_imagery,
 	"Road Labels": labels_roads,
 	"Airspace": labels_airspace,
+	"AAR Tracks": labels_aars,
 	"KML": labels_kml,
 	"MGRS Grids": mgrs_grids,
 	"Threat Rings": layer_master_threats,
@@ -212,6 +223,7 @@ var label_layers = {
  */
 basemap_firefly.addTo(map);
 labels_imagery.addTo(map);
+labels_aars.addTo(map);
 labels_airspace.addTo(map);
 labels_kml.addTo(map);
 //mgrs_grids.addTo(map);
