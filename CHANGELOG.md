@@ -6,6 +6,13 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.40.0
+* Created ATCAA Layer Group
+* Added ATCAA Layer Group to Layer Menu
+* Added Sheboygan, Oshkosh, and Black River ATCAAs
+* Added additional WI and VA airspace and restricted areas
+* Requested by ROAD
+
 ## 1.39.0
 * Created AAR Tracks Layer Group
 * Added AAR Tracks Layer Group to Layer Menu (Allows the disabling of AAR tracks from the map separate from airspace)

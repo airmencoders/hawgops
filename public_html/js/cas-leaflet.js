@@ -54,6 +54,14 @@ var draw_control_options = {
 /**
  * Declare Airspace line options
  */
+// ATCAAs
+var atcaa_options = {
+	stroke: true,
+	color: "#ffff00",
+	weight: 2,
+	fill: false,
+	clickable: false
+}
 // Blue MOAs (High)
 var moa_options = {
 	stroke: true,
@@ -173,6 +181,7 @@ var labels_imagery = L.esri.basemapLayer("ImageryLabels");
 var labels_roads = L.esri.basemapLayer("ImageryTransportation");
 var labels_airspace = L.layerGroup();
 var labels_aars = L.layerGroup();
+var labels_atcaas = L.layerGroup();
 var labels_kml = L.layerGroup();
 var mgrs_grids = L.grids.mgrs();
 
@@ -184,10 +193,12 @@ L.polygon(low_moas, moa_low_options).addTo(labels_airspace);
 L.polygon(moas, moa_options).addTo(labels_airspace);
 L.polygon(warning_areas, warning_options).addTo(labels_airspace);
 L.polygon(restricted_areas, range_options).addTo(labels_airspace);
+L.polygon(aars, aar_options).addTo(labels_aars);
+L.polygon(atcaas, atcaa_options).addTo(labels_atcaas)
 L.polyline(p518_border, p518_options).addTo(labels_airspace);
 L.polyline(korea_nfl_buffer, nfl_buffer_options).addTo(labels_airspace);
 L.polyline(korea_nfl, nfl_options).addTo(labels_airspace);
-L.polyline(aars, aar_options).addTo(labels_aars);
+
 
 
 /**
@@ -203,6 +214,7 @@ var label_layers = {
 	"Road Labels": labels_roads,
 	"Airspace": labels_airspace,
 	"AAR Tracks": labels_aars,
+	"ATCAAs": labels_atcaas,
 	"KML": labels_kml,
 	"MGRS Grids": mgrs_grids,
 	"Threat Rings": layer_master_threats,
@@ -225,6 +237,7 @@ basemap_firefly.addTo(map);
 labels_imagery.addTo(map);
 labels_aars.addTo(map);
 labels_airspace.addTo(map);
+labels_atcaas.addTo(map);
 labels_kml.addTo(map);
 //mgrs_grids.addTo(map);
 L.control.layers(basemap_layers, label_layers).addTo(map);
