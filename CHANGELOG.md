@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.41.1
+* Fixed Bug where chits were not being properly resized when map zooms
+
 ## 1.40.0
 * Created ATCAA Layer Group
 * Added ATCAA Layer Group to Layer Menu

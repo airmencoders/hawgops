@@ -2161,6 +2161,7 @@ function resetThtModal() {
  * Resizes markers according to their type
  */
 function resizeChits() {
+	// Threat markers (8, 2B/F, etc...)
 	layer_threat_markers.eachLayer(function(marker) {
 		var marker_icon = marker.getIcon();
 		var map_zoom = map.getZoom();
@@ -2171,18 +2172,43 @@ function resizeChits() {
 		
 		marker.setIcon(marker_icon);
 	});
-	
-	layer_markers.eachLayer(function(marker) {
+
+	// Building Markers
+	layer_bldg_markers.eachLayer(function(marker) {
 		var marker_icon = marker.getIcon();
 		var map_zoom = map.getZoom();
 		
-		if(marker.options.type == "div") {
-			$(".bldg-label-divicon").css("font-size", (chit_scale * map_zoom) / 2);
-			$(".bldg-label-divicon").css("line-height", ((chit_scale * map_zoom)) + "px");
-			marker_icon.options.iconSize = [chit_scale * map_zoom, chit_scale * map_zoom];
-		} else {
-			marker_icon.options.iconSize = [chit_scale * map_zoom, chit_scale * map_zoom];
-		}
+		$(".bldg-label-divicon").css("font-size", (chit_scale * map_zoom) / 2);
+		$(".bldg-label-divicon").css("line-height", ((chit_scale * map_zoom)) + "px");
+		marker_icon.options.iconSize = [chit_scale * map_zoom, chit_scale * map_zoom];
+
+		marker.setIcon(marker_icon);
+	});
+
+	// Friendly Chits
+	layer_friendly_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		var map_zoom = map.getZoom();
+		
+		marker.options.iconSize = [chit_scale * map_zoom, chit_scale * map_zoom];
+		marker.setIcon(marker_icon);
+	});
+	
+	// Hostile Chits
+	layer_hostile_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		var map_zoom = map.getZoom();
+		
+		marker_icon.options.iconSize = [chit_scale * map_zoom, chit_scale * map_zoom];
+		marker.setIcon(marker_icon);
+	});
+
+	// Survivor chits
+	layer_survivor_markers.eachLayer(function(marker) {
+		var marker_icon = marker.getIcon();
+		var map_zoom = map.getZoom();
+		
+		marker_icon.options.iconSize = [chit_scale * map_zoom, chit_scale * map_zoom];
 		marker.setIcon(marker_icon);
 	});
 }
