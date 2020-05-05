@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.42.0
+* Added new BMGR Airspace to a new layer
+* Moved old BMGR Airspace to a new layer
+* Added both BMGR layers to the layer map
+* Requested by BEAR
+
 ## 1.41.0
 * Added R-6904 Airspace
 * Requested by ROAD
