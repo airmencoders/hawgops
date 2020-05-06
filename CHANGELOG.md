@@ -6,6 +6,12 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.43.0
+* Updated NTTR Lines to compose internal boundaries
+* Requested by Diesel
+* Fixed bug in `/js/cas-airspace.js` (Missing `;`) which broke the `Download KML` function
+* Updated `airspace-kml.php` to include old and new BMGR boundaries
+
 ## 1.42.0
 * Added new BMGR Airspace to a new layer
 * Moved old BMGR Airspace to a new layer
