@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.43.1
+* Removed extraneous NTTR lines unneeded
+* Requested by Diesel
+
 ## 1.43.0
 * Updated NTTR Lines to compose internal boundaries
 * Requested by Diesel
