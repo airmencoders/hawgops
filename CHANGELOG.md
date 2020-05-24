@@ -6,6 +6,11 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.43.2
+* Began testing for the ability to change colors of drawing objects after they're created
+* Essentially requires the object to be removed and then recreated and added to the map
+* Requested by Simple
+
 ## 1.43.1
 * Removed extraneous NTTR lines unneeded
 * Requested by Diesel
