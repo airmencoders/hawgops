@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.44.1
+* Updated `index.php` jumbotron with what's new and roadmap.
+
 ## 1.44.0
 * Created `/req/modals/edit-cap-modal.php` to edit CAPs after creating them
 * Part of Editing overhaul requested by Simple
