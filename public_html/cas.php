@@ -99,6 +99,7 @@
 					require("../req/structure/ie-alert-cas.php");
 				} else {
 					require("../req/modals/cap-modal.php");
+					require("../req/modals/edit-cap-modal.php");
 					require("../req/modals/tht-ring-modal.php");
 					require("../req/modals/save-modal.php");
 					require("../req/modals/load-modal.php");

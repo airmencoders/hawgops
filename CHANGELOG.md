@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.44.0
+* Created `/req/modals/edit-cap-modal.php` to edit CAPs after creating them
+* Part of Editing overhaul requested by Simple
+
 ## 1.43.2
 * Began testing for the ability to change colors of drawing objects after they're created
 * Essentially requires the object to be removed and then recreated and added to the map

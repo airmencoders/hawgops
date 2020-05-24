@@ -397,11 +397,11 @@ function addCap(e) {
 			color: color,
 			fill: false,
 			weight: 5,
-			mgrs: mgrs + ""
+			mgrs: mgrs + "",
 		};
 
 		var ellipse = L.ellipse(ll_posit, [length, minor], angle, ellipse_options).addTo(layer_caps);
-		ellipse.bindPopup(label + "<br/>Center: " + mgrs + "<hr/><input type=\"text\" class=\"form-control cap-rename\"><button class=\"btn btn-sm btn-warning btn-cap-rename\">Save</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
+		ellipse.bindPopup(label + "<br/>Center: " + mgrs + "<hr/><button class=\"btn btn-sm btn-info btn-cap-edit\">Edit</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
 		ellipse.on("popupopen", capClicked);
 
 		// Close the modal
@@ -877,21 +877,62 @@ function bldgLabelClicked() {
 function capClicked() {
 	var tempCap = this;
 
-	/*var options = tempCap.options
-	options.color='#ff0000'
+	$(".btn-cap-edit").click(function () {
 
-	tempCap.options = options
-	layer_caps.removeLayer(tempCap)
-	tempCap.addTo(layer_caps)
+		$("#edit-cap-label").val(tempCap.options.title)
+		$("#edit-cap-length").val(tempCap.getRadius().x / 926)
+		$("#edit-cap-color").val(tempCap.options.color)
+		$("#edit-cap-angle").val(tempCap.getTilt() - 90)
 
-	tempCap.bindPopup(options.title + "<br/>Center: " + options.mgrs + "<hr/><input type=\"text\" class=\"form-control cap-rename\"><button class=\"btn btn-sm btn-warning btn-cap-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
-		tempCap.on("popupopen", capClicked);*/
+		$("#edit-cap-modal").modal("show");
 
+		$("#btn-save-cap").click(function () {
+			// Get Options
+			var color = $("#edit-cap-color").spectrum("get").toHexString();
+			var label = $("#edit-cap-label").val();
+			var length = $("#edit-cap-length").val();
+			var angle = $("#edit-cap-angle").val();
 
-	// TESTING
-	// In order to change the color, the object needs to be completely removed and re-added
-	// To the map
+			if (label == "") {
+				label = "CAP";
+			}
 
+			if (length == "") {
+				length = 10 * 926;
+			} else {
+				length = length * 926;
+			}
+
+			var minor = length / 2;
+
+			if (minor > minor_axis) {
+				minor = minor_axis;
+			}
+
+			if (angle == "") {
+				angle = 90;
+			} else {
+				angle = parseInt(angle) + 90;
+			}
+
+			var options = tempCap.options;
+
+			options.title = label;
+			options.color = color;
+
+			layer_caps.removeLayer(tempCap);
+
+			var ellipse = L.ellipse(tempCap.options.latlng, [length, minor], angle, options).addTo(layer_caps)
+
+			ellipse.bindPopup(ellipse.options.title + "<br/>Center: " + ellipse.options.mgrs + "<hr/><button class=\"btn btn-sm btn-info btn-cap-edit\">Edit</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
+
+			ellipse.on("popupopen", capClicked);
+
+			$("#edit-cap-modal").modal("hide");
+			stopListeningToModals();
+			map.closePopup();
+		})
+	});
 
 	$(".btn-cap-del").click(function () {
 		layer_caps.removeLayer(tempCap);
@@ -2909,6 +2950,15 @@ $(document).ready(function () {
 
 	// Initialize CAP Modal color picker
 	$("#cap-color").spectrum({
+		preferredFormat: "name",
+		color: "#3388ff",
+		showPalette: true,
+		showPaletteOnly: true,
+		hideAfterPaletteSelect: true,
+		palette: ["#3388ff", "#ff0000", "#ff9000", "#ffff00", "#00ff00", "#00ffff", "#0000ff", "#9000ff", "#ff00ff"]
+	});
+
+	$("#edit-cap-color").spectrum({
 		preferredFormat: "name",
 		color: "#3388ff",
 		showPalette: true,
