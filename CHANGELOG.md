@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.45.0
+* Fixed bug when loading CAPs that would not properly render the new popups
+* Fixed bug where scenario ID not properly passed when updating scenario (occured on v.1.34.0)
+
 ## 1.44.1
 * Updated `index.php` jumbotron with what's new and roadmap.
 

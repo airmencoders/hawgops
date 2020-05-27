@@ -652,6 +652,7 @@ function polygonClicked() {
 	$(".btn-polygon-del").click(function() {
 		layer_polygons.removeLayer(tempPolygon);
 	});
+
 	
 	$(".btn-polygon-rename").click(function() {
 		var new_name = $(".polygon-rename").val();

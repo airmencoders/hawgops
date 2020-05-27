@@ -9,7 +9,7 @@
 			</div>
 			<div id="save-scenario-body" class="modal-body">
 				<?php if(isset($_GET["scenario"])) { ?>
-				<input type="hidden" id="scenario-id" name="scenario-id" value="<?php echo $_GET["scenario"]; ?>">
+				<input type="hidden" id="scenario-id" name="scenario-id" value="<?php echo $_GET["scenario"][0]; ?>">
 				<?php } ?>
 				<?php if(isLoggedIn()) { ?>
 				<div class="form-group">

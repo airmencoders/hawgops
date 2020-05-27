@@ -915,10 +915,11 @@ function capClicked() {
 				angle = parseInt(angle) + 90;
 			}
 
-			var options = tempCap.options;
-
-			options.title = label;
-			options.color = color;
+			var options = {
+				...tempCap.options,
+				title: label,
+				color,
+			}
 
 			layer_caps.removeLayer(tempCap);
 
@@ -1946,7 +1947,7 @@ function loadScenario(input) {
 		};
 
 		var ellipse = L.ellipse(ref.latlng, [ref.radii.x, ref.radii.y], ref.tilt, ellipse_options).addTo(layer_caps);
-		ellipse.bindPopup(ref.title + "<br/>Center: " + ref.mgrs + "<hr/><input type=\"text\" class=\"form-control cap-rename\"><button class=\"btn btn-sm btn-warning btn-cap-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
+		ellipse.bindPopup(ref.title + "<br/>Center: " + ref.mgrs + "<hr/><button class=\"btn btn-sm btn-info btn-cap-edit\">Edit</button><button class=\"btn btn-sm btn-danger btn-cap-del\">Delete</button>");
 		ellipse.on("popupopen", capClicked);
 	});
 
