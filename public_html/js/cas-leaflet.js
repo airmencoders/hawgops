@@ -1144,6 +1144,11 @@ function chitClicked() {
  */
 function clearMap() {
 	layer_markers.clearLayers();
+	layer_bldg_markers.clearLayers();
+	layer_friendly_markers.clearLayers();
+	layer_hostile_markers.clearLayers();
+	layer_survivor_markers.clearLayers();
+	layer_master_threats.clearLayers();
 	layer_threat_markers.clearLayers();
 	layer_caps.clearLayers();
 	layer_threats.clearLayers();
