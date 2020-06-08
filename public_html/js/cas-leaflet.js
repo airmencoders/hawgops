@@ -203,14 +203,25 @@ L.polyline(korea_nfl, nfl_options).addTo(labels_airspace);
 L.polygon(old_bmgr, range_options).addTo(labels_old_bmgr);
 L.polygon(new_bmgr, range_options).addTo(labels_new_bmgr);
 
-
+/**
+ * Grayscale control button
+ */
+L.easyButton('fa-tint fa-lg', function (btn, map) {
+	if ($('.leaflet-tile-pane').css('filter') == 'none') {
+		$('.leaflet-tile-pane').css('filter', 'grayscale(100%)')
+		$('.fa-tint').css('color', '#19CF19')
+	} else {
+		$('.leaflet-tile-pane').css('filter', '')
+		$('.fa-tint').css('color', 'black')
+	}
+}).addTo(map);
 
 /**
  * Create object that holds the basemaps and the labels
  */
 var basemap_layers = {
 	"ESRI Aerial Clarity": basemap_clarity,
-	"ESRI Aerial Firefly": basemap_firefly
+	"ESRI Aerial Firefly": basemap_firefly,
 };
 
 var label_layers = {

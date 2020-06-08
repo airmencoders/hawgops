@@ -6,6 +6,11 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.46.0
+* Added `EasyButton` plugin
+* Added ability to turn map to grayscale
+* Requested by JT (185 SOS)
+
 ## 1.45.1
 * Fixed bug when clearing map of chits, new layers were not included
 

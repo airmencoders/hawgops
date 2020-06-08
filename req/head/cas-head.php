@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="./css/leaflet-ruler.css">
 <link rel="stylesheet" href="./js/leaflet-plugins/leaflet-draw/leaflet.draw.css">
 <link rel="stylesheet" href="./css/leaflet.fullscreen.css">
+<link rel="stylesheet" href="./js/leaflet-plugins/easybutton/easy-button.css">
 
 <!-- Vendor jQuery / Popper.js / Bootstrap JS / Leaflet JS -->
 
@@ -33,6 +34,7 @@
 <script src="./js/leaflet-plugins/leaflet-ruler.js"></script>
 <script src="./js/leaflet-plugins/leaflet.geometryutil.js"></script>
 <script src="./js/leaflet-plugins/Leaflet.fullscreen.js"></script>
+<script src="./js/leaflet-plugins/easybutton/easy-button.js"></script>
 
 <!-- Leaflet Draw -->
 <script src="./js/leaflet-plugins/leaflet-draw/Leaflet.draw.js"></script>

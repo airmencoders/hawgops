@@ -26,9 +26,10 @@ createLog("info", $HTTP_OK, $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
 			<p class="lead">Integration is essential to CAS. With Hawg Ops CAS Planner, mission planning takes less time, allows you to share scenarios &amp; GRGs with participating units, and use your scenario as a visual aid for flight briefs &amp; debriefs.</p>
 			<hr class="my-4">
 			<h4>What's new?</h4>
-			<p>You now have greater ability to edit CAPs after creating them, allowing you to edit the CAP rather than deleting and recreating the object.</p>
+			<p>Turn maps grayscale for greater contrast making GRGs</p>
 			<h4>Feature Roadmap</h4>
 			<ol>
+				<li>Greater options to customize building labels</li>
 				<li>Edit 9 lines and 15 lines</li>
 				<li>Editing ability to be added to polygons, threats, and other objects.</li>
 				<li>Create and edit Phase lines.</li>

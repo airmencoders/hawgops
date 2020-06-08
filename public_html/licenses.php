@@ -40,6 +40,7 @@
 					<p><a href="https://github.com/makinacorpus/Leaflet.GeometryUtil" target="_blank">Leaflet Geometry Util by makinacorpus (BSD-3-Clause)</a></p>
 					<p><a href="https://github.com/Leaflet/Leaflet.fullscreen" target="_blank">Leaflet Fullscreen by Leaflet (ISC)</a></p>
 					<p><a href="https://github.com/tmcw/togeojson" target="_blank">toGeoJSON by tmcw (BSD-2)</a></p>
+					<p><a href="https://github.com/CliffCloud/Leaflet.EasyButton" target="_blank">Leaflet Easy Button by CliffCloud (MIT)</a></p>
 				</div>
 			</div>
 		</div>
