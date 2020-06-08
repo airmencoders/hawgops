@@ -15,7 +15,7 @@
 }(function (L) {
     L.Control.Fullscreen = L.Control.extend({
         options: {
-            position: 'topleft',
+            position: 'topright',
             title: {
                 'false': 'View Fullscreen',
                 'true': 'Exit Fullscreen'

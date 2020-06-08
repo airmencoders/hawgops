@@ -23,8 +23,8 @@ var marker_id = 1;
  * Declare various options for map and map elements
  */
 var map_options = {
-	worldCopyJump: true,
-	fullscreenControl: true
+  worldCopyJump: true,
+  zoomControl: false,
 }
 
 var mouse_coord_options = {
@@ -34,7 +34,7 @@ var mouse_coord_options = {
 };
 
 var nm_ruler_options = {
-	position: "topleft",
+	position: "topright",
 	lengthUnit: {
 		factor: 0.539956803,
 		display: "NM",
@@ -44,10 +44,11 @@ var nm_ruler_options = {
 };
 
 var draw_control_options = {
+  position: 'topright',
 	draw: {
 		flot: true,
 		marker: false,
-		circlemarker: false
+    circlemarker: false,
 	}
 };
 
@@ -144,14 +145,7 @@ var p518_options = {
 	clickable: false
 };
 
-/**
- * Initialize the LeafletJS Map and map plugins
- */
 var map = L.map("map", map_options).setView([35.77, -93.34], 5);
-var scale = L.control.scale();
-var mouse_coords = L.control.mouseCoordinate(mouse_coord_options);
-var nm_ruler = L.control.ruler(nm_ruler_options);
-var drawControl = new L.Control.Draw(draw_control_options);
 
 /**
  * Drawing layers are initialized globally in cas-head.php
@@ -168,9 +162,6 @@ layer_lines.addTo(map);
 layer_polygons.addTo(map);
 layer_eas.addTo(map);
 layer_rozs.addTo(map);
-scale.addTo(map);
-nm_ruler.addTo(map);
-map.addControl(drawControl);
 
 /**
  * Initialize basemap and labels
@@ -202,19 +193,6 @@ L.polyline(korea_nfl_buffer, nfl_buffer_options).addTo(labels_airspace);
 L.polyline(korea_nfl, nfl_options).addTo(labels_airspace);
 L.polygon(old_bmgr, range_options).addTo(labels_old_bmgr);
 L.polygon(new_bmgr, range_options).addTo(labels_new_bmgr);
-
-/**
- * Grayscale control button
- */
-L.easyButton('fa-tint fa-lg', function (btn, map) {
-	if ($('.leaflet-tile-pane').css('filter') == 'none') {
-		$('.leaflet-tile-pane').css('filter', 'grayscale(100%)')
-		$('.fa-tint').css('color', '#19CF19')
-	} else {
-		$('.leaflet-tile-pane').css('filter', '')
-		$('.fa-tint').css('color', 'black')
-	}
-}).addTo(map);
 
 /**
  * Create object that holds the basemaps and the labels
@@ -259,6 +237,34 @@ labels_kml.addTo(map);
 labels_old_bmgr.addTo(map);
 //mgrs_grids.addTo(map);
 L.control.layers(basemap_layers, label_layers).addTo(map);
+
+/**
+ * Initialize the LeafletJS Map and map plugins
+ */
+
+var scale = L.control.scale();
+var mouse_coords = L.control.mouseCoordinate(mouse_coord_options);
+var nm_ruler = L.control.ruler(nm_ruler_options);
+var drawControl = new L.Control.Draw(draw_control_options);
+
+map.addControl(new L.control.zoom({position: 'topright'}))
+map.addControl(new L.Control.Fullscreen());
+nm_ruler.addTo(map);
+scale.addTo(map);
+map.addControl(drawControl);
+
+/**
+ * Grayscale control button
+ */
+L.easyButton('fa-tint fa-lg', function (btn, map) {
+	if ($('.leaflet-tile-pane').css('filter') == 'none') {
+		$('.leaflet-tile-pane').css('filter', 'grayscale(100%)')
+		$('.fa-tint').css('color', '#19CF19')
+	} else {
+		$('.leaflet-tile-pane').css('filter', '')
+		$('.fa-tint').css('color', 'black')
+	}
+}).addTo(map);
 
 /**
  * Callback function allowing shapes created with Draw Control

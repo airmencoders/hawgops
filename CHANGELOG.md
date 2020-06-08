@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.46.1
+* Moved map controls to right so screenshots won't include them when screenshotting and using MGRS grids
+
 ## 1.46.0
 * Added `EasyButton` plugin
 * Added ability to turn map to grayscale
