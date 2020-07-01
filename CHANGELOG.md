@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.46.3
+* Fixed bug where loading the new threat marker didn't add the `marker: true` prop to the options causing the new save function to not work properly
+
 ## 1.46.2
 * Fixed Bug where loading scenario from text file would not render threats properly
 * For some reason, adding two `L.layerGroups` to one parent group and then adding the parent group to the map was breaking via the helper function but not loading from account

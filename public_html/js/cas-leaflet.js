@@ -1555,6 +1555,7 @@ function loadScenario(input) {
 			var marker_options = {
 				id: id,
 				type: ref.type,
+				marker: true,
 				msnThreat: ref.msnThreat,
 				soverignty: ref.soverignty,
 				icon: icon,
@@ -2356,6 +2357,46 @@ function saveScenario() {
 	var scenario_polygons = [];
 	var scenario_eas = [];
 	var scenario_rozs = [];
+
+	// stop gap for old versions
+	layer_threat_markers.eachLayer(function (marker) {
+		var marker_icon = marker.getIcon();
+
+			// Make the icon reference
+			if (marker_icon.options.type == "img") {
+				var icon = {
+					type: marker_icon.options.type,
+					iconUrl: marker_icon.options.iconUrl
+					// iconSize default
+				};
+			} else {
+				var icon = {
+					type: marker_icon.options.type
+					// html uses label
+					// iconSize default
+					// className default
+				};
+			}
+
+			var marker_ref = {
+				id: marker.options.id,
+				type: marker.options.type,
+				title: marker.options.title,
+				latlng: marker.getLatLng(),
+				mgrs: marker.options.mgrs,
+				elevation: marker.options.elevation,
+				msnThreat: marker.options.msnThreat,
+				soverignty: marker.options.soverignty,
+				color: marker.options.ring.options.color,
+				radius: marker.options.radius,
+				units: marker.options.units,
+				icon: icon,
+				data: marker.options.data
+			};
+
+			scenario_threat_markers.push(marker_ref);
+		
+	})
 
 	layer_threats.eachLayer(function (marker) {
 		if (marker.options.marker) {
