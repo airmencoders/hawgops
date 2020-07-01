@@ -23,8 +23,8 @@ var marker_id = 1;
  * Declare various options for map and map elements
  */
 var map_options = {
-  worldCopyJump: true,
-  zoomControl: false,
+	worldCopyJump: true,
+	zoomControl: false,
 }
 
 var mouse_coord_options = {
@@ -44,11 +44,11 @@ var nm_ruler_options = {
 };
 
 var draw_control_options = {
-  position: 'topright',
+	position: 'topright',
 	draw: {
 		flot: true,
 		marker: false,
-    circlemarker: false,
+		circlemarker: false,
 	}
 };
 
@@ -156,7 +156,8 @@ layer_bldg_markers.addTo(map);
 layer_friendly_markers.addTo(map);
 layer_hostile_markers.addTo(map);
 layer_survivor_markers.addTo(map);
-layer_master_threats.addTo(map);
+//layer_master_threats.addTo(map);
+layer_threats.addTo(map);
 layer_caps.addTo(map);
 layer_lines.addTo(map);
 layer_polygons.addTo(map);
@@ -212,7 +213,7 @@ var label_layers = {
 	"ATCAAs": labels_atcaas,
 	"KML": labels_kml,
 	"MGRS Grids": mgrs_grids,
-	"Threat Rings": layer_master_threats,
+	"Threat Rings": layer_threats,//layer_master_threats,
 	"Friendly Chits": layer_friendly_markers,
 	"Hostile Chits": layer_hostile_markers,
 	"Survivor Chits": layer_survivor_markers,
@@ -247,7 +248,7 @@ var mouse_coords = L.control.mouseCoordinate(mouse_coord_options);
 var nm_ruler = L.control.ruler(nm_ruler_options);
 var drawControl = new L.Control.Draw(draw_control_options);
 
-map.addControl(new L.control.zoom({position: 'topright'}))
+map.addControl(new L.control.zoom({ position: 'topright' }))
 map.addControl(new L.Control.Fullscreen());
 nm_ruler.addTo(map);
 scale.addTo(map);
@@ -781,6 +782,7 @@ function addThtRing(e) {
 		var marker_options = {
 			id: marker_id,
 			type: "threat",
+			marker: true,
 			msnThreat: msn_tht,
 			soverignty: soverignty,
 			icon: icon,
@@ -801,7 +803,7 @@ function addThtRing(e) {
 			msn_tht_label = "Custom";
 		}
 
-		var marker = L.marker(ll_posit, marker_options).addTo(layer_threat_markers);
+		var marker = L.marker(ll_posit, marker_options).addTo(layer_threats);
 
 		// Attempt to get elevation data
 		// https://nationalmap.gov/epqs/
@@ -1311,7 +1313,8 @@ function flyToCoordinates() {
  *
  */
 function hideTitles() {
-	layer_threat_markers.eachLayer(function (marker) {
+	//layer_threat_markers.eachLayer(function (marker) {
+	layer_threats.eachLayer(function (marker) {
 		marker.unbindTooltip();
 	});
 
@@ -1473,7 +1476,7 @@ function loadScenario(input) {
 					radius_label = ref.radius / 1000;
 				}
 
-				var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
+				var marker = L.marker(ref.latlng, marker_options).addTo(layer_threats);
 
 				if (marker.options.data == null) {
 					marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
@@ -1578,7 +1581,7 @@ function loadScenario(input) {
 				radius_label = ref.radius / 1000;
 			}
 
-			var marker = L.marker(ref.latlng, marker_options).addTo(layer_threat_markers);
+			var marker = L.marker(ref.latlng, marker_options).addTo(layer_threats);
 
 			if (marker.options.data == null) {
 				marker.bindPopup(ref.title + " (" + ref.soverignty + ")<br/>Type: " + ref.msnThreat + "<br/>Range: " + radius_label + " " + ref.units + "<br/>" + ref.mgrs + "<br/>" + ref.elevation + "<hr/><input type=\"text\" class=\"form-control tht-rename\"><button class=\"btn btn-sm btn-warning btn-tht-rename\">Rename</button><button class=\"btn btn-sm btn-danger btn-tht-del\">Delete</button><button class=\"btn btn-sm btn-block btn-info btn-add-9-line\">Add 9-Line</button>");
@@ -2354,42 +2357,44 @@ function saveScenario() {
 	var scenario_eas = [];
 	var scenario_rozs = [];
 
-	layer_threat_markers.eachLayer(function (marker) {
-		var marker_icon = marker.getIcon();
+	layer_threats.eachLayer(function (marker) {
+		if (marker.options.marker) {
+			var marker_icon = marker.getIcon();
 
-		// Make the icon reference
-		if (marker_icon.options.type == "img") {
-			var icon = {
-				type: marker_icon.options.type,
-				iconUrl: marker_icon.options.iconUrl
-				// iconSize default
+			// Make the icon reference
+			if (marker_icon.options.type == "img") {
+				var icon = {
+					type: marker_icon.options.type,
+					iconUrl: marker_icon.options.iconUrl
+					// iconSize default
+				};
+			} else {
+				var icon = {
+					type: marker_icon.options.type
+					// html uses label
+					// iconSize default
+					// className default
+				};
+			}
+
+			var marker_ref = {
+				id: marker.options.id,
+				type: marker.options.type,
+				title: marker.options.title,
+				latlng: marker.getLatLng(),
+				mgrs: marker.options.mgrs,
+				elevation: marker.options.elevation,
+				msnThreat: marker.options.msnThreat,
+				soverignty: marker.options.soverignty,
+				color: marker.options.ring.options.color,
+				radius: marker.options.radius,
+				units: marker.options.units,
+				icon: icon,
+				data: marker.options.data
 			};
-		} else {
-			var icon = {
-				type: marker_icon.options.type
-				// html uses label
-				// iconSize default
-				// className default
-			};
+
+			scenario_threat_markers.push(marker_ref);
 		}
-
-		var marker_ref = {
-			id: marker.options.id,
-			type: marker.options.type,
-			title: marker.options.title,
-			latlng: marker.getLatLng(),
-			mgrs: marker.options.mgrs,
-			elevation: marker.options.elevation,
-			msnThreat: marker.options.msnThreat,
-			soverignty: marker.options.soverignty,
-			color: marker.options.ring.options.color,
-			radius: marker.options.radius,
-			units: marker.options.units,
-			icon: icon,
-			data: marker.options.data
-		};
-
-		scenario_threat_markers.push(marker_ref);
 
 	});
 

@@ -6,6 +6,11 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.46.2
+* Fixed Bug where loading scenario from text file would not render threats properly
+* For some reason, adding two `L.layerGroups` to one parent group and then adding the parent group to the map was breaking via the helper function but not loading from account
+* Just moved to one single threat layerGroup
+
 ## 1.46.1
 * Moved map controls to right so screenshots won't include them when screenshotting and using MGRS grids
 
