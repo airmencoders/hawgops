@@ -6,6 +6,9 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.47.0
+* Added Birmingham 1 MOA (Requested by Smok'd)
+
 ## 1.46.3
 * Fixed bug where loading the new threat marker didn't add the `marker: true` prop to the options causing the new save function to not work properly
 
