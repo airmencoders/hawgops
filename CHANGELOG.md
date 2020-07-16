@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.48.0
+* Migrated from using CDNs for Bootstrap, Popper, and jQuery JS and CSS files to self hosting. Fixes NIPR CDN issues.
+* Updated `index` Jumbotron content.
+
 ## 1.47.0
 * Added Birmingham 1 MOA (Requested by Smok'd)
 

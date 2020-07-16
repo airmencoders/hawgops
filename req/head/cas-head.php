@@ -119,7 +119,8 @@
 	var layer_polygons = new L.FeatureGroup();
 	var layer_eas = new L.FeatureGroup();
 	var layer_rozs = new L.FeatureGroup();
-	
+  
+  
 	layer_threats.addTo(layer_master_threats);
-	layer_threat_markers.addTo(layer_master_threats);
+  layer_threat_markers.addTo(layer_master_threats);
 </script>
