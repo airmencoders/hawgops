@@ -2866,7 +2866,7 @@ function thtClicked() {
 
 	$(".btn-tht-del").click(function () {
 		layer_threats.removeLayer(thtRing);
-		layer_threat_markers.removeLayer(thtMarker);
+		layer_threats.removeLayer(thtMarker);
 
 		$("#marker-" + thtMarker.options.id).remove();
 	});
