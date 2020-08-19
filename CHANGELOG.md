@@ -6,6 +6,10 @@ Allows users to create CAS scenarios in order to mission plan for training missi
 
 # Change Log
 
+## 1.49.0
+* Added `rel="noopener noreferrer` to external links
+* Added `wiki` link to `navbar`
+
 ## 1.48.1
 * Fixed but when deleting threat that ring would delete but not the marker (Thanks Junk)
 
