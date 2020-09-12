@@ -3017,6 +3017,24 @@ function thtClicked() {
  */
 $(document).ready(function () {
 
+  var interval = null;
+
+  // Listen to the subscribe switch
+  $("#update-switch").change(function() {
+    var switch_checked = $("#update-switch").is(":checked");
+
+    if(switch_checked) {
+      console.log('checked', switch_checked)
+      interval = window.setInterval(function() {
+        location.reload();
+      }, 300000);
+    } else {
+      console.log('checked', switch_checked)
+      window.clearInterval(interval)
+      interval = null;
+    }
+  });
+
 	// Initialize CAP Modal color picker
 	$("#cap-color").spectrum({
 		preferredFormat: "name",

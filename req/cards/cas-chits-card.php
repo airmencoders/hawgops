@@ -50,6 +50,12 @@
 		<img src="chits/hostile/supply.svg" class="img-thumbnail chit-small" title="Supply" alt="Supply">
 		<img src="chits/hostile/unit.svg" class="img-thumbnail chit-small" title="Unit" alt="Unit">
 	</div>
+  <div class="card-footer">
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="update-switch">
+      <label class="custom-control-label" for="update-switch">Subscribe to <abbr title="Refreshes the page every 5 minutes">Updates</abbr></label>
+    </div>
+  </div>
 	<div class="card-footer">
 		<div id="action-buttons" class="btn-group btn-group-sm mb-1" role="group">
 			<button type="button" id="clear-chits" class="btn btn-danger">Clear</button>

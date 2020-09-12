@@ -5,6 +5,9 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.50.0
+* Added a `Subscribe to Updates` switch in the chit cards (Refreshes the page every 5 minutes)
+* Requested by Depo (74FS Intel)
 
 ## 1.49.0
 * Added `rel="noopener noreferrer` to external links
