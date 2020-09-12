@@ -3022,14 +3022,18 @@ $(document).ready(function () {
   // Listen to the subscribe switch
   $("#update-switch").change(function() {
     var switch_checked = $("#update-switch").is(":checked");
+    var scenario_id = $("#reload-scenario-id").val();
 
     if(switch_checked) {
-      console.log('checked', switch_checked)
       interval = window.setInterval(function() {
-        location.reload();
-      }, 300000);
+        $.ajax({
+          url: "https://hawg-ops.com/get-scenario.php?scenario="+scenario_id,
+          success: function (data, textStatus, jqXHR) {
+            loadScenario(data);
+          }
+        })
+      }, 30000);
     } else {
-      console.log('checked', switch_checked)
       window.clearInterval(interval)
       interval = null;
     }

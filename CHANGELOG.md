@@ -5,6 +5,11 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.51.0
+* Changed the subscribe to reload the scenario every 30 seconds
+* Subscribed updates now pull the JSON data using the `get-scenario.php` helper page
+* Viewing scenarios now no longer require user to be logged in
+
 ## 1.50.0
 * Added a `Subscribe to Updates` switch in the chit cards (Refreshes the page every 5 minutes)
 * Requested by Depo (74FS Intel)

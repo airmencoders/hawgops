@@ -9,7 +9,7 @@
 	$scenarioName = "";
 	
 	if(isset($_GET["scenario"])) {
-		if(!isLoggedIn()) {
+		/*if(!isLoggedIn()) {
 			createLog("warning", "-", "cas", "-", "Guest attempted to load scenario while not logged in", "-");
 			//logInfoMsg("Guest [".$_SERVER["REMOTE_ADDR"]."] attempted to load a scenario while not logged in.");
 			if(isset($_GET["share"]) && $_GET["share"] == "1") {
@@ -19,7 +19,7 @@
 				header("Location: /cas");
 				closeLogs();
 			}
-		}
+		}*/
 				
 		// Loop through the scenarios, get the JSON text, and add to an array.
 		$scenarioArray = array();
@@ -93,6 +93,7 @@
 
 		<div id="body-container" class="container-fluid flex-fill">
 			<div id="alert-container" class="cas-alert mx-auto"><?php require("../req/structure/alert-container.php"); ?></div>
+      <input type="hidden" id="reload-scenario-id" value="<?php echo $_GET["scenario"][0]; ?>" />
 			<?php
 				$ua = htmlentities($_SERVER["HTTP_USER_AGENT"], ENT_QUOTES, "UTF-8");
 				if(preg_match("~MSIE|Internet Explorer~i", $ua) || preg_match("~edge~i", $ua) || (strpos($ua, "Trident/7.0") !== false && strpos($ua, "rv:11.0") !== false)) {

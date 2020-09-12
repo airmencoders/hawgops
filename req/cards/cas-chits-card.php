@@ -53,7 +53,7 @@
   <div class="card-footer">
     <div class="custom-control custom-switch">
       <input type="checkbox" class="custom-control-input" id="update-switch">
-      <label class="custom-control-label" for="update-switch">Subscribe to <abbr title="Refreshes the page every 5 minutes">Updates</abbr></label>
+      <label class="custom-control-label" for="update-switch">Subscribe to <abbr title="Updates the scenario every 30 seconds">Updates</abbr></label>
     </div>
   </div>
 	<div class="card-footer">

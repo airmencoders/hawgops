@@ -480,7 +480,7 @@ function getScenario($sid) {
 	global $tbl_scenarios;
 	
 	global $col_scenario_id;
-	global $col_scenario_data;
+  global $col_scenario_data;
 	
 	global $API_GET_SCENARIO_SCENARIO_ID_NOT_RECEIVED;
 	global $API_GET_SCENARIO_SCENARIO_DOES_NOT_EXIST;
