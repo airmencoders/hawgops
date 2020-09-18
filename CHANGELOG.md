@@ -5,6 +5,9 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.51.1
+* Fixed update bug that would not clear the map when updating the scenario
+
 ## 1.51.0
 * Changed the subscribe to reload the scenario every 30 seconds
 * Subscribed updates now pull the JSON data using the `get-scenario.php` helper page

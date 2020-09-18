@@ -3029,6 +3029,7 @@ $(document).ready(function () {
         $.ajax({
           url: "https://hawg-ops.com/get-scenario.php?scenario="+scenario_id,
           success: function (data, textStatus, jqXHR) {
+            clearMap();
             loadScenario(data);
           }
         })
