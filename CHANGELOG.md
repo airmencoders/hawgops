@@ -5,6 +5,10 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.52.0
+* Added Wheeled Armor and Light Armor Friendly & Hostile Chits
+* Requested by Boston Joe
+
 ## 1.51.1
 * Fixed update bug that would not clear the map when updating the scenario
 
