@@ -5,6 +5,10 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.53.0
+* Added R-4804, R-4810, R-4812, R-4813 airspaces to NV
+* Requested by Squirrel
+
 ## 1.52.0
 * Added Wheeled Armor and Light Armor Friendly & Hostile Chits
 * Requested by Boston Joe
