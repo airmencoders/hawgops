@@ -19,6 +19,9 @@
     <img src="chits/friendly/wheeled-armor.svg" class="img-thumbnail chit-small" title="Wheeled Armor" alt="Wheeled Armor">
     <img src="chits/friendly/light-armor.svg" class="img-thumbnail chit-small" title="Light Armor" alt="Light Armor">
 		<img src="chits/friendly/artillery.svg" class="img-thumbnail chit-small" title="Artillery" alt="Artillery">
+    <img src="chits/friendly/self-propelled-artillery.svg" class="img-thumbnail chit-small" title="Self Propelled Artillery" alt="Self Propelled Artillery">
+    <img src="chits/friendly/mlrs.svg" class="img-thumbnail chit-small" title="MLRS" alt="MLRS">
+    <img src="chits/friendly/counter-battery-radar.svg" class="img-thumbnail chit-small" title="Counter-Battery Radar" alt="Counter-Battery Radar">
 		<img src="chits/friendly/aviation.svg" class="img-thumbnail chit-small" title="Aviation" alt="Aviation">
 		<img src="chits/friendly/cbrne.svg" class="img-thumbnail chit-small" title="CBRNE" alt="CBRNE">
 		<img src="chits/friendly/engineer.svg" class="img-thumbnail chit-small" title="Engineer" alt="Engineer">
@@ -27,11 +30,11 @@
 		<img src="chits/friendly/maintenance.svg" class="img-thumbnail chit-small" title="Maintenance" alt="Maintenance">
 		<img src="chits/friendly/mech-infantry.svg" class="img-thumbnail chit-small" title="Mech Infantry" alt="Mech Infantry">
 		<img src="chits/friendly/medical.svg" class="img-thumbnail chit-small" title="Medical" alt="Medical">
-		<img src="chits/friendly/recce.svg" class="img-thumbnail chit-small" title="Recce" alt="Recce">
-		<img src="chits/friendly/self-propelled-artillery.svg" class="img-thumbnail chit-small" title="Self Propelled Artillery" alt="Self Propelled Artillery">
+		<img src="chits/friendly/recce.svg" class="img-thumbnail chit-small" title="Recce" alt="Recce">		
 		<img src="chits/friendly/signals.svg" class="img-thumbnail chit-small" title="Signals" alt="Signals">
 		<img src="chits/friendly/supply.svg" class="img-thumbnail chit-small" title="Supply" alt="Supply">
 		<img src="chits/friendly/unit.svg" class="img-thumbnail chit-small" title="Unit" alt="Unit">
+    <img src="chits/friendly/special-forces.svg" class="img-thumbnail chit-small" title="Special Forces" alt="Special Forces">
 		<hr/>
 		<img src="chits/hostile/air-defense.svg" class="img-thumbnail chit-small" title="Air Defense" alt="Air Defense">
 		<img src="chits/hostile/airborne-infantry.svg" class="img-thumbnail chit-small" title="Airborne Infantry" alt="Airborne Infantry">
@@ -40,7 +43,10 @@
 		<img src="chits/hostile/armor.svg" class="img-thumbnail chit-small" title="Armor" alt="Armor">
     <img src="chits/hostile/wheeled-armor.svg" class="img-thumbnail chit-small" title="Wheeled Armor" alt="Wheeled Armor">
     <img src="chits/hostile/light-armor.svg" class="img-thumbnail chit-small" title="Light Armor" alt="Light Armor">
-		<img src="chits/hostile/artillery.svg" class="img-thumbnail chit-small" title="Artillery" alt="Artillery">
+		<img src="chits/hostile/artillery.svg" class="img-thumbnail chit-small" title="Artillery" alt="Artillery">    
+		<img src="chits/hostile/self-propelled-artillery.svg" class="img-thumbnail chit-small" title="Self Propelled Artillery" alt="Self Propelled Artillery">
+    <img src="chits/hostile/mlrs.svg" class="img-thumbnail chit-small" title="MLRS" alt="MLRS">
+    <img src="chits/hostile/counter-battery-radar.svg" class="img-thumbnail chit-small" title="Counter-Battery Radar" alt="Counter-Battery Radar">
 		<img src="chits/hostile/aviation.svg" class="img-thumbnail chit-small" title="Aviation" alt="Aviation">
 		<img src="chits/hostile/cbrne.svg" class="img-thumbnail chit-small" title="CBRNE" alt="CBRNE">
 		<img src="chits/hostile/engineer.svg" class="img-thumbnail chit-small" title="Engineer" alt="Engineer">
@@ -51,10 +57,10 @@
 		<img src="chits/hostile/medical.svg" class="img-thumbnail chit-small" title="Medical" alt="Medical">
 		<!--<img src="chits/hostile/missile.svg" class="img-thumbnail chit-small" title="Missile" alt="Missile">-->
 		<img src="chits/hostile/recce.svg" class="img-thumbnail chit-small" title="Recce" alt="Recce">
-		<img src="chits/hostile/self-propelled-artillery.svg" class="img-thumbnail chit-small" title="Self Propelled Artillery" alt="Self Propelled Artillery">
 		<img src="chits/hostile/signals.svg" class="img-thumbnail chit-small" title="Signals" alt="Signals">
 		<img src="chits/hostile/supply.svg" class="img-thumbnail chit-small" title="Supply" alt="Supply">
 		<img src="chits/hostile/unit.svg" class="img-thumbnail chit-small" title="Unit" alt="Unit">
+    <img src="chits/hostile/special-forces.svg" class="img-thumbnail chit-small" title="Special Forces" alt="Special Forces">
 	</div>
   <div class="card-footer">
     <div class="custom-control custom-switch">

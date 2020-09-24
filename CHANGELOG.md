@@ -5,6 +5,12 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.55.0
+* Added Counter-Battery Radar marker
+* Added MLRS marker
+* Added Special Forces marker
+* Requested by 23OSS/IN (DePo) and ASOS (Boston Joe)
+
 ## 1.54.0
 * Added CP and No Strike markers
 * Requested by 23OSS/IN (No Strike) and Squirrel (CP)
