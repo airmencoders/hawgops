@@ -5,15 +5,19 @@
 		<img src="chits/friendly/srv.svg" class="img-thumbnail chit-srv" title="SRV" alt="SRV">
 		<img src="chits/ip/bldg-label.svg" class="img-thumbnail chit-bldg-label" title="Building Label" alt="Building Label">
 		<img src="chits/ip/ip.svg" class="img-thumbnail chit-small" title="IP" alt="IP">
+    <img src="chits/ip/cp.svg" class="img-thumbnail chit-small" title="CP" alt="CP">
 		<img src="chits/threats/ada.svg" class="img-thumbnail chit-small" title="ADA" alt="ADA">
 		<img src="chits/threats/missile.svg" class="img-thumbnail chit-small" title="Missile" alt="Missile">
 		<img src="chits/ip/tgt.svg" class="img-thumbnail chit-small" title="TGT" alt="TGT">
+    <img src="chits/ip/no-strike.svg" class="img-thumbnail chit-small" title="No Strike" alt="No Strike">
 		<hr/>
 		<img src="chits/friendly/air-defense.svg" class="img-thumbnail chit-small" title="Air Defense" alt="Air Defense">
 		<img src="chits/friendly/airborne-infantry.svg" class="img-thumbnail chit-small" title="Airborne Infantry" alt="Airborne Infantry">
 		<img src="chits/friendly/airborne.svg" class="img-thumbnail chit-small" title="Airborne" alt="Airborne">
 		<img src="chits/friendly/anti-armor.svg" class="img-thumbnail chit-small" title="Anti Armor" alt="Anti Armor">
 		<img src="chits/friendly/armor.svg" class="img-thumbnail chit-small" title="Armor" alt="Armor">
+    <img src="chits/friendly/wheeled-armor.svg" class="img-thumbnail chit-small" title="Wheeled Armor" alt="Wheeled Armor">
+    <img src="chits/friendly/light-armor.svg" class="img-thumbnail chit-small" title="Light Armor" alt="Light Armor">
 		<img src="chits/friendly/artillery.svg" class="img-thumbnail chit-small" title="Artillery" alt="Artillery">
 		<img src="chits/friendly/aviation.svg" class="img-thumbnail chit-small" title="Aviation" alt="Aviation">
 		<img src="chits/friendly/cbrne.svg" class="img-thumbnail chit-small" title="CBRNE" alt="CBRNE">
@@ -34,6 +38,8 @@
 		<img src="chits/hostile/airborne.svg" class="img-thumbnail chit-small" title="Airborne" alt="Airborne">
 		<img src="chits/hostile/anti-armor.svg" class="img-thumbnail chit-small" title="Anti Armor" alt="Anti Armor">
 		<img src="chits/hostile/armor.svg" class="img-thumbnail chit-small" title="Armor" alt="Armor">
+    <img src="chits/hostile/wheeled-armor.svg" class="img-thumbnail chit-small" title="Wheeled Armor" alt="Wheeled Armor">
+    <img src="chits/hostile/light-armor.svg" class="img-thumbnail chit-small" title="Light Armor" alt="Light Armor">
 		<img src="chits/hostile/artillery.svg" class="img-thumbnail chit-small" title="Artillery" alt="Artillery">
 		<img src="chits/hostile/aviation.svg" class="img-thumbnail chit-small" title="Aviation" alt="Aviation">
 		<img src="chits/hostile/cbrne.svg" class="img-thumbnail chit-small" title="CBRNE" alt="CBRNE">

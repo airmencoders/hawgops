@@ -5,6 +5,10 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.54.0
+* Added CP and No Strike markers
+* Requested by 23OSS/IN (No Strike) and Squirrel (CP)
+
 ## 1.53.0
 * Added R-4804, R-4810, R-4812, R-4813 airspaces to NV
 * Requested by Squirrel
