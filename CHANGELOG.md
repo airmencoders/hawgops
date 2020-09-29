@@ -5,6 +5,9 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.56.0
+* Added Rose Hill, AL MOA (Requested by Tonto)
+
 ## 1.55.0
 * Added Counter-Battery Radar marker
 * Added MLRS marker
