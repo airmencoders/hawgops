@@ -5,6 +5,9 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.57.0
+* Added Birmingham 2 MOA and ROZs (Requested by RIP & Dath)
+
 ## 1.56.0
 * Added Rose Hill, AL MOA (Requested by Tonto)
 
