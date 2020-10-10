@@ -5,6 +5,11 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.58.0
+* Removed old BMGR from airspace
+* Merged new BMGR to restricted areas
+* Updated the `airspace-kml` page to no longer reference old and new bmgr
+
 ## 1.57.0
 * Added Birmingham 2 MOA and ROZs (Requested by RIP & Dath)
 

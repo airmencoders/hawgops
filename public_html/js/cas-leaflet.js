@@ -176,8 +176,8 @@ var labels_aars = L.layerGroup();
 var labels_atcaas = L.layerGroup();
 var labels_kml = L.layerGroup();
 var mgrs_grids = L.grids.mgrs();
-var labels_old_bmgr = L.layerGroup();
-var labels_new_bmgr = L.layerGroup();
+//var labels_old_bmgr = L.layerGroup();
+//var labels_new_bmgr = L.layerGroup();
 
 /**
  * Add airspace to the airspace layer
@@ -192,8 +192,8 @@ L.polygon(atcaas, atcaa_options).addTo(labels_atcaas)
 L.polyline(p518_border, p518_options).addTo(labels_airspace);
 L.polyline(korea_nfl_buffer, nfl_buffer_options).addTo(labels_airspace);
 L.polyline(korea_nfl, nfl_options).addTo(labels_airspace);
-L.polygon(old_bmgr, range_options).addTo(labels_old_bmgr);
-L.polygon(new_bmgr, range_options).addTo(labels_new_bmgr);
+//L.polygon(old_bmgr, range_options).addTo(labels_old_bmgr);
+//L.polygon(new_bmgr, range_options).addTo(labels_new_bmgr);
 
 /**
  * Create object that holds the basemaps and the labels
@@ -207,8 +207,6 @@ var label_layers = {
 	"Map Labels": labels_imagery,
 	"Road Labels": labels_roads,
 	"Airspace": labels_airspace,
-	"Current BMGR": labels_old_bmgr,
-	"New BMGR": labels_new_bmgr,
 	"AAR Tracks": labels_aars,
 	"ATCAAs": labels_atcaas,
 	"KML": labels_kml,
@@ -235,7 +233,7 @@ labels_aars.addTo(map);
 labels_airspace.addTo(map);
 labels_atcaas.addTo(map);
 labels_kml.addTo(map);
-labels_old_bmgr.addTo(map);
+//labels_old_bmgr.addTo(map);
 //mgrs_grids.addTo(map);
 L.control.layers(basemap_layers, label_layers).addTo(map);
 

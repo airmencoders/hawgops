@@ -93,7 +93,7 @@
     }
     
     // Add the Old BMGR
-    $kmlData .= '</Folder><Folder id="Current_BMGR"><name>Current BMGR (May 2020)</name><open>1</open>';
+    /*$kmlData .= '</Folder><Folder id="Current_BMGR"><name>Current BMGR (May 2020)</name><open>1</open>';
     foreach($old_bmgr as $bmgr) {
       $kmlData .= '<Placemark><styleUrl>#poly_red</styleUrl><Polygon><outerBoundaryIs><LinearRing><coordinates>';
 
@@ -114,7 +114,7 @@
       }
 
       $kmlData .= $closingPlacemark;
-    }
+    }*/
 
 		// Add Korea No Fly Line
 		$kmlData .= '</Folder><Folder id="Korea_NFL"><name>Korea NFL</name><open>1</open><Placemark><styleUrl>#thick_line_black</styleUrl><LineString><tessellate>1</tessellate><coordinates>';
