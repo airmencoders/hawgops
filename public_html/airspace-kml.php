@@ -16,7 +16,7 @@
 		$closingPlacemark = '</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>';
 		
 		// Get the airspace from my javascript
-		$airspace = file_get_contents("./js/cas-airspace.js");
+    $airspace = file_get_contents("./js/cas-airspace.js");
 
 		// Change all the JavaScript "var" to PHP variables with a delimiter
 		$airspace = str_replace("var ", "~~$", $airspace);
@@ -42,7 +42,7 @@
 			}
 
 			$kmlData .= $closingPlacemark;
-		}
+    }
 
 		// Add all the Low MOAs 
 		$kmlData .= '</Folder><Folder id="Low_MOAs"><name>Low MOAs</name><open>1</open>';
@@ -54,7 +54,7 @@
 			}
 
 			$kmlData .= $closingPlacemark;
-		}
+    }
 
 		// Add all the MOAs
 		$kmlData .= '</Folder><Folder id="MOAs"><name>MOAs</name><open>1</open>';
@@ -66,7 +66,7 @@
 			}
 
 			$kmlData .= $closingPlacemark;
-		}
+    }
 
 		// Add all the Warning Areas
 		$kmlData .= '</Folder><Folder id="warning_areas"><name>Warning Areas</name><open>1</open>';
@@ -78,7 +78,7 @@
 			}
 
 			$kmlData .= $closingPlacemark;
-		}
+    }
 
 		// Add all the Restricted Areas
 		$kmlData .= '</Folder><Folder id="Restriced_areas"><name>Restricted Areas</name><open>1</open>';
@@ -92,29 +92,7 @@
 			$kmlData .= $closingPlacemark;
     }
     
-    // Add the Old BMGR
-    /*$kmlData .= '</Folder><Folder id="Current_BMGR"><name>Current BMGR (May 2020)</name><open>1</open>';
-    foreach($old_bmgr as $bmgr) {
-      $kmlData .= '<Placemark><styleUrl>#poly_red</styleUrl><Polygon><outerBoundaryIs><LinearRing><coordinates>';
 
-      foreach($bmgr as $latlng) {
-        $kmlData .= $latlng[1].",".$latlng[0]."\n";
-      }
-
-      $kmlData .= $closingPlacemark;
-    }
-
-    // Add the New BMGR
-    $kmlData .= '</Folder><Folder id="New_BMGR"><name>New BMGR</name><open>1</open>';
-    foreach($new_bmgr as $bmgr) {
-      $kmlData .= '<Placemark><styleUrl>#poly_red</styleUrl><Polygon><outerBoundaryIs><LinearRing><coordinates>';
-
-      foreach($bmgr as $latlng) {
-        $kmlData .= $latlng[1].",".$latlng[0]."\n";
-      }
-
-      $kmlData .= $closingPlacemark;
-    }*/
 
 		// Add Korea No Fly Line
 		$kmlData .= '</Folder><Folder id="Korea_NFL"><name>Korea NFL</name><open>1</open><Placemark><styleUrl>#thick_line_black</styleUrl><LineString><tessellate>1</tessellate><coordinates>';
@@ -123,7 +101,7 @@
 			$kmlData .= $latlng[1].",".$latlng[0]."\n";
 		}
 
-		$kmlData .= '</coordinates></LineString></Placemark>';
+    $kmlData .= '</coordinates></LineString></Placemark>';
 
 		// Add Korea 2NM Buffer
 		$kmlData .= '</Folder><Folder id="2NM_Buffer"><name>2NM Buffer</name><open>1</open><Placemark><styleUrl>#thin_line_red</styleUrl><LineString><tessellate>1</tessellate><coordinates>';
@@ -132,7 +110,7 @@
 			$kmlData .= $latlng[1].",".$latlng[0]."\n";
 		}
 
-		$kmlData .= '</coordinates></LineString></Placemark>';
+    $kmlData .= '</coordinates></LineString></Placemark>';
 
 		// Add P-518 Border
 		$kmlData .= '</Folder><Folder id="P518_Border"><name>P-518 Border</name><open>1</open><Placemark><styleUrl>#thick_line_red</styleUrl><LineString><tessellate>1</tessellate><coordinates>';
@@ -140,10 +118,10 @@
 			$kmlData .= $latlng[1].",".$latlng[0]."\n";
 		}
 
-		$kmlData .= '</coordinates></LineString></Placemark>';
+    $kmlData .= '</coordinates></LineString></Placemark>';
 
 		// Finish the Folders
-		$kmlData .= '</Folder>'.$closingData;
+    $kmlData .= '</Folder>'.$closingData;
 
 		echo $kmlData;
 	} else {

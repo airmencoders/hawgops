@@ -5,6 +5,9 @@ https://hawg-ops.com
 Allows users to create CAS scenarios in order to mission plan for training missions.
 
 # Change Log
+## 1.58.1
+* Removed commented out airspace from `cas-airspace.js` which was causing errors when attempting to download the KML
+
 ## 1.58.0
 * Removed old BMGR from airspace
 * Merged new BMGR to restricted areas

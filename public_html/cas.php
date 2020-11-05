@@ -6,7 +6,10 @@
 	
 	createLog("info", $HTTP_OK, $_SERVER["REQUEST_URI"], "-", "Navigation", "-");
 	
-	$scenarioName = "";
+  $scenarioName = "";
+  
+  $reloadID = "";
+  $numInvalidScenarios = 0;
 	
 	if(isset($_GET["scenario"])) {
 		/*if(!isLoggedIn()) {
@@ -19,12 +22,14 @@
 				header("Location: /cas");
 				closeLogs();
 			}
-		}*/
+    }*/
+    
+    $reloadID = $_GET["scenario"][0];
 				
 		// Loop through the scenarios, get the JSON text, and add to an array.
 		$scenarioArray = array();
 		$error = 0;
-		$numInvalidScenarios=0;
+		
 		foreach($_GET["scenario"] as $key => $value) {
 			$tempScenario = getScenario($value);
 			if(!is_int($tempScenario)) {
@@ -93,7 +98,7 @@
 
 		<div id="body-container" class="container-fluid flex-fill">
 			<div id="alert-container" class="cas-alert mx-auto"><?php require("../req/structure/alert-container.php"); ?></div>
-      <input type="hidden" id="reload-scenario-id" value="<?php echo $_GET["scenario"][0]; ?>" />
+      <input type="hidden" id="reload-scenario-id" value="<?php echo $reloadID; ?>" />
 			<?php
 				$ua = htmlentities($_SERVER["HTTP_USER_AGENT"], ENT_QUOTES, "UTF-8");
 				if(preg_match("~MSIE|Internet Explorer~i", $ua) || preg_match("~edge~i", $ua) || (strpos($ua, "Trident/7.0") !== false && strpos($ua, "rv:11.0") !== false)) {
