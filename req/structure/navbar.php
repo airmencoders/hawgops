@@ -26,7 +26,7 @@
 				<a class="nav-link <?php echo ($_SERVER["PHP_SELF"] == "/airspace-kml.php") ? "active" : ""; ?>" href="/airspace-kml">Airspace KML</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="https://wiki.hawg-ops.com" target="_blank" rel="noopener noreferrer">Wiki <i class="fas fa-external-link-alt"></i></a>
+				<a class="nav-link" href="https://hawg-ops.com">Version 2</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="https://badbirdbook.com" target="_blank" rel="noopener noreferrer">A-10 Bad Bird Book <i class="fas fa-external-link-alt"></i></a>

@@ -1,5 +1,8 @@
 # Hawg Ops
-https://hawg-ops.com
+https://v1.hawg-ops.com
+
+## Deprectated!
+Hawg Ops utilizing PHP has been deprecated. Users are advised to use Hawg View [Github](https://github.com/airmencoders/hawgview)
 
 ## CAS Planner
 Allows users to create CAS scenarios in order to mission plan for training missions. 

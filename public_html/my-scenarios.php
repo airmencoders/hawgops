@@ -64,6 +64,7 @@
 							<?php echo $scenario["name"]." (Created On ".date("d M, Y", strtotime($scenario["date"]))." at ".date("H:i", strtotime($scenario["date"]))." Z)"; ?> 
 							<div id="buttons">
 								<a class="btn btn-success" href="/cas?scenario[]=<?php echo $scenario["id"];?>" role="button">Load</a>
+                <a class="btn btn-success" target="_blank" href="/load-v2?scenario=<?php echo $scenario["id"];?>" role="button">Download v2</a>
 								<button type="button" class="btn btn-primary btn-share-scenario" data-name="<?php echo $scenario["name"]; ?>" data-id="<?php echo $scenario["id"]; ?>" data-toggle="modal" data-target="#share-scenario-modal">Share</button>
 								<button type="button" class="btn btn-danger btn-del" data-name="<?php echo $scenario["name"]; ?>" data-id="<?php echo $scenario["id"]; ?>" data-toggle="modal" data-target="#del-scenario-modal">Delete</button>
 							</div>
